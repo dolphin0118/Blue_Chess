@@ -20,14 +20,15 @@ public class CharaLocate : MonoBehaviour {
         Vector3 pos = this.transform.position;
         Vector3Int tilepos = tilemap.LocalToCell(pos);
         TileBase UnderTile = tilemap.GetTile(tilepos);
-        Debug.Log(UnderTile);
         if(UnderTile != null && UnderTile.name == BenchTile.name) {
             transform.rotation = Quaternion.Euler(-20, 180, 0);
             Debug.Log("Bench");
+            Debug.Log(tilepos);
         }
         else if(UnderTile != null && UnderTile.name == BattleTile.name) {
             transform.rotation = Quaternion.Euler(0, 0, 0);
             Debug.Log("Battle");
+            Debug.Log(tilepos);
         }
     }
 

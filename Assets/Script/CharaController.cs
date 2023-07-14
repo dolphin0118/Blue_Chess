@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class State {
     public enum state {
@@ -14,13 +15,15 @@ public class State {
 public class CharaController : MonoBehaviour {
     Animator anim;
     GameObject Target_Enemy = null;
-
     State.state _state = State.state.Idle;
-    float Player_Speed = 1.0f;
-    float Player_Range = 1.0f;
-    float Attack_count = 0.7f;
+
+    [SerializeField]float Player_Speed = 1.0f;
+    [SerializeField]float Player_Range = 1.0f;
+    private float Attack_count;
+
     void Awake(){
        anim = GetComponent<Animator>();
+       Attack_count = GetComponent<CharaInfo>().Player_Attack_count;
     }
 
     void Update() {
@@ -61,13 +64,14 @@ public class CharaController : MonoBehaviour {
         Vector3 Player_distance = gameObject.transform.position;
         Vector3 Target_distance = Target_Enemy.transform.position;
         float Distance = Vector3.Distance(Player_distance, Target_distance);
+
         if(Distance <= Player_Range) {
             _state = State.state.Attack;
             anim.SetBool("Attack", true);
             anim.SetBool("Move", false); 
             return;
         }
-        else if(Target_Enemy != null) {
+        else {
             transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(Target_distance - Player_distance), Time.deltaTime);
             transform.position = Vector3.MoveTowards(Player_distance, Target_distance, 1f * Time.deltaTime);
         }
