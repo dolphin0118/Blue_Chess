@@ -18,6 +18,7 @@ public class CharaController : MonoBehaviour {
     State.state _state = State.state.Idle;
     float Player_Speed = 1.0f;
     float Player_Range = 1.0f;
+    float Attack_count = 0.7f;
     void Awake(){
        anim = GetComponent<Animator>();
     }
@@ -73,6 +74,11 @@ public class CharaController : MonoBehaviour {
     }
 
     void Attack_State() {
+        if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&anim.GetCurrentAnimatorStateInfo(0).normalizedTime > Attack_count) {
+            Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            Attack_count += 1.0f;
+            Target_Enemy.GetComponent<CharaInfo>().Player_Hp-=10;
+        }
     }
 
     void Die_state() {
@@ -90,6 +96,12 @@ public class CharaController : MonoBehaviour {
                 Target_Enemy = Target_Enemys[i];
                 min_distance = current_distance;
             }
+        }
+    }
+
+    void Attack_Enemy() {
+        if(Target_Enemy!= null) {
+            
         }
     }
 }

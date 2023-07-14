@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 8667631799130709052}
   m_Layer: 5
   m_Name: Hp_front
-  m_TagString: Untagged
+  m_TagString: Hp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
