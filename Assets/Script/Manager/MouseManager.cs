@@ -4,14 +4,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 public class MouseManager : MonoBehaviour {
     public Tilemap tilemap;
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
+    void Update(){
         Select_Tile();
     }
 

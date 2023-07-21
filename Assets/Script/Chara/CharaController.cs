@@ -48,11 +48,11 @@ public class CharaController : MonoBehaviour {
     }
 
     void Idle_state() {
-        if(!GameManager.isBattle) {
+        if(!BattleManager.isBattle) {
             _state = State.state.Idle;
             anim.SetBool("Idle", true);
         }
-        else if(GameManager.isBattle) {
+        else if(BattleManager.isBattle) {
             _state = State.state.Move;
             anim.SetBool("Idle", false);
             anim.SetBool("Move", true);

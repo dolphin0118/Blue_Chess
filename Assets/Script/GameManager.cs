@@ -16,10 +16,4 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Update(){
-        if(Input.GetKeyDown(KeyCode.Space)) {
-            isBattle = true;
-            Debug.Log("Battle");
-        }
-    }
 }
