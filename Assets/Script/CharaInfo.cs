@@ -29,8 +29,10 @@ public class CharaInfo : MonoBehaviour {
     }
 
     void StatInit() {
-        Player_Hp += Player_Hp * 0.8f;
-        Player_ATK += Player_ATK * 0.5f;
+        if(Player_Level != 0) {
+            Player_Hp += Player_Hp * 0.8f;
+            Player_ATK += Player_ATK * 0.5f;
+        }
     }
 
 }

@@ -10,7 +10,7 @@ public class MapManager : MonoBehaviour {
     public List<TileBase> BenchTiles;
     public List<bool> isBench;
     public int Bench_length = 8;
-
+    public int tile_gap = 4;
     public static MapManager instance = null;
     private void Awake() {
         if (instance == null) {
@@ -30,16 +30,15 @@ public class MapManager : MonoBehaviour {
             isBench.Add(false);
         }
     }
-
+    public void Bench_seat(int Bench_num, bool ischeck) {
+        int Bench_Num = Bench_num + tile_gap;
+        isBench[Bench_Num] = ischeck;
+    }
     public bool Check_Bench() {
         for(int i = 0; i < isBench.Count; i++) {
             if(!isBench[i]) return true;
             else continue;
         }
         return false;
-    }
-
-    void Update() {
-        
     }
 }

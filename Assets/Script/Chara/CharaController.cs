@@ -72,7 +72,7 @@ public class CharaController : MonoBehaviour {
             return;
         }
         else {
-            transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(Target_distance - Player_distance), Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(Target_distance - Player_distance), Time.deltaTime);
             transform.position = Vector3.MoveTowards(Player_distance, Target_distance, 1f * Time.deltaTime);
         }
     }

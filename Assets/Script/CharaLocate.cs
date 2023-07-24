@@ -9,40 +9,47 @@ public class CharaLocate : MonoBehaviour {
     Transform cam;
     RaycastHit hitRay, hitLayerMask;
     GameObject ObjectHitPosition, previousParent;
-    Vector3 previous_pos, current_pos;
+    Vector3 previous_pos;
 
     void Start() {
         cam = Camera.main.transform;
         tilemap = MapManager.instance.tilemap;
         BattleTile = MapManager.instance.BattleTile;
         BenchTile = MapManager.instance.BenchTile;
-    }
-    void Update() {
         Player_Rotate();
     }
 
-    Vector3 tile_pos() {
+    public Vector3Int Player_tilepos() {
         Vector3 Player_pos = this.transform.position;
         Vector3Int tile_pos = tilemap.LocalToCell(Player_pos);
-        Player_pos = tilemap.GetCellCenterLocal(tile_pos);
-        return Player_pos;
+        return tile_pos;
     }
 
-    void Player_Rotate() {
-        current_pos = this.transform.position;
-        Vector3Int current_tilepos = tilemap.LocalToCell(current_pos);
-        Vector3Int previous_tilepos = tilemap.LocalToCell(previous_pos);
-        TileBase UnderTile = tilemap.GetTile(current_tilepos);
-        TileBase previous_UnderTile = tilemap.GetTile(previous_tilepos);
-        
+    bool Check_Tile(){
+        TileBase UnderTile = tilemap.GetTile(Player_tilepos());
         if(UnderTile != null && UnderTile.name == BenchTile.name) {
-            transform.rotation = Quaternion.Euler(-20, 180, 0);
-            MapManager.instance.isBench[current_tilepos.x + 4] = true;
+            return false;
         }
-        else if(UnderTile != null && UnderTile.name == BattleTile.name) {
+        else if(UnderTile != null &&UnderTile.name == BattleTile.name) {
+            return true;
+        }
+        else return false;
+    }
+    
+    void Player_Rotate() {
+        Vector3Int current_tilepos = Player_tilepos();
+        Vector3Int previous_tilepos = tilemap.LocalToCell(previous_pos);
+        TileBase current_UnderTile = tilemap.GetTile(current_tilepos);
+        TileBase previous_UnderTile = tilemap.GetTile(previous_tilepos);
+        bool isBattleTile = Check_Tile();
+        if(!isBattleTile) {
+            this.transform.rotation = Quaternion.Euler(-20, 180, 0);
+            MapManager.instance.Bench_seat(current_tilepos.x, true);
+        }
+        else if(isBattleTile) {
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
-        if(previous_UnderTile.name == BenchTile.name) MapManager.instance.isBench[previous_tilepos.x + 4] = false;
+        if(previous_UnderTile.name == BenchTile.name) MapManager.instance.Bench_seat(previous_tilepos.x, false);
     }
 
     void OnMouseUp() {
@@ -56,11 +63,10 @@ public class CharaLocate : MonoBehaviour {
         Ray ray = new Ray();
         ray.origin = this.transform.position;
         ray.direction = -this.transform.up;
-        Vector3 pos = tile_pos();
+        Vector3 pos = tilemap.GetCellCenterLocal(Player_tilepos());
         transform.position = new Vector3(pos.x, this.transform.position.y, pos.z);
     }
-    void Check_Tile() {
-    }
+
 
     void OnMouseDown() {
         previous_pos = this.transform.position;

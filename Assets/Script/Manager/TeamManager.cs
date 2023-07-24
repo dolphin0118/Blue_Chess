@@ -6,7 +6,7 @@ public class TeamManager : MonoBehaviour {
     public static TeamManager instance = null;
     GameObject[] Chara_s;
     CharaInfo[] CharaInfo_s;    
-
+    int Level_gap = 100;
     private void Awake() {
         if (instance == null) {
             instance = this;
@@ -17,7 +17,7 @@ public class TeamManager : MonoBehaviour {
         }     
     }
 
-    public void Delete_Chara_s(int Compare_Code) {
+    public void Combine_Chara_s(int Compare_Code) {
         Chara_s = GameObject.FindGameObjectsWithTag("Player");
         CharaInfo_s = GetComponentsInChildren<CharaInfo>(); 
         int Delete_Count = 0;
@@ -26,7 +26,7 @@ public class TeamManager : MonoBehaviour {
             if(Compare_Code == Player_Code) {
                 if(Delete_Count >= 2) {
                     CharaInfo_s[i].Player_Level += 1;
-                    CharaInfo_s[i].Player_Code += 100;
+                    CharaInfo_s[i].Player_Code += Level_gap;
                     CharaInfo_s[i].Init();
                     break;
                 }

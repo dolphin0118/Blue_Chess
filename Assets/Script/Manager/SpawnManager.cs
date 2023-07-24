@@ -30,7 +30,7 @@ public class SpawnManager : MonoBehaviour {
                 GameObject Chara_Clone = Instantiate(Chara_Prefab,Prefab_Pos, Quaternion.identity);//prefab 소환
                 GameObject Home_Team = GameObject.FindGameObjectWithTag("Home");
                 Chara_Clone.transform.SetParent(Home_Team.transform);
-                MapManager.instance.isBench[i] = true;
+                MapManager.instance.Bench_seat(tilepos.x, true);
                 break;
             }
         }
@@ -38,7 +38,7 @@ public class SpawnManager : MonoBehaviour {
 
     public void Destroy_Chara(GameObject Chara_Object) {
         Vector3Int tilepos = MapManager.instance.tilemap.LocalToCell(Chara_Object.transform.position);
-        MapManager.instance.isBench[tilepos.x + 4] = false;
+        MapManager.instance.Bench_seat(tilepos.x, false);
         Destroy(Chara_Object);
     }
     
