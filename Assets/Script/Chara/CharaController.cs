@@ -17,13 +17,21 @@ public class CharaController : MonoBehaviour {
     GameObject Target_Enemy = null;
     State.state _state = State.state.Idle;
 
-    [SerializeField]float Player_Speed = 1.0f;
-    [SerializeField]float Player_Range = 1.0f;
-    private float Attack_count;
+    public bool isBattle = false;
 
+    private float Player_Speed;
+    private float Player_Range;
+    private float Player_Attack_count;
+  
     void Awake(){
-       anim = GetComponent<Animator>();
-       Attack_count = GetComponent<CharaInfo>().Player_Attack_count;
+        anim = GetComponent<Animator>();
+        Init();
+    }
+    void Init() {
+        CharaInfo charainfo =  GetComponent<CharaInfo>();
+        Player_Speed = charainfo.Player_Speed;
+        Player_Range = charainfo.Player_Range;
+        Player_Attack_count = charainfo.Player_Attack_count;
     }
 
     void Update() {
@@ -48,11 +56,11 @@ public class CharaController : MonoBehaviour {
     }
 
     void Idle_state() {
-        if(!BattleManager.isBattle) {
+        if(!isBattle) {
             _state = State.state.Idle;
             anim.SetBool("Idle", true);
         }
-        else if(BattleManager.isBattle) {
+        else if(isBattle) {
             _state = State.state.Move;
             anim.SetBool("Idle", false);
             anim.SetBool("Move", true);
@@ -78,9 +86,9 @@ public class CharaController : MonoBehaviour {
     }
 
     void Attack_State() {
-        if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&anim.GetCurrentAnimatorStateInfo(0).normalizedTime > Attack_count) {
+        if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&anim.GetCurrentAnimatorStateInfo(0).normalizedTime > Player_Attack_count) {
             Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
-            Attack_count += 1.0f;
+            Player_Attack_count += 1.0f;
             Target_Enemy.GetComponent<CharaInfo>().Player_Hp-=10;
         }
     }

@@ -1,5 +1,4 @@
-﻿namespace Map
-{
+﻿
     public class Block
     {
         /// <summary>
@@ -72,4 +71,4 @@
             next = null;
         }
     }
-}
+

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Map
-{
     public class Board
     {
         public Block[,] blocks;
@@ -126,4 +124,3 @@ namespace Map
             return arounds;
         }
     }
-}

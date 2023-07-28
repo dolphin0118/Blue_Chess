@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 201782316}
   - component: {fileID: 201782318}
   - component: {fileID: 201782317}
+  - component: {fileID: 201782319}
   m_Layer: 5
   m_Name: Card_3
   m_TagString: Card
@@ -243,6 +244,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201782315}
   m_CullTransparentMesh: 1
+--- !u!114 &201782319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201782315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb6f953d93a3a17468534b233e382872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &494504850
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +321,10 @@ MonoBehaviour:
   BenchTile: {fileID: 11400000, guid: 23e69f8e8e839ae46a3abf919c3f30c0, type: 2}
   BenchTiles: []
   isBench: 
+  Battle_width: 8
+  Battle_height: 7
   Bench_length: 9
+  tile_gap: 4
 --- !u!114 &494504854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,6 +339,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Chara_List:
   - {fileID: 11400000, guid: 3876e58c8d5c93349a920a49b500b589, type: 2}
+  - {fileID: 11400000, guid: f61d18e9301e0b34f8e02fe8fc9ecfd0, type: 2}
 --- !u!114 &494504855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1725,6 +1742,7 @@ GameObject:
   - component: {fileID: 1589601438}
   - component: {fileID: 1589601440}
   - component: {fileID: 1589601439}
+  - component: {fileID: 1589601441}
   m_Layer: 5
   m_Name: Card_4
   m_TagString: Card
@@ -1790,6 +1808,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1589601437}
   m_CullTransparentMesh: 1
+--- !u!114 &1589601441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589601437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb6f953d93a3a17468534b233e382872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1612686955
 GameObject:
   m_ObjectHideFlags: 0
@@ -2012,6 +2042,7 @@ GameObject:
   - component: {fileID: 1688978367}
   - component: {fileID: 1688978369}
   - component: {fileID: 1688978368}
+  - component: {fileID: 1688978370}
   m_Layer: 5
   m_Name: Card_2
   m_TagString: Card
@@ -2077,6 +2108,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1688978366}
   m_CullTransparentMesh: 1
+--- !u!114 &1688978370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688978366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb6f953d93a3a17468534b233e382872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1760185371
 GameObject:
   m_ObjectHideFlags: 0
@@ -2471,6 +2514,7 @@ GameObject:
   - component: {fileID: 2085405803}
   - component: {fileID: 2085405805}
   - component: {fileID: 2085405804}
+  - component: {fileID: 2085405806}
   m_Layer: 5
   m_Name: Card_5
   m_TagString: Card
@@ -2536,6 +2580,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2085405802}
   m_CullTransparentMesh: 1
+--- !u!114 &2085405806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2085405802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb6f953d93a3a17468534b233e382872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2128491733
 GameObject:
   m_ObjectHideFlags: 0
@@ -3145,7 +3201,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &919132147602677493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3162,8 +3218,10 @@ MonoBehaviour:
   Player_Hp: 100
   Player_Mp: 100
   Player_ATK: 50
+  Player_Speed: 1
+  Player_Range: 1
   Player_Level: 1
-  Player_Code: 2
+  Player_Code: 3
 --- !u!114 &919132147602677494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3176,8 +3234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64a48b6b49f71894cb4c76f32986d207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player_Speed: 1
-  Player_Range: 1
+  isBattle: 0
 --- !u!4 &927176940150615120
 Transform:
   m_ObjectHideFlags: 0
