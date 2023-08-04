@@ -64,12 +64,10 @@ public class MapManager : MonoBehaviour {
     public void Battle_seat() {
         if(GameObject.FindGameObjectWithTag("Home").gameObject.transform.childCount > 0) {
             CharaLocate[] Chara_pos = GameObject.FindGameObjectWithTag("Home").GetComponentsInChildren<CharaLocate>(); 
-            Debug.Log(Chara_pos.Length);
             for(int i = 0; i < Chara_pos.Length; i++) {
                 Vector2Int current_pos = Coord_Lerp(Chara_pos[i].Player_Tilepos());
                 if(current_pos.x >=0 && current_pos.y >= 0) {
                     isBattle[current_pos.x][current_pos.y] = true;            
-                    Debug.Log(current_pos);
                 }
             }
         }

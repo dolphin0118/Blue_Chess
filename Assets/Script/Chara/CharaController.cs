@@ -97,17 +97,24 @@ public class CharaController : MonoBehaviour {
         Destroy(this.gameObject);
     }
 
-    void Set_Target() {
+    public Vector3Int Set_Target() {
         GameObject[] Target_Enemys = GameObject.FindGameObjectsWithTag("Away");
+        Vector3 Target_distance = Vector3.zero;
         float min_distance = float.MaxValue;
         for(int i = 0; i < Target_Enemys.Length; i++) {
             Vector3 Player_distance = this.transform.position;
-            Vector3 Target_distance = Target_Enemys[i].transform.position;
+            Target_distance = Target_Enemys[i].transform.position;
             float current_distance = Vector3.Distance(Player_distance, Target_distance);
             if(min_distance > current_distance) {
                 Target_Enemy = Target_Enemys[i];
                 min_distance = current_distance;
             }
+        }
+        
+        if(Target_Enemys.Length == 0) return Vector3Int.zero;
+        else {
+            Vector3Int tile_pos = MapManager.instance.tilemap.LocalToCell(Target_distance);
+            return tile_pos;
         }
     }
 

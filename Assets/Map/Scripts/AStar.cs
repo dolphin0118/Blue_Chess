@@ -37,14 +37,11 @@ namespace Map.PathFinding
 
                     // 검사 완료 리스트로 이관
                     current.check = true;
-                    if (waittingBlocks.Remove(current))
-                        finishedBlocks.Add(current);
+                    if (waittingBlocks.Remove(current)) finishedBlocks.Add(current);
 
                     // 이동 불가 시, 길찾기 실패 처리
-                    if (aroundBlocks.Count == 0)
-                        return null;
-                    else
-                    {
+                    if (aroundBlocks.Count == 0) return null;
+                    else {
                         // 부모 세팅
                         aroundBlocks = aroundBlocks.FindAll(block => !block.check);
                     }
@@ -158,8 +155,7 @@ namespace Map.PathFinding
                     var block = arounds[i];
                     bool isDiagonalBlock = Math.Abs(block.x - current.x) == 1 && Math.Abs(block.y - current.y) == 1;
                     int priceFromDest = (Math.Abs(dest.x - block.x) + Math.Abs(dest.y - block.y)) * 10;
-                    if (block.prev == null)
-                        block.prev = current;
+                    if (block.prev == null) block.prev = current;
                     block.SetPrice(current.G + (isDiagonalBlock ? 14 : 10), priceFromDest);
                 }
             }

@@ -8,6 +8,7 @@ TagManager:
   - Away
   - Hp
   - Card
+  - Main
   layers:
   - Default
   - TransparentFX
