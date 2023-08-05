@@ -7,12 +7,12 @@ public class CharaAstar : MonoBehaviour {
 
     List<Vector3Int> Tile_Pos;
     public List<List<bool>> isBattle;
-    //public Block[,] blocks;
     public Board board;
-    public int Lerp_x = 4;
-    public int Lerp_y = 6;
+    public int Lerp_x = 5;
+    public int Lerp_y = 8;
     public int width = 9;
     public int height = 7;
+    private bool ismove = false;
 
     Vector2Int Coord_Lerp() {
         Vector3Int pos = this.GetComponent<CharaLocate>().Player_Tilepos();
@@ -96,27 +96,48 @@ public class CharaAstar : MonoBehaviour {
         }
     }
   
-    void Update() {
-    }
-
     void MovePath() {
         Vector2Int start_pos = Coord_Lerp();
         Vector2Int dest_pos = Target_Coord_Lerp();
-        if(start_pos.x >= 0 && start_pos.y >= 0) {
+        Debug.Log(start_pos.x);
+        Debug.Log(start_pos.y);
+        Debug.Log(this.GetComponent<CharaLocate>().Player_Tilepos());
+        if (start_pos.x >= 0 && start_pos.y >= 0) {
             TileCheck();
             Block start = board.blocks[start_pos.x, start_pos.y];
             Block dest = board.blocks[dest_pos.x, dest_pos.y];
             var startBlock = PathFindTile(start,dest);
+            Debug.Log("translate");
+            int loopNum = 0;
             while(startBlock != null) {
-                Debug.Log(startBlock.x);
-                Debug.Log(startBlock.y);
-                if(startBlock != null) startBlock = startBlock.next;
+                if(!ismove) StartCoroutine(MoveTile(startBlock.x, startBlock.y));
+                else startBlock = startBlock.next;
+                if (loopNum++ > 10000) throw new Exception("Infinite Loop");
             }
 
         }
     }
+
+    IEnumerator MoveTile(int x, int y) {
+        ismove = true;
+        Vector3Int pos = this.GetComponent<CharaLocate>().Player_Tilepos();
+        Vector3Int target_pos = new Vector3Int(pos.x + x, pos.y + y, pos.z);
+        Debug.Log("translate");
+        int loopNum = 0;
+        while(Vector3.Magnitude(target_pos - pos) > 0) {
+            Vector3 dir = new Vector3Int(x, y, 0);
+            transform.position = Vector3.Lerp(pos, target_pos, Time.deltaTime);
+            if (loopNum++ > 10000)
+                throw new Exception("Infinite Loop");
+            yield return null;
+        }
+        transform.position = target_pos;
+        ismove = false;
+    }
+
     private void OnCollisionEnter(Collision other) {
         if(other.transform.tag == "Main") {
+            Debug.Log("In Tile");
             MovePath();
         }
     }
