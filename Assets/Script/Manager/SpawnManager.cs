@@ -41,11 +41,4 @@ public class SpawnManager : MonoBehaviour {
         MapManager.instance.Bench_seat(tilepos.x, false);
         Destroy(Chara_Object);
     }
-    
-    void Update() {
-        if(Input.GetKeyDown(KeyCode.Q)) {
-            Spawn_Chara(Chara_List[0].Chara_Prefab);
-            Debug.Log("Spawn");
-        }
-    }
 }

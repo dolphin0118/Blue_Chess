@@ -11,8 +11,8 @@ public class MapManager : MonoBehaviour {
     public List<TileBase> BenchTiles;
     public List<bool> isBench;
 
-    public int Battle_width = 8;
-    public int Battle_height = 7;
+    public int Battle_width = 10;
+    public int Battle_height = 10;
     public int Bench_length = 8;
     public int tile_gap = 4;
 

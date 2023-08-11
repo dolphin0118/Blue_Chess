@@ -14,9 +14,11 @@ public class State {
 
 public class CharaController : MonoBehaviour {
     Animator anim;
+    CharaAstar Astar;
+    CharaInfo  charainfo;
     GameObject Target_Enemy = null;
     State.state _state = State.state.Idle;
-
+    static public Vector3Int Infinity = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue);
     public bool isBattle = false;
 
     private float Player_Speed;
@@ -25,16 +27,19 @@ public class CharaController : MonoBehaviour {
   
     void Awake(){
         anim = GetComponent<Animator>();
+        Astar = GetComponent<CharaAstar>();
+        charainfo = GetComponent<CharaInfo>();
         Init();
     }
     void Init() {
-        CharaInfo charainfo =  GetComponent<CharaInfo>();
+        
         Player_Speed = charainfo.Player_Speed;
         Player_Range = charainfo.Player_Range;
         Player_Attack_count = charainfo.Player_Attack_count;
     }
 
     void Update() {
+        if(Input.GetKey(KeyCode.Q)) isBattle = true;
         Player_State();
     }
 
@@ -64,30 +69,31 @@ public class CharaController : MonoBehaviour {
             _state = State.state.Move;
             anim.SetBool("Idle", false);
             anim.SetBool("Move", true);
+            Astar.MovePath();
         }
     }
 
     void Move_state() {
-        Set_Target();
+        if(Target_Enemy == null) {
+            anim.SetBool("Idle",true);
+            anim.SetBool("Move", false);
+            return;
+        }
         Vector3 Player_distance = gameObject.transform.position;
         Vector3 Target_distance = Target_Enemy.transform.position;
         float Distance = Vector3.Distance(Player_distance, Target_distance);
-
         if(Distance <= Player_Range) {
             _state = State.state.Attack;
             anim.SetBool("Attack", true);
             anim.SetBool("Move", false); 
+            Astar.StopPath();
             return;
-        }
-        else {
-            transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(Target_distance - Player_distance), Time.deltaTime);
-            transform.position = Vector3.MoveTowards(Player_distance, Target_distance, 1f * Time.deltaTime);
         }
     }
 
     void Attack_State() {
         if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&anim.GetCurrentAnimatorStateInfo(0).normalizedTime > Player_Attack_count) {
-            Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            //Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
             Player_Attack_count += 1.0f;
             Target_Enemy.GetComponent<CharaInfo>().Player_Hp-=10;
         }
@@ -97,9 +103,9 @@ public class CharaController : MonoBehaviour {
         Destroy(this.gameObject);
     }
 
-    public Vector3Int Set_Target() {
+    public GameObject Set_Target() {
         GameObject[] Target_Enemys = GameObject.FindGameObjectsWithTag("Away");
-        Vector3 Target_distance = Vector3.zero;
+        Vector3 Target_distance;
         float min_distance = float.MaxValue;
         for(int i = 0; i < Target_Enemys.Length; i++) {
             Vector3 Player_distance = this.transform.position;
@@ -110,17 +116,6 @@ public class CharaController : MonoBehaviour {
                 min_distance = current_distance;
             }
         }
-        
-        if(Target_Enemys.Length == 0) return Vector3Int.zero;
-        else {
-            Vector3Int tile_pos = MapManager.instance.tilemap.LocalToCell(Target_distance);
-            return tile_pos;
-        }
-    }
-
-    void Attack_Enemy() {
-        if(Target_Enemy!= null) {
-            
-        }
+        return Target_Enemy;
     }
 }

@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharaAstar : MonoBehaviour {
-
     List<Vector3Int> Tile_Pos;
     public List<List<bool>> isBattle;
     public Board board;
-    public int Lerp_x = 5;
-    public int Lerp_y = 8;
-    public int width = 9;
-    public int height = 7;
+    public int Lerp_x = 4;
+    public int Lerp_y = 6;
+    public int width = 10;
+    public int height = 10;
     private bool ismove = false;
-
+    GameObject Target_Object;  
+    
     Vector2Int Coord_Lerp() {
         Vector3Int pos = this.GetComponent<CharaLocate>().Player_Tilepos();
         int Lerp_pos_x = pos.x + Lerp_x;
@@ -37,7 +37,7 @@ public class CharaAstar : MonoBehaviour {
     }
 
     Vector2Int Target_Coord_Lerp() {
-        Vector3Int pos = this.GetComponent<CharaController>().Set_Target();
+        Vector3Int pos = MapManager.instance.tilemap.LocalToCell(Target_Object.transform.position);
         int Lerp_pos_x = pos.x + Lerp_x;
         int Lerp_pos_y = pos.y + Lerp_y;
         Vector2Int Lerp_pos = new Vector2Int(Lerp_pos_x, Lerp_pos_y);
@@ -67,7 +67,6 @@ public class CharaAstar : MonoBehaviour {
             Block block = board.blocks[target.x + 1, target.y - 1];
             arounds.Add(block);
         }
-
         if (Exists(target.x - 1, target.y))
         {
             Block block = board.blocks[target.x - 1, target.y];
@@ -95,53 +94,68 @@ public class CharaAstar : MonoBehaviour {
             arounds.Add(block);
         }
     }
-  
-    void MovePath() {
+    
+    public Block CreatePath() {
+        pos = this.GetComponent<CharaLocate>().Player_Tilepos();
         Vector2Int start_pos = Coord_Lerp();
         Vector2Int dest_pos = Target_Coord_Lerp();
-        Debug.Log(start_pos.x);
-        Debug.Log(start_pos.y);
-        Debug.Log(this.GetComponent<CharaLocate>().Player_Tilepos());
-        if (start_pos.x >= 0 && start_pos.y >= 0) {
-            TileCheck();
-            Block start = board.blocks[start_pos.x, start_pos.y];
-            Block dest = board.blocks[dest_pos.x, dest_pos.y];
-            var startBlock = PathFindTile(start,dest);
-            Debug.Log("translate");
-            int loopNum = 0;
-            while(startBlock != null) {
-                if(!ismove) StartCoroutine(MoveTile(startBlock.x, startBlock.y));
-                else startBlock = startBlock.next;
-                if (loopNum++ > 10000) throw new Exception("Infinite Loop");
+        TileCheck();
+        Block start = board.blocks[start_pos.x, start_pos.y];
+        Block dest = board.blocks[dest_pos.x, dest_pos.y];
+        var startBlock = PathFindTile(start, dest);
+        if(startBlock != null) {
+            return startBlock;
+        }
+        return null;
+    }
+
+    Vector3Int pos;
+    Block startBlock = null;
+    Coroutine Movetile;
+
+    public void MovePath() {
+        Target_Object = this.GetComponent<CharaController>().Set_Target();
+        if(Target_Object == null) return;
+        else if(startBlock == null) startBlock = CreatePath();
+        if(startBlock != null) {
+            if(!ismove) Movetile = StartCoroutine(MoveTile(startBlock));
+            else {
+                ismove = false;
+                startBlock = startBlock.next;
+                MovePath();
             }
-
         }
+        else return;
     }
 
-    IEnumerator MoveTile(int x, int y) {
+    public void StopPath() {
+        StopCoroutine(Movetile);
+    }
+
+    IEnumerator MoveTile(Block target_Block) {
         ismove = true;
-        Vector3Int pos = this.GetComponent<CharaLocate>().Player_Tilepos();
-        Vector3Int target_pos = new Vector3Int(pos.x + x, pos.y + y, pos.z);
-        Debug.Log("translate");
-        int loopNum = 0;
-        while(Vector3.Magnitude(target_pos - pos) > 0) {
-            Vector3 dir = new Vector3Int(x, y, 0);
-            transform.position = Vector3.Lerp(pos, target_pos, Time.deltaTime);
-            if (loopNum++ > 10000)
-                throw new Exception("Infinite Loop");
-            yield return null;
-        }
-        transform.position = target_pos;
-        ismove = false;
-    }
+        Vector3Int player_pos;
+        if(target_Block.prev != null) player_pos = new Vector3Int(target_Block.prev.x - Lerp_x,target_Block.prev.y - Lerp_y, pos.z);
+        else player_pos = new Vector3Int(pos.x, pos.y, pos.z);    
+        Vector3Int target_pos = new Vector3Int(target_Block.x - Lerp_x, target_Block.y - Lerp_y, pos.z);
+        Vector3 pos_Lerp = MapManager.instance.tilemap.CellToWorld(player_pos);
+        Vector3 target_Lerp = MapManager.instance.tilemap.CellToWorld(target_pos);
 
-    private void OnCollisionEnter(Collision other) {
-        if(other.transform.tag == "Main") {
-            Debug.Log("In Tile");
-            MovePath();
-        }
-    }
+        int loopNum = 0;//무한루프 방지
+        float elapsedTime = 0f;//lerp
+        float speedValue = Vector3.Magnitude(target_Lerp - pos_Lerp);//스피드 일정하게
 
+        while(Vector3.Magnitude(target_Lerp - transform.position) > 0.01f) { 
+            transform.position = Vector3.Lerp(pos_Lerp, target_Lerp, elapsedTime += Time.deltaTime/speedValue);
+            transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(target_Lerp - pos_Lerp), elapsedTime);
+            if (loopNum++ > 10000) throw new Exception("Infinite Loop");   
+            yield return null;  
+        }
+        transform.position = target_Lerp;
+        transform.rotation =  Quaternion.LookRotation(target_Lerp - pos_Lerp);
+        MovePath();
+    }
+   
     Block PathFindTile(Block start, Block dest) {   
         if(board.Exists(start) && board.Exists(dest)) {
             board.CheckClear();
