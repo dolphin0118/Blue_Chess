@@ -114,9 +114,11 @@ public class CharaAstar : MonoBehaviour {
     Coroutine Movetile;
 
     public void MovePath() {
-        Target_Object = this.GetComponent<CharaController>().Set_Target();
+        if(Target_Object == null) Target_Object = this.GetComponent<CharaController>().Set_Target();
+        
         if(Target_Object == null) return;
         else if(startBlock == null) startBlock = CreatePath();
+
         if(startBlock != null) {
             if(!ismove) Movetile = StartCoroutine(MoveTile(startBlock));
             else {
@@ -141,9 +143,9 @@ public class CharaAstar : MonoBehaviour {
         Vector3 pos_Lerp = MapManager.instance.tilemap.CellToWorld(player_pos);
         Vector3 target_Lerp = MapManager.instance.tilemap.CellToWorld(target_pos);
 
-        int loopNum = 0;//무한루프 방지
-        float elapsedTime = 0f;//lerp
-        float speedValue = Vector3.Magnitude(target_Lerp - pos_Lerp);//스피드 일정하게
+        int loopNum = 0;
+        float elapsedTime = 0f;
+        float speedValue = Vector3.Magnitude(target_Lerp - pos_Lerp);
 
         while(Vector3.Magnitude(target_Lerp - transform.position) > 0.01f) { 
             transform.position = Vector3.Lerp(pos_Lerp, target_Lerp, elapsedTime += Time.deltaTime/speedValue);
@@ -153,6 +155,7 @@ public class CharaAstar : MonoBehaviour {
         }
         transform.position = target_Lerp;
         transform.rotation =  Quaternion.LookRotation(target_Lerp - pos_Lerp);
+        startBlock = CreatePath();
         MovePath();
     }
    

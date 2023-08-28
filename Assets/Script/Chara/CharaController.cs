@@ -39,7 +39,10 @@ public class CharaController : MonoBehaviour {
     }
 
     void Update() {
-        if(Input.GetKey(KeyCode.Q)) isBattle = true;
+        if(Input.GetKey(KeyCode.Q)) isBattle = true;     
+    }
+
+    void FixedUpdate() {
         Player_State();
     }
 
@@ -68,21 +71,21 @@ public class CharaController : MonoBehaviour {
         else if(isBattle) {
             _state = State.state.Move;
             anim.SetBool("Idle", false);
-            anim.SetBool("Move", true);
             Astar.MovePath();
         }
     }
 
     void Move_state() {
         if(Target_Enemy == null) {
-            anim.SetBool("Idle",true);
+            _state = State.state.Idle;
             anim.SetBool("Move", false);
             return;
         }
-        Vector3 Player_distance = gameObject.transform.position;
-        Vector3 Target_distance = Target_Enemy.transform.position;
-        float Distance = Vector3.Distance(Player_distance, Target_distance);
-        if(Distance <= Player_Range) {
+        else {
+            anim.SetBool("Move", true);
+        }
+
+        if(PlayerToTarget() <= Player_Range) {
             _state = State.state.Attack;
             anim.SetBool("Attack", true);
             anim.SetBool("Move", false); 
@@ -92,6 +95,14 @@ public class CharaController : MonoBehaviour {
     }
 
     void Attack_State() {
+         if(PlayerToTarget() > Player_Range) {
+            _state = State.state.Move;
+            anim.SetBool("Attack", false);
+            anim.SetBool("Move", true); 
+            Astar.MovePath();
+            return;
+        }
+        
         if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&anim.GetCurrentAnimatorStateInfo(0).normalizedTime > Player_Attack_count) {
             //Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
             Player_Attack_count += 1.0f;
@@ -101,6 +112,13 @@ public class CharaController : MonoBehaviour {
 
     void Die_state() {
         Destroy(this.gameObject);
+    }
+
+    float PlayerToTarget() {
+        Vector3 Player_distance = gameObject.transform.position;
+        Vector3 Target_distance = Target_Enemy.transform.position;
+        float Distance = Vector3.Distance(Player_distance, Target_distance);
+        return Distance;
     }
 
     public GameObject Set_Target() {
