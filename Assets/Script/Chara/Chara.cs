@@ -6,4 +6,5 @@ using UnityEngine;
 public class Chara : ScriptableObject{
     public GameObject Chara_Prefab;
     public Sprite Chara_Card;
+    public string CharaSynergy;
 }
