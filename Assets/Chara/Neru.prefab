@@ -873,6 +873,7 @@ GameObject:
   - component: {fileID: 1675407789663064219}
   - component: {fileID: 1981961329273491618}
   - component: {fileID: 1981961329273491617}
+  - component: {fileID: 5989282878851396530}
   m_Layer: 8
   m_Name: Neru
   m_TagString: Away
@@ -992,6 +993,17 @@ MonoBehaviour:
   Player_Range: 1
   Player_Level: 0
   Player_Code: 3
+--- !u!210 &5989282878851396530
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981961329273491616}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
 --- !u!1 &2058468397757642367
 GameObject:
   m_ObjectHideFlags: 0

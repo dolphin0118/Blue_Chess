@@ -563,6 +563,7 @@ GameObject:
   - component: {fileID: 1945202537334826139}
   - component: {fileID: 1603236075247383415}
   - component: {fileID: 48862488408835265}
+  - component: {fileID: 7130747522660909931}
   m_Layer: 7
   m_Name: Hoshino
   m_TagString: Player
@@ -694,6 +695,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1737c8288f4a22e4cb175572f2572a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Lerp_x: 4
+  Lerp_y: 6
+  width: 9
+  height: 7
+--- !u!210 &7130747522660909931
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603236075247383408}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
 --- !u!1 &1647945608251189504
 GameObject:
   m_ObjectHideFlags: 0
