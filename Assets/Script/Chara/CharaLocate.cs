@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class CharaLocate : MonoBehaviour {
     Tilemap tilemap;
-    TileBase BattleTile, BenchTile;
+    public TileBase BattleTile, BenchTile;
     Transform cam;
     RaycastHit hitRay, hitLayerMask;
     GameObject ObjectHitPosition, previousParent;

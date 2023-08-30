@@ -9,6 +9,7 @@ TagManager:
   - Hp
   - Card
   - Main
+  - Abydos
   layers:
   - Default
   - TransparentFX
