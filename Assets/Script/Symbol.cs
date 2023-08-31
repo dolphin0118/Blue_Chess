@@ -11,7 +11,7 @@ public class Symbol : MonoBehaviour
         symbolObject = GetComponent<GameObject>();
         string symbolName = symbolObject.tag;
         SynergyManager.SynergyList[symbolName] += 1;
-        isBattleTile = charaObject.GetComponent<CharaLocate>().isBattleTile;
+        //isBattleTile = charaObject.GetComponent<CharaLocate>().isBattleTile;
     }
 
     // Update is called once per frame
