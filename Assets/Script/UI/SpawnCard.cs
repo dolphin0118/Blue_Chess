@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 
 public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
+
     Color initColor;
     Image Chara_Image;
     Chara Chara_Clone;
@@ -28,14 +29,20 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        SpawnManager.instance.Spawn_Chara(Chara_Clone.Chara_Prefab);
+        SpawnSystem.instance.Spawn_Chara(Chara_Clone.Chara_Prefab);
     }
 
     void Card_Init() {
-        int Select_Max = SpawnManager.instance.Chara_List.Length;
-        int Select_Card = Random.Range(0, Select_Max);  
-        Chara_Clone = SpawnManager.instance.Chara_List[Select_Card];
+        int Select_Max = SpawnSystem.instance.Chara_List.Length;
+        int Select_Card = Random.Range(0, Select_Max);
+
+        Chara_Clone = SpawnSystem.instance.Chara_List[Select_Card];
         Chara_Image.sprite = Chara_Clone.Chara_Card;
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 }

@@ -33,7 +33,7 @@ public class TeamManager : MonoBehaviour {
                 }
                 else {
                     Delete_Count++;
-                    SpawnManager.instance.Destroy_Chara(Chara_s[i]);
+                    SpawnSystem.instance.Destroy_Chara(Chara_s[i]);
                 }
             }
         }
