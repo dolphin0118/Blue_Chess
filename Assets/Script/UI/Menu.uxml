@@ -1,6 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement style="background-color: rgb(1, 10, 15); width: 300px; height: 500px; color: rgb(1, 10, 15); margin-left: 100px;">
-        <ui:Label text="아비도스&#10;" display-tooltip-when-elided="true" style="height: 49px; font-size: 36px; -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(242, 235, 199);" />
+    <ui:VisualElement focusable="false" style="background-color: rgb(1, 10, 15); width: 300px; height: 500px; color: rgb(1, 10, 15); margin-left: 100px;">
+        <ui:Label text="아비도스&#10;" display-tooltip-when-elided="true" style="height: 61px; font-size: 36px; -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(242, 235, 199);">
+            <ui:VisualElement style="width: 64px; height: 60px; background-image: url(&apos;project://database/Assets/Chara/Symbol/AbydosSymbol.jpg?fileID=2800000&amp;guid=2da81f8df9cb4bd4d96b2a68c2e3feaf&amp;type=3#AbydosSymbol&apos;);" />
+        </ui:Label>
         <ui:Label text="학생 한명당 &#10;체력과 공격력이&#10;상승합니다." display-tooltip-when-elided="true" style="height: 111px; color: rgb(174, 181, 182); font-size: 24px; -unity-text-align: upper-left; white-space: normal; -unity-font: none; -unity-font-style: normal;" />
         <ui:Label text="(2) 체력 및 공격력 + 200&#10;(3) 체력 및 공격력 + 300&#10;(4) 체력 및 공격력 + 400&#10;(5) 체력 및 공격력 + 500&#10;" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); font-size: 24px; height: 168px;" />
         <ui:GroupBox style="height: 166px; background-image: none; width: 292px;">

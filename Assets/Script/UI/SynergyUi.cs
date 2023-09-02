@@ -9,7 +9,7 @@ public class SynergyUi : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     Color initColor;
     GameObject tooltip;
     bool mouseOn;
-    
+    public Material[] maters;
     void Start() {
         initColor = this.GetComponent<Image>().color;
         tooltip = this.transform.Find("SynergyTooltip").gameObject;
