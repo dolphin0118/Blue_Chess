@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
+using System.Linq;
 public class SynergyManager : MonoBehaviour {
+
     public static SynergyManager instance = null;
     public static Dictionary<string, int> SynergyList = new Dictionary<string, int>();
-    
+    public List<Synergy> Synergies = Enum.GetValues(typeof(Synergy)).Cast<Synergy>().ToList();
+
+    public string[] synergyNames;
 
     void Awake() {
         if (instance == null) {

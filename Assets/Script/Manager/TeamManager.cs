@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
+using System.Linq;
 public class TeamManager : MonoBehaviour {
     public static TeamManager instance = null;
+    bool[] charaCheck = new bool[100]; 
     GameObject[] Chara_s;  
     CharaInfo[] CharaInfo_s;
     int Level_gap = 100;
@@ -38,8 +39,24 @@ public class TeamManager : MonoBehaviour {
             }
         }
     }
+    public void SynersyChara_s() {
+        Chara_s = GameObject.FindGameObjectsWithTag("Player");
+        CharaInfo_s = GetComponentsInChildren<CharaInfo>();
+        charaCheck = Enumerable.Repeat(false , 100).ToArray();
+        SynergyManager.instance.Synergies.Clear();
+        
+        for (int i = 0; i < CharaInfo_s.Length; i++) {
+            int Player_Code = CharaInfo_s[i].Player_Code;
+            while(Player_Code > 100) Player_Code -= 100;
+            if(!charaCheck[Player_Code]) {
+                charaCheck[Player_Code] = true;
+                //SynergyManager.instance.Synergies.Add(CharaInfo_s[i].CharaSynergy);
+            }
+        }
 
-    public void Battle_Chara_s() {
+    }
+
+    public void BattleChara_s() {
         Chara_s = GameObject.FindGameObjectsWithTag("Player");
         for(int i = 0; i < Chara_s.Length; i++) {
             TileBase Chara_Tile = Chara_s[i].GetComponent<CharaLocate>().Player_Tile();
@@ -52,7 +69,7 @@ public class TeamManager : MonoBehaviour {
     
     void Update(){
         if(Input.GetKeyDown(KeyCode.Space)) {
-            Battle_Chara_s();
+            BattleChara_s();
         }
     }
 }

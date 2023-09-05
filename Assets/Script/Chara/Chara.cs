@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum Synergy {
+public enum Synergy{
     Abydos,
     Gehenna,
     Trinity,
     millennium,
+    guardian,
 }
- [CreateAssetMenu]
+
+[CreateAssetMenu]
 public class Chara : ScriptableObject{
     public GameObject Chara_Prefab;
     public Sprite Chara_Card;
