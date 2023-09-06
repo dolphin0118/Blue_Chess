@@ -43,14 +43,14 @@ public class TeamManager : MonoBehaviour {
         Chara_s = GameObject.FindGameObjectsWithTag("Player");
         CharaInfo_s = GetComponentsInChildren<CharaInfo>();
         charaCheck = Enumerable.Repeat(false , 100).ToArray();
-        SynergyManager.instance.Synergies.Clear();
+        SynergyManager.instance.SynergyList.Clear();
         
         for (int i = 0; i < CharaInfo_s.Length; i++) {
             int Player_Code = CharaInfo_s[i].Player_Code;
             while(Player_Code > 100) Player_Code -= 100;
             if(!charaCheck[Player_Code]) {
                 charaCheck[Player_Code] = true;
-                //SynergyManager.instance.Synergies.Add(CharaInfo_s[i].CharaSynergy);
+                SynergyManager.instance.SynergyList.Add(CharaInfo_s[i].CharaSynergy);
             }
         }
 
@@ -68,6 +68,7 @@ public class TeamManager : MonoBehaviour {
     }
     
     void Update(){
+        SynersyChara_s();
         if(Input.GetKeyDown(KeyCode.Space)) {
             BattleChara_s();
         }

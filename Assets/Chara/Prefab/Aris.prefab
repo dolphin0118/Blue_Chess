@@ -5010,6 +5010,7 @@ GameObject:
   - component: {fileID: 7307773984585483073}
   - component: {fileID: 7307773984585483133}
   - component: {fileID: 7614184444424803473}
+  - component: {fileID: 3387201107027364450}
   m_Layer: 7
   m_Name: Aris
   m_TagString: Player
@@ -5096,6 +5097,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4890fdcce2ef50f4f820ffc844796276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BattleTile: {fileID: 0}
+  BenchTile: {fileID: 0}
 --- !u!114 &7307773984585483133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5121,6 +5124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9544faa739bb4d49a0c377ad3916b92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CharaSynergy: 0
   Player_Attack_count: 0.3
   Player_Hp: 100
   Player_Mp: 100
@@ -5129,6 +5133,22 @@ MonoBehaviour:
   Player_Range: 4
   Player_Level: 0
   Player_Code: 2
+--- !u!114 &3387201107027364450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7614184444424803478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1737c8288f4a22e4cb175572f2572a0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Lerp_x: 4
+  Lerp_y: 6
+  width: 10
+  height: 10
 --- !u!1 &7646719049899376506
 GameObject:
   m_ObjectHideFlags: 0

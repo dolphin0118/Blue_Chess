@@ -6,10 +6,8 @@ using System.Linq;
 public class SynergyManager : MonoBehaviour {
 
     public static SynergyManager instance = null;
-    public static Dictionary<string, int> SynergyList = new Dictionary<string, int>();
-    public List<Synergy> Synergies = Enum.GetValues(typeof(Synergy)).Cast<Synergy>().ToList();
-
-    public string[] synergyNames;
+    public List<Synergy> SynergyList = Enum.GetValues(typeof(Synergy)).Cast<Synergy>().ToList();
+    public GameObject[] SynergyObjects;
 
     void Awake() {
         if (instance == null) {
@@ -18,31 +16,48 @@ public class SynergyManager : MonoBehaviour {
         else{
             if (instance != this) Destroy(this.gameObject);
         }
+        //SynergyObjects = GetComponentsInChildren<GameObject>();
+        for(int i = 0; i < SynergyObjects.Length; i++) SynergyObjects[i].gameObject.SetActive(false);
+    }
+    void Update() {
+        SynergyGeneral();
+
+    }
+
+    void SynergyGeneral() {
+        AbydosSynergy();
     }
 
     void AbydosSynergy() {
-        int[] synergyStack = {1, 2, 5};
-        int synergyCheck = synergyStack.Length;
+        int[] synergyStack = {0, 1, 2, 3};
+        int synergyCheck = synergyStack.Length - 1;
         bool isSynergy = false;
+        Synergy abydosSynergy = Synergy.Abydos;
+        int synergyCnt = 0;
+
+        for(int i = 0; i < SynergyList.Count; i++) {
+            if(SynergyList[i] == abydosSynergy) {
+                synergyCnt++;
+            }
+        }
+
         while(synergyCheck > 0) {
-            if(synergyStack[synergyCheck] > SynergyList["Abydos"]) {
+            if(synergyStack[synergyCheck] > synergyCnt) {
                 synergyCheck--;
+                
+            }
+            else {
+                isSynergy = true;
                 break;
             }
-            else isSynergy = true;
         }
+
         if(!isSynergy) return;
         else if(isSynergy) {
-            GameObject[] AbydosChara = GameObject.FindGameObjectsWithTag("Abydos");
-            for(int i = 0; i < AbydosChara.Length; i++) {
-                AbydosChara[i].GetComponent<CharaInfo>().Player_Hp *= 1.5f;
-            }
+            GameObject abydosCell = GameObject.FindGameObjectWithTag("Abydos");
+            abydosCell.SetActive(true);
+            abydosCell.GetComponent<SynergyUi>().ChangeMaterial(synergyCnt);
+            return;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
