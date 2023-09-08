@@ -34,12 +34,13 @@ public class TeamManager : MonoBehaviour {
                 }
                 else {
                     Delete_Count++;
-                    SpawnSystem.instance.Destroy_Chara(Chara_s[i]);
+                    Destroy(Chara_s[i]);
+                    //SpawnSystem.instance.Destroy_Chara(Chara_s[i]);
                 }
             }
         }
     }
-    public void SynersyChara_s() {
+    public void SynersyChara_s() {  
         Chara_s = GameObject.FindGameObjectsWithTag("Player");
         CharaInfo_s = GetComponentsInChildren<CharaInfo>();
         charaCheck = Enumerable.Repeat(false , 100).ToArray();

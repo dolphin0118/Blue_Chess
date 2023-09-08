@@ -59,19 +59,20 @@ public class CharaLocate : MonoBehaviour {
 
     void OnMouseUp() {
         this.transform.SetParent(previousParent.transform);
-        CorrectPos();
-        Player_Rotate();     
-        Destroy(ObjectHitPosition);
+        TileBase UnderTile = Player_Tile();
+        if(UnderTile == null){
+            Vector3 pos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(previous_pos));
+            transform.position = new Vector3(pos.x, this.transform.position.y, pos.z);
+            Destroy(ObjectHitPosition);
+        }
+        else if (UnderTile.name == BenchTile.name || UnderTile.name == BattleTile.name) {
+            Vector3 pos = tilemap.GetCellCenterLocal(Player_Tilepos());
+            transform.position = new Vector3(pos.x, this.transform.position.y, pos.z);
+            Player_Rotate();
+            Destroy(ObjectHitPosition);
+        }
+        else return;
     }
-
-    void CorrectPos() {
-        Ray ray = new Ray();
-        ray.origin = this.transform.position;
-        ray.direction = -this.transform.up;
-        Vector3 pos = tilemap.GetCellCenterLocal(Player_Tilepos());
-        transform.position = new Vector3(pos.x, this.transform.position.y, pos.z);
-    }
-
 
     void OnMouseDown() {
         previous_pos = this.transform.position;
