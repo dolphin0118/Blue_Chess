@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class CharaLocate : MonoBehaviour {
     Tilemap tilemap;
-    public TileBase BattleTile, BenchTile;
+    TileBase BattleTile, BenchTile;
     Transform cam;
     RaycastHit hitRay, hitLayerMask;
     GameObject ObjectHitPosition, previousParent;
@@ -54,24 +54,26 @@ public class CharaLocate : MonoBehaviour {
         else if(isBattleTile) {
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
-        if(previous_UnderTile.name == BenchTile.name) MapManager.instance.Bench_seat(previous_tilepos.x, false);
+        //if(previous_UnderTile.name == BenchTile.name) MapManager.instance.Bench_seat(previous_tilepos.x, false);
     }
 
     void OnMouseUp() {
         this.transform.SetParent(previousParent.transform);
         TileBase UnderTile = Player_Tile();
-        if(UnderTile == null){
-            Vector3 pos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(previous_pos));
-            transform.position = new Vector3(pos.x, this.transform.position.y, pos.z);
-            Destroy(ObjectHitPosition);
-        }
-        else if (UnderTile.name == BenchTile.name || UnderTile.name == BattleTile.name) {
+        int layerMask = 1 << LayerMask.NameToLayer("Bench") | 1 << LayerMask.NameToLayer("Battle");
+        Vector3 charaPos = this.transform.position;
+        RaycastHit hit;
+        if (Physics.Raycast(charaPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
             Vector3 pos = tilemap.GetCellCenterLocal(Player_Tilepos());
             transform.position = new Vector3(pos.x, this.transform.position.y, pos.z);
             Player_Rotate();
             Destroy(ObjectHitPosition);
         }
-        else return;
+        else {
+            Vector3 pos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(previous_pos));
+            transform.position = new Vector3(pos.x, this.transform.position.y, pos.z);
+            Destroy(ObjectHitPosition);
+        }
     }
 
     void OnMouseDown() {
@@ -83,6 +85,7 @@ public class CharaLocate : MonoBehaviour {
             ObjectHitPosition.transform.position = hitRay.point;
             this.transform.SetParent(ObjectHitPosition.transform);   
         }
+        
     }
 
     void OnMouseDrag() {
@@ -100,6 +103,22 @@ public class CharaLocate : MonoBehaviour {
 
             ObjectHitPosition.transform.position = newPos;
         }
+        BenchLayer();
     }
+    void BenchLayer() {
+        Vector3 charaPos = this.transform.position;
+        RaycastHit hit;
+        int layerMask = 1 << LayerMask.NameToLayer("Bench");
+        if (Physics.Raycast(charaPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
+            GameObject hitBench = hit.collider.transform.gameObject;
+            if (hitBench.transform.childCount == 0) {
+                previousParent = hitBench;
+            }
+            else {
+                hitBench.transform.GetChild(0).SetParent(previousParent.transform);
+                previousParent = hitBench;
+            }
+        }
 
+    }
 }

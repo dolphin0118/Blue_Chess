@@ -67,7 +67,10 @@ public class TeamManager : MonoBehaviour {
             else Chara_s[i].GetComponent<CharaController>().isBattle = false;
         }      
     }
-    
+    public void BenchChara_s() {
+        
+    }
+
     void Update(){
         SynersyChara_s();
         if(Input.GetKeyDown(KeyCode.Space)) {

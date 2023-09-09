@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-public class MouseManager : MonoBehaviour {
+public class SelectTile: MonoBehaviour {
     public Tilemap tilemap;
 
     void Update(){

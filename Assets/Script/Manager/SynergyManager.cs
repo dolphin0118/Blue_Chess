@@ -26,6 +26,7 @@ public class SynergyManager : MonoBehaviour {
 
     void SynergyGeneral() {
         AbydosSynergy();
+        MillenniumSynergy();
     }
 
     void AbydosSynergy() {
@@ -40,7 +41,6 @@ public class SynergyManager : MonoBehaviour {
                 synergyCnt++;
             }
         }
-
         while(synergyCheck > 0) {
             if(synergyStack[synergyCheck] > synergyCnt) {
                 synergyCheck--;
@@ -55,6 +55,43 @@ public class SynergyManager : MonoBehaviour {
         if(!isSynergy) return;
         else if(isSynergy) {
             GameObject abydosCell = GameObject.FindGameObjectWithTag("Abydos");
+            abydosCell.SetActive(true);
+            abydosCell.GetComponent<SynergyUi>().ChangeMaterial(synergyCnt);
+            return;
+        }
+    }
+    void MillenniumSynergy() {
+        int[] synergyStack = { 0, 1, 2, 3 };
+        int synergyCheck = synergyStack.Length - 1;
+        bool isSynergy = false;
+        Synergy millenniumSynergy = Synergy.millennium;
+        int synergyCnt = 0;
+
+        for (int i = 0; i < SynergyList.Count; i++)
+        {
+            if (SynergyList[i] == millenniumSynergy)
+            {
+                synergyCnt++;
+            }
+        }
+        while (synergyCheck > 0)
+        {
+            if (synergyStack[synergyCheck] > synergyCnt)
+            {
+                synergyCheck--;
+
+            }
+            else
+            {
+                isSynergy = true;
+                break;
+            }
+        }
+
+        if (!isSynergy) return;
+        else if (isSynergy)
+        {
+            GameObject abydosCell = GameObject.FindGameObjectWithTag("Millennium");
             abydosCell.SetActive(true);
             abydosCell.GetComponent<SynergyUi>().ChangeMaterial(synergyCnt);
             return;
