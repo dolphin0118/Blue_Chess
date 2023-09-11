@@ -64,8 +64,8 @@ public class CharaLocate : MonoBehaviour {
         Vector3 charaPos = this.transform.position;
         RaycastHit hit;
         if (Physics.Raycast(charaPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
-            Vector3 pos = tilemap.GetCellCenterLocal(Player_Tilepos());
-            transform.position = new Vector3(pos.x, this.transform.position.y, pos.z);
+            Vector3 hitPos = hit.transform.position;
+            transform.position = new Vector3((int)hitPos.x, transform.position.y, (int)hitPos.z);
             Player_Rotate();
             Destroy(ObjectHitPosition);
         }
@@ -115,10 +115,12 @@ public class CharaLocate : MonoBehaviour {
                 previousParent = hitBench;
             }
             else {
-                hitBench.transform.GetChild(0).SetParent(previousParent.transform);
+                hitBench.transform.GetChild(0).gameObject.transform.localPosition = new Vector3(0, 0, 0);
+                hitBench.transform.GetChild(0).SetParent(previousParent.transform);     
                 previousParent = hitBench;
             }
         }
 
     }
 }
+  
