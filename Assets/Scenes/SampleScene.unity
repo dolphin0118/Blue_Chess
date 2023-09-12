@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 113672737}
   - component: {fileID: 113672739}
   - component: {fileID: 113672738}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CharaSlot_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 145223503}
   - component: {fileID: 145223505}
   - component: {fileID: 145223504}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CharaSlot_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -453,6 +453,7 @@ Transform:
   - {fileID: 168054464}
   - {fileID: 502584899}
   - {fileID: 145223503}
+  - {fileID: 335981788}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -479,7 +480,7 @@ GameObject:
   - component: {fileID: 168054464}
   - component: {fileID: 168054466}
   - component: {fileID: 168054465}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CharaSlot_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -961,6 +962,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.0000002, z: 0.20000005}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &335981787
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 335981788}
+  m_Layer: 0
+  m_Name: BattleArea
+  m_TagString: BattleArea
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &335981788
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335981787}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 155532013}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &494504850
 GameObject:
   m_ObjectHideFlags: 0
@@ -1051,7 +1083,7 @@ GameObject:
   - component: {fileID: 502584899}
   - component: {fileID: 502584901}
   - component: {fileID: 502584900}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CharaSlot_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}

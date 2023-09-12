@@ -12,6 +12,7 @@ TagManager:
   - Abydos
   - Synergy
   - Millennium
+  - BattleArea
   layers:
   - Default
   - TransparentFX

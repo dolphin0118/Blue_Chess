@@ -121,8 +121,9 @@ public class CharaController : MonoBehaviour {
         return Distance;
     }
 
-    public GameObject Set_Target() {
-        GameObject[] Target_Enemys = GameObject.FindGameObjectsWithTag("Away");
+    public GameObject Set_Target(string targetTag) {
+        string _targetTag = targetTag;
+        GameObject[] Target_Enemys = GameObject.FindGameObjectsWithTag(_targetTag);
         Vector3 Target_distance;
         float min_distance = float.MaxValue;
         for(int i = 0; i < Target_Enemys.Length; i++) {

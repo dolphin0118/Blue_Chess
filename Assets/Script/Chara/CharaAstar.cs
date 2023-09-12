@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharaAstar : MonoBehaviour {
-    List<Vector3Int> Tile_Pos;
-    public List<List<bool>> isBattle;
-    public Board board;
-    public int Lerp_x = 4;
-    public int Lerp_y = 6;
-    public int width = 10;
-    public int height = 10;
+    private List<Vector3Int> Tile_Pos;
+    private List<List<bool>> isBattle;
+    private Board board;
+    [SerializeField] int Lerp_x = 4;
+    [SerializeField] int Lerp_y = 6;
+    [SerializeField] int width = 10;
+    [SerializeField] int height = 10;
     private bool ismove = false;
-    GameObject Target_Object;  
-    
+    private GameObject Target_Object;  
+    private string targetTag;
+
     Vector2Int Coord_Lerp() {
         Vector3Int pos = this.GetComponent<CharaLocate>().Player_Tilepos();
         int Lerp_pos_x = pos.x + Lerp_x;
@@ -25,6 +26,8 @@ public class CharaAstar : MonoBehaviour {
     void Start() {
         board = new Board(width, height);
         Blocks_set();
+        if (this.transform.tag == "Home") targetTag = "Away";
+        else if (this.transform.tag == "Away") targetTag = "Home";
     }
 
     void Blocks_set() {
@@ -114,7 +117,7 @@ public class CharaAstar : MonoBehaviour {
     Coroutine Movetile;
 
     public void MovePath() {
-        if(Target_Object == null) Target_Object = this.GetComponent<CharaController>().Set_Target();
+        if(Target_Object == null) Target_Object = this.GetComponent<CharaController>().Set_Target(targetTag);
         
         if(Target_Object == null) return;
         else if(startBlock == null) startBlock = CreatePath();

@@ -1,22 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class CharaLocate : MonoBehaviour {
     Tilemap tilemap;
-    TileBase BattleTile, BenchTile;
-    Transform cam;
     RaycastHit hitRay, hitLayerMask;
     GameObject ObjectHitPosition, previousParent;
     Vector3 previous_pos;
-
+    [SerializeField] GameObject BattleArea;
+    Quaternion benchRotate,battleRotate;
     void Start() {
-        cam = Camera.main.transform;
         tilemap = MapManager.instance.tilemap;
-        BattleTile = MapManager.instance.BattleTile;
-        BenchTile = MapManager.instance.BenchTile;
-        Player_Rotate();
+        benchRotate = Quaternion.Euler(-20, 180,0);
+        battleRotate = Quaternion.Euler(0, 0, 0);
     }
 
     public Vector3Int Player_Tilepos() {
@@ -29,51 +27,40 @@ public class CharaLocate : MonoBehaviour {
         TileBase Player_tile = tilemap.GetTile(Player_Tilepos());
         return Player_tile;
     }
-
-    bool Check_Tile(){
-        TileBase UnderTile = Player_Tile();
-        if(UnderTile != null && UnderTile.name == BenchTile.name) {
+    public bool LayerCheck() {
+        int benchLayer = 1 << LayerMask.NameToLayer("Bench");
+        int battleLayer = 1 << LayerMask.NameToLayer("Battle");
+        if(Physics.Raycast(this.transform.position, Vector3.down, Mathf.Infinity, benchLayer)) {
             return false;
         }
-        else if(UnderTile != null &&UnderTile.name == BattleTile.name) {
+        else {
             return true;
         }
-        else return false;
-    }
-    
-    void Player_Rotate() {
-        Vector3Int current_tilepos = Player_Tilepos();
-        Vector3Int previous_tilepos = tilemap.LocalToCell(previous_pos);
-        TileBase current_UnderTile = Player_Tile();
-        TileBase previous_UnderTile = tilemap.GetTile(previous_tilepos);
-        bool isBattleTile = Check_Tile();
-        if(!isBattleTile) {
-            this.transform.rotation = Quaternion.Euler(-20, 180, 0);
-            MapManager.instance.Bench_seat(current_tilepos.x, true);
-        }
-        else if(isBattleTile) {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-        //if(previous_UnderTile.name == BenchTile.name) MapManager.instance.Bench_seat(previous_tilepos.x, false);
-    }
+    }   
 
     void OnMouseUp() {
         this.transform.SetParent(previousParent.transform);
-        TileBase UnderTile = Player_Tile();
-        int layerMask = 1 << LayerMask.NameToLayer("Bench") | 1 << LayerMask.NameToLayer("Battle");
+        int battleLayer= 1 << LayerMask.NameToLayer("Battle");
+        int benchLayer = 1 << LayerMask.NameToLayer("Bench");
         Vector3 charaPos = this.transform.position;
         RaycastHit hit;
-        if (Physics.Raycast(charaPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
+        if (Physics.Raycast(charaPos, Vector3.down, out hit, Mathf.Infinity, benchLayer)) {
             Vector3 hitPos = hit.transform.position;
-            transform.position = new Vector3((int)hitPos.x, transform.position.y, (int)hitPos.z);
-            Player_Rotate();
-            Destroy(ObjectHitPosition);
+            transform.localPosition = new Vector3(0, 0.1f, 0);
+            this.transform.rotation = benchRotate;
+        }
+        else if(Physics.Raycast(charaPos, Vector3.down, out hit, Mathf.Infinity, battleLayer)){
+            this.transform.SetParent(GameObject.FindGameObjectWithTag("Home").transform);
+            Vector3 pos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(this.transform.position));
+            transform.position = new Vector3(pos.x, 0.1f, pos.z);
+            this.transform.rotation = battleRotate;
         }
         else {
             Vector3 pos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(previous_pos));
             transform.position = new Vector3(pos.x, this.transform.position.y, pos.z);
-            Destroy(ObjectHitPosition);
+            transform.localPosition = new Vector3(0, transform.position.y, 0);
         }
+        Destroy(ObjectHitPosition);
     }
 
     void OnMouseDown() {
@@ -84,6 +71,7 @@ public class CharaLocate : MonoBehaviour {
             previousParent= this.transform.parent.gameObject;
             ObjectHitPosition.transform.position = hitRay.point;
             this.transform.SetParent(ObjectHitPosition.transform);   
+            this.transform.localPosition = new Vector3(0, 0.1f, 0);
         }
         
     }
@@ -105,11 +93,15 @@ public class CharaLocate : MonoBehaviour {
         }
         BenchLayer();
     }
+
     void BenchLayer() {
         Vector3 charaPos = this.transform.position;
         RaycastHit hit;
+        Debug.DrawRay(charaPos, Vector3.down * Mathf.Infinity, Color.green);
+
         int layerMask = 1 << LayerMask.NameToLayer("Bench");
         if (Physics.Raycast(charaPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
+            
             GameObject hitBench = hit.collider.transform.gameObject;
             if (hitBench.transform.childCount == 0) {
                 previousParent = hitBench;

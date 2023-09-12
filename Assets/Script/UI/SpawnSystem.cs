@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using Unity.VisualScripting;
 
 public class SpawnSystem : MonoBehaviour{
-    public static SpawnSystem  instance = null;
+    public static SpawnSystem instance = null;
     public Chara[] Chara_List;
-    private Vector3 Spawn_Pos = new Vector3(-4, 0, -6);
-    bool[] checkSlot = new bool[5];
+    bool[] checkSlot = new bool[9];
     GameObject teamObject;
     void Awake() {
         if (instance == null) {
@@ -31,20 +31,17 @@ public class SpawnSystem : MonoBehaviour{
     public void Spawn_Chara(GameObject Chara_Prefab) {
         for(int i = 0; i < checkSlot.Length; i++) {
             if(!checkSlot[i]) {
+                Vector3 Spawn_Pos = new Vector3(-4, 0.1f, -6);
                 Vector3 Prefab_Pos = new Vector3(Spawn_Pos.x + i, Spawn_Pos.y, Spawn_Pos.z);
                 Vector3Int tilepos = MapManager.instance.tilemap.LocalToCell(Prefab_Pos);
                 Prefab_Pos = MapManager.instance.tilemap.GetCellCenterLocal(tilepos);
                 Prefab_Pos = new Vector3(Prefab_Pos.x, 0.1f, Prefab_Pos.z);
-                GameObject Chara_Clone = Instantiate(Chara_Prefab,Prefab_Pos, Quaternion.identity);//prefab 소환
+                
+                GameObject Chara_Clone = Instantiate(Chara_Prefab, Prefab_Pos, Quaternion.identity);
                 Chara_Clone.transform.SetParent(teamObject.transform.GetChild(i));
+                //Chara_Clone.transform.localPosition = new Vector3(0, 0.1f, 0);
                 break;
             }
         }
-    }
-
-    public void Destroy_Chara(GameObject Chara_Object) {
-        Vector3Int tilepos = MapManager.instance.tilemap.LocalToCell(Chara_Object.transform.position);
-        MapManager.instance.Bench_seat(tilepos.x, false);
-        Destroy(Chara_Object);
     }
 }
