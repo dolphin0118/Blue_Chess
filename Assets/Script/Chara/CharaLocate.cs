@@ -11,6 +11,7 @@ public class CharaLocate : MonoBehaviour {
     Vector3 previous_pos;
     [SerializeField] GameObject BattleArea;
     Quaternion benchRotate,battleRotate;
+    
     void Start() {
         tilemap = MapManager.instance.tilemap;
         benchRotate = Quaternion.Euler(-20, 180,0);
@@ -33,9 +34,10 @@ public class CharaLocate : MonoBehaviour {
         if(Physics.Raycast(this.transform.position, Vector3.down, Mathf.Infinity, benchLayer)) {
             return false;
         }
-        else {
+        else if(Physics.Raycast(this.transform.position, Vector3.down, Mathf.Infinity, battleLayer)){
             return true;
         }
+        else return false;
     }   
 
     void OnMouseUp() {
@@ -50,7 +52,7 @@ public class CharaLocate : MonoBehaviour {
             this.transform.rotation = benchRotate;
         }
         else if(Physics.Raycast(charaPos, Vector3.down, out hit, Mathf.Infinity, battleLayer)){
-            this.transform.SetParent(GameObject.FindGameObjectWithTag("Home").transform);
+            this.transform.SetParent(GameObject.FindGameObjectWithTag("BattleArea").transform);
             Vector3 pos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(this.transform.position));
             transform.position = new Vector3(pos.x, 0.1f, pos.z);
             this.transform.rotation = battleRotate;

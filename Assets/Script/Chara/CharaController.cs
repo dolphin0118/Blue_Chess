@@ -2,22 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
-public class State {
-    public enum state {
-        Idle,
-        Move,
-        Attack,
-        Die
-    }
-}
+using UnityEngine.AI;
 
 public class CharaController : MonoBehaviour {
     Animator anim;
     CharaAstar Astar;
+    NavAstar navAstar;
     CharaInfo  charainfo;
+    CharaLocate charaLocate;
     GameObject Target_Enemy = null;
     State.state _state = State.state.Idle;
+    NavMeshAgent charaNav;
     static public Vector3Int Infinity = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue);
     public bool isBattle = false;
 
@@ -28,11 +23,14 @@ public class CharaController : MonoBehaviour {
     void Awake(){
         anim = GetComponent<Animator>();
         Astar = GetComponent<CharaAstar>();
+        navAstar = GetComponent<NavAstar>();
         charainfo = GetComponent<CharaInfo>();
+        charaNav = GetComponent<NavMeshAgent>();
+        charaLocate = GetComponent<CharaLocate>();
+        charaNav.enabled = false;
         Init();
     }
     void Init() {
-        
         Player_Speed = charainfo.Player_Speed;
         Player_Range = charainfo.Player_Range;
         Player_Attack_count = charainfo.Player_Attack_count;
@@ -68,43 +66,41 @@ public class CharaController : MonoBehaviour {
             _state = State.state.Idle;
             anim.SetBool("Idle", true);
         }
-        else if(isBattle) {
+        else if(isBattle&&charaLocate.LayerCheck()) {
             _state = State.state.Move;
             anim.SetBool("Idle", false);
-            Astar.MovePath();
+            charaNav.enabled = true;
         }
+        else return;
     }
 
     void Move_state() {
+        navAstar.NavStart();
         if(Target_Enemy == null) {
             _state = State.state.Idle;
             anim.SetBool("Move", false);
             return;
         }
-        else {
-            anim.SetBool("Move", true);
-        }
-
+        else anim.SetBool("Move", true);
+        
         if(PlayerToTarget() <= Player_Range) {
             _state = State.state.Attack;
             anim.SetBool("Attack", true);
             anim.SetBool("Move", false); 
-            Astar.StopPath();
+            navAstar.NavStop();
             return;
         }
     }
 
     void Attack_State() {
-         if(PlayerToTarget() > Player_Range) {
+        if(PlayerToTarget() > Player_Range) {
             _state = State.state.Move;
             anim.SetBool("Attack", false);
             anim.SetBool("Move", true); 
-            Astar.MovePath();
+            navAstar.NavStart();
             return;
         }
-        
         if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&anim.GetCurrentAnimatorStateInfo(0).normalizedTime > Player_Attack_count) {
-            //Debug.Log(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
             Player_Attack_count += 1.0f;
             Target_Enemy.GetComponent<CharaInfo>().Player_Hp-=10;
         }

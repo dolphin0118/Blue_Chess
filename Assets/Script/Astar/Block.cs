@@ -1,14 +1,6 @@
 ﻿
-    public class Block
-    {
-        /// <summary>
-        /// 좌표
-        /// </summary>
+    public class Block {
         public int x, y;
-
-        /// <summary>
-        /// 닫힌 블럭인지 여부
-        /// </summary>
         public bool wall;
 
         //===========================================================================================================

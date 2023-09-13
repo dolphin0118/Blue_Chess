@@ -9,6 +9,22 @@ public enum Synergy{
     millennium,
     guardian,
 }
+public enum SubSynergy {
+    Engineer,
+    Sniper,
+    Slayer,
+    guardian,
+    mystery
+}
+
+public class State {
+    public enum state {
+        Idle,
+        Move,
+        Attack,
+        Die
+    }
+}
 
 [CreateAssetMenu]
 public class Chara : ScriptableObject{

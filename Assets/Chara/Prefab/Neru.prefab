@@ -875,9 +875,10 @@ GameObject:
   - component: {fileID: 1981961329273491617}
   - component: {fileID: 7825032735170177567}
   - component: {fileID: 5989282878851396530}
+  - component: {fileID: 4251372194936159540}
   m_Layer: 3
   m_Name: Neru
-  m_TagString: Player
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -961,6 +962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4890fdcce2ef50f4f820ffc844796276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BattleArea: {fileID: 0}
 --- !u!114 &1981961329273491618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -987,12 +989,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CharaSynergy: 3
-  Player_Attack_count: 0.5
+  Player_Attack_count: 0.1
   Player_Hp: 100
   Player_Mp: 100
   Player_ATK: 50
   Player_Speed: 1
-  Player_Range: 1
+  Player_Range: 2
   Player_Level: 0
   Player_Code: 3
 --- !u!114 &7825032735170177567
@@ -1011,6 +1013,7 @@ MonoBehaviour:
   Lerp_y: 6
   width: 10
   height: 10
+  isCoroutin: 1
 --- !u!210 &5989282878851396530
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -1022,6 +1025,28 @@ SortingGroup:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
+--- !u!195 &4251372194936159540
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981961329273491616}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &2058468397757642367
 GameObject:
   m_ObjectHideFlags: 0

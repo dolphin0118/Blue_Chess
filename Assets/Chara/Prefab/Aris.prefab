@@ -3935,7 +3935,7 @@ Transform:
   m_GameObject: {fileID: 5562956588700102129}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 621007882718066424}
@@ -5011,9 +5011,12 @@ GameObject:
   - component: {fileID: 7307773984585483133}
   - component: {fileID: 7614184444424803473}
   - component: {fileID: 3387201107027364450}
+  - component: {fileID: 6528327303905419082}
+  - component: {fileID: -6562040565175524054}
+  - component: {fileID: 166501473741270769}
   m_Layer: 3
   m_Name: Aris
-  m_TagString: Player
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5027,7 +5030,7 @@ Transform:
   m_GameObject: {fileID: 7614184444424803478}
   m_LocalRotation: {x: 0, y: 0.9848078, z: 0.17364825, w: 0}
   m_LocalPosition: {x: -5.93, y: -0.7841372, z: -2.8934548}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 982417598965143353}
@@ -5047,7 +5050,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
@@ -5061,10 +5064,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.0019049989
-  m_Height: 0.010475934
+  m_Radius: 0.32393864
+  m_Height: 1.434034
   m_Direction: 1
-  m_Center: {x: 0.00025922045, y: 0.0041007483, z: 0.00020319074}
+  m_Center: {x: 0.051932335, y: 0.19732124, z: 0.00020319378}
 --- !u!95 &7307773984585483079
 Animator:
   serializedVersion: 4
@@ -5097,6 +5100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4890fdcce2ef50f4f820ffc844796276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BattleArea: {fileID: 0}
 --- !u!114 &7307773984585483133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5128,7 +5132,7 @@ MonoBehaviour:
   Player_Mp: 100
   Player_ATK: 50
   Player_Speed: 1
-  Player_Range: 4
+  Player_Range: 3
   Player_Level: 0
   Player_Code: 2
 --- !u!114 &3387201107027364450
@@ -5147,6 +5151,57 @@ MonoBehaviour:
   Lerp_y: 6
   width: 10
   height: 10
+  isCoroutin: 1
+--- !u!210 &6528327303905419082
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7614184444424803478}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+--- !u!195 &-6562040565175524054
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7614184444424803478}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 360
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &166501473741270769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7614184444424803478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c170cfbd874c464980ff71b6d3085b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Lerp_x: 4
+  Lerp_y: 6
+  width: 10
+  height: 10
+  isCoroutin: 1
 --- !u!1 &7646719049899376506
 GameObject:
   m_ObjectHideFlags: 0

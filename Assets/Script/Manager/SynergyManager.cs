@@ -21,7 +21,11 @@ public class SynergyManager : MonoBehaviour {
     }
     void Update() {
         SynergyGeneral();
-
+        SynergySorting();
+    }
+    
+    void SynergySorting() {
+        
     }
 
     void SynergyGeneral() {

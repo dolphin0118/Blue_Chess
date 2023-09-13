@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharaInfo : MonoBehaviour { 
     public Synergy CharaSynergy;
+    public SubSynergy CharaSubSynergy;
     public float Player_Attack_count = 0.5f;
 
     public float Player_Hp = 100;

@@ -39,6 +39,7 @@ public class SpawnSystem : MonoBehaviour{
                 
                 GameObject Chara_Clone = Instantiate(Chara_Prefab, Prefab_Pos, Quaternion.identity);
                 Chara_Clone.transform.SetParent(teamObject.transform.GetChild(i));
+                Chara_Clone.gameObject.tag = "Friendly";
                 //Chara_Clone.transform.localPosition = new Vector3(0, 0.1f, 0);
                 break;
             }

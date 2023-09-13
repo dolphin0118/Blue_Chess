@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 using TMPro;
 
 public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
-
     Color initColor;
     Image Chara_Image;
     Chara Chara_Clone;

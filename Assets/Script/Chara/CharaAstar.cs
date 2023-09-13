@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.AI;
 
 public class CharaAstar : MonoBehaviour {
     private List<Vector3Int> Tile_Pos;
     private List<List<bool>> isBattle;
     private Board board;
-    [SerializeField] int Lerp_x = 4;
+    [SerializeField] int Lerp_x = 5;
     [SerializeField] int Lerp_y = 6;
     [SerializeField] int width = 10;
     [SerializeField] int height = 10;
@@ -26,8 +28,8 @@ public class CharaAstar : MonoBehaviour {
     void Start() {
         board = new Board(width, height);
         Blocks_set();
-        if (this.transform.tag == "Home") targetTag = "Away";
-        else if (this.transform.tag == "Away") targetTag = "Home";
+        if (this.transform.tag == "Friendly") targetTag = "Enemy";
+        else if (this.transform.tag == "Enemy") targetTag = "Friendly";
     }
 
     void Blocks_set() {
@@ -106,15 +108,14 @@ public class CharaAstar : MonoBehaviour {
         Block start = board.blocks[start_pos.x, start_pos.y];
         Block dest = board.blocks[dest_pos.x, dest_pos.y];
         var startBlock = PathFindTile(start, dest);
-        if(startBlock != null) {
-            return startBlock;
-        }
+        if(startBlock != null) return startBlock;
         return null;
     }
 
     Vector3Int pos;
     Block startBlock = null;
     Coroutine Movetile;
+    public bool isCoroutin = true;
 
     public void MovePath() {
         if(Target_Object == null) Target_Object = this.GetComponent<CharaController>().Set_Target(targetTag);
@@ -134,10 +135,12 @@ public class CharaAstar : MonoBehaviour {
     }
 
     public void StopPath() {
-        StopCoroutine(Movetile);
+        if(Movetile == null) return;
+        else StopCoroutine(Movetile);
     }
 
     IEnumerator MoveTile(Block target_Block) {
+        if(!isCoroutin) yield break;
         ismove = true;
         Vector3Int player_pos;
         if(target_Block.prev != null) player_pos = new Vector3Int(target_Block.prev.x - Lerp_x,target_Block.prev.y - Lerp_y, pos.z);
@@ -149,7 +152,7 @@ public class CharaAstar : MonoBehaviour {
         int loopNum = 0;
         float elapsedTime = 0f;
         float speedValue = Vector3.Magnitude(target_Lerp - pos_Lerp);
-
+        
         while(Vector3.Magnitude(target_Lerp - transform.position) > 0.01f) { 
             transform.position = Vector3.Lerp(pos_Lerp, target_Lerp, elapsedTime += Time.deltaTime/speedValue);
             transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(target_Lerp - pos_Lerp), elapsedTime);

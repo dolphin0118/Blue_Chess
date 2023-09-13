@@ -8,7 +8,7 @@ public class CharaCombine : MonoBehaviour {
     int Combine_Count = 3;
     int Chara_MaxLevel = 3;
 
-    void Start() {
+    void Awake() {
         MapInit();
     }
 
