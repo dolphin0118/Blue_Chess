@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement focusable="false" style="background-color: rgb(1, 10, 15); width: 300px; height: 500px; color: rgb(1, 10, 15); margin-left: 100px;">
+    <ui:VisualElement focusable="false" name="VisualElement" style="background-color: rgb(1, 10, 15); width: 300px; height: 500px; color: rgb(1, 10, 15); margin-left: 200px;">
         <ui:Label text="밀레니엄 " display-tooltip-when-elided="true" style="height: 61px; font-size: 36px; -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(242, 235, 199); -unity-font: none;">
             <ui:VisualElement style="width: 64px; height: 60px; background-image: url(&apos;project://database/Assets/Chara/Symbol/Millennium%20Symbol.jpg?fileID=2800000&amp;guid=b25dbe600fc717d41933d2531292ef83&amp;type=3#Millennium Symbol&apos;);" />
         </ui:Label>

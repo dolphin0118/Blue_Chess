@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fc7f3d53a5d11428c610313d0bf8d2, type: 3}
   m_Name: Neru
   m_EditorClassIdentifier: 
-  Chara_Prefab: {fileID: 1981961329273491616, guid: b54c03a73b5d4e34e9d742ced00db079, type: 3}
+  Chara_Prefab: {fileID: 5951521986430524614, guid: e18b537031bae204d93d25df8fcb13a7, type: 3}
   Chara_Card: {fileID: 21300000, guid: e862a4686a54ec145a4b57a83e90f621, type: 3}
   CharaSynergy: 

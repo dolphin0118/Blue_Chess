@@ -20,7 +20,7 @@ public class HpSystem : MonoBehaviour {
     }
     void Update() {
         transform.LookAt(transform.position + cam.rotation * Vector3.forward, cam.rotation * Vector3.up);
-        //Hp_Gague.rectTransform.SetAsLastSibling();
+        Hp_Gague.rectTransform.SetAsLastSibling();
         Hp_Gague.fillAmount = transform.GetComponentInParent<CharaInfo>().Player_Hp / 100f;
     }
 }

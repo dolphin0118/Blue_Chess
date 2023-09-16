@@ -19,7 +19,8 @@ public class CharaController : MonoBehaviour {
     private float Player_Speed;
     private float Player_Range;
     private float Player_Attack_count;
-  
+    private float Player_Hp;
+
     void Awake(){
         anim = GetComponent<Animator>();
         Astar = GetComponent<CharaAstar>();
@@ -41,9 +42,13 @@ public class CharaController : MonoBehaviour {
     }
 
     void FixedUpdate() {
+        PlayerDieCheck();
         Player_State();
     }
-
+    void PlayerDieCheck() {
+        Player_Hp = charainfo.Player_Hp;
+        if(Player_Hp <= 0) _state = State.state.Die;
+    }
     void Player_State(){
         switch(_state) {
             case State.state.Idle :
@@ -81,29 +86,41 @@ public class CharaController : MonoBehaviour {
             anim.SetBool("Move", false);
             return;
         }
-        else anim.SetBool("Move", true);
-        
-        if(PlayerToTarget() <= Player_Range) {
-            _state = State.state.Attack;
-            anim.SetBool("Attack", true);
-            anim.SetBool("Move", false); 
-            navAstar.NavStop();
-            return;
+        else {
+            anim.SetBool("Move", true);
+            if(PlayerToTarget() <= Player_Range) {
+                _state = State.state.Attack;
+                anim.SetBool("Attack", true);
+                anim.SetBool("Move", false); 
+                navAstar.NavStop();
+                return;
+            }
+            else return;
         }
+
     }
 
     void Attack_State() {
-        if(PlayerToTarget() > Player_Range) {
+        if(Target_Enemy != null) {
+            if(PlayerToTarget() > Player_Range) {
+                _state = State.state.Move;
+                anim.SetBool("Attack", false);
+                anim.SetBool("Move", true); 
+                return;
+            }
+            if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&
+                anim.GetCurrentAnimatorStateInfo(0).normalizedTime > Player_Attack_count) {
+                Player_Attack_count += 1.0f;
+                Target_Enemy.GetComponent<CharaInfo>().Player_Hp-=10;
+            }
+        }   
+        else if(Target_Enemy == null){
             _state = State.state.Move;
             anim.SetBool("Attack", false);
             anim.SetBool("Move", true); 
-            navAstar.NavStart();
             return;
         }
-        if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&anim.GetCurrentAnimatorStateInfo(0).normalizedTime > Player_Attack_count) {
-            Player_Attack_count += 1.0f;
-            Target_Enemy.GetComponent<CharaInfo>().Player_Hp-=10;
-        }
+
     }
 
     void Die_state() {

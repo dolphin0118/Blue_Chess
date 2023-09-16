@@ -51,7 +51,7 @@ public class TeamManager : MonoBehaviour {
             while(Player_Code > 100) Player_Code -= 100;
             if(!charaCheck[Player_Code]) {
                 charaCheck[Player_Code] = true;
-                SynergyManager.instance.SynergyList.Add(charaInfo.CharaSynergy);
+                SynergyManager.instance.SynergyList.AddRange(charaInfo.CharaSynergy);
             }
         }
 

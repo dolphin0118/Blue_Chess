@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using Unity.VisualScripting;
 public class SynergyManager : MonoBehaviour {
 
     public static SynergyManager instance = null;
     public List<Synergy> SynergyList = Enum.GetValues(typeof(Synergy)).Cast<Synergy>().ToList();
-    public GameObject[] SynergyObjects;
+    List<SynergyAll> synergyAll;
+    public List<GameObject> SynergyObjects;
 
     void Awake() {
         if (instance == null) {
@@ -16,89 +18,51 @@ public class SynergyManager : MonoBehaviour {
         else{
             if (instance != this) Destroy(this.gameObject);
         }
-        //SynergyObjects = GetComponentsInChildren<GameObject>();
-        for(int i = 0; i < SynergyObjects.Length; i++) SynergyObjects[i].gameObject.SetActive(false);
+        
+        SynergyInit();
     }
+
     void Update() {
         SynergyGeneral();
-        SynergySorting();
-    }
-    
-    void SynergySorting() {
-        
     }
 
+    void SynergyInit() {
+        for(int i = 0; i < SynergyObjects.Count; i++) {
+            SynergyObjects[i] = this.transform.GetChild(i).gameObject;
+            SynergyObjects[i].gameObject.SetActive(false);
+        }
+        synergyAll = new List<SynergyAll>();
+        synergyAll.Add(new AbydosSynergy());
+        synergyAll.Add(new MillenniumSynergy());
+        synergyAll.Add(new MysterySynergy());
+        synergyAll.Add(new SlayerSynergy());
+    }
     void SynergyGeneral() {
-        AbydosSynergy();
-        MillenniumSynergy();
+        SynergyCounter();
+        SynergyInvoke(); 
     }
 
-    void AbydosSynergy() {
-        int[] synergyStack = {0, 1, 2, 3};
-        int synergyCheck = synergyStack.Length - 1;
-        bool isSynergy = false;
-        Synergy abydosSynergy = Synergy.Abydos;
-        int synergyCnt = 0;
+    void SynergyCounter() {
+        for(int i = 0; i < synergyAll.Count; i++) synergyAll[i].ResetCount();
 
         for(int i = 0; i < SynergyList.Count; i++) {
-            if(SynergyList[i] == abydosSynergy) {
-                synergyCnt++;
+            string tempSynergy = Convert.ToString(SynergyList[i]);
+            int nindex = synergyAll.FindIndex(x => x.synergyTag == tempSynergy);
+            if(nindex != -1) {
+                synergyAll[nindex].AddCount();
+                Debug.Log(synergyAll[nindex].synergyCount);
             }
-        }
-        while(synergyCheck > 0) {
-            if(synergyStack[synergyCheck] > synergyCnt) {
-                synergyCheck--;
-                
-            }
-            else {
-                isSynergy = true;
-                break;
-            }
-        }
-
-        if(!isSynergy) return;
-        else if(isSynergy) {
-            GameObject abydosCell = GameObject.FindGameObjectWithTag("Abydos");
-            abydosCell.SetActive(true);
-            abydosCell.GetComponent<SynergyUi>().ChangeMaterial(synergyCnt);
-            return;
         }
     }
-    void MillenniumSynergy() {
-        int[] synergyStack = { 0, 1, 2, 3 };
-        int synergyCheck = synergyStack.Length - 1;
-        bool isSynergy = false;
-        Synergy millenniumSynergy = Synergy.millennium;
-        int synergyCnt = 0;
 
-        for (int i = 0; i < SynergyList.Count; i++)
-        {
-            if (SynergyList[i] == millenniumSynergy)
-            {
-                synergyCnt++;
+    void SynergyInvoke() {
+        for(int i = 0; i < synergyAll.Count; i++) {
+            int synergyCnt = synergyAll[i].SynergyInvoke();
+            if(synergyCnt != -1) {
+                int nindex = SynergyObjects.FindIndex(x => x.tag == synergyAll[i].synergyTag);
+                SynergyObjects[nindex].SetActive(true);
+                SynergyObjects[nindex].GetComponent<SynergyUi>().ChangeMaterial(synergyAll[i].synergyCount);
             }
-        }
-        while (synergyCheck > 0)
-        {
-            if (synergyStack[synergyCheck] > synergyCnt)
-            {
-                synergyCheck--;
-
-            }
-            else
-            {
-                isSynergy = true;
-                break;
-            }
-        }
-
-        if (!isSynergy) return;
-        else if (isSynergy)
-        {
-            GameObject abydosCell = GameObject.FindGameObjectWithTag("Millennium");
-            abydosCell.SetActive(true);
-            abydosCell.GetComponent<SynergyUi>().ChangeMaterial(synergyCnt);
-            return;
         }
     }
 }

@@ -15,6 +15,13 @@ TagManager:
   - BattleArea
   - Friendly
   - Enemy
+  - Gehenna
+  - Trinity
+  - Engineer
+  - Sniper
+  - Slayer
+  - Guardian
+  - Mystery
   layers:
   - Default
   - TransparentFX

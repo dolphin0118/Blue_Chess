@@ -2,19 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Synergy{
+public enum Synergy {
     Abydos,
     Gehenna,
     Trinity,
-    millennium,
-    guardian,
-}
-public enum SubSynergy {
+    Millennium,
     Engineer,
     Sniper,
     Slayer,
-    guardian,
-    mystery
+    Guardian,
+    Mystery
 }
 
 public class State {
