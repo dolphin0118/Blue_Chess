@@ -17,6 +17,6 @@ public class SelectTile: MonoBehaviour {
             Vector3 pos = tilemap.GetCellCenterLocal(tilepos);
             transform.position = new Vector3(pos.x, this.transform.position.y, pos.z);
         }
-
     }
+    //이 타일의 좌표를 vector3.up의 레이로 쏴서 맞은 캐릭터 객체 불러오기
 }

@@ -10,10 +10,8 @@ public class MapManager : MonoBehaviour {
     public List<List<bool>> isBattle = new List<List<bool>>();
     public List<TileBase> BenchTiles;
     public List<bool> isBench;
-
-    public int Battle_width = 10;
-    public int Battle_height = 10;
-    public int Bench_length = 8;
+    [SerializeField]private int battleHeight = 10;
+    [SerializeField]private int battleWidth= 10;
     public int tile_gap = 4;
 
     public static MapManager instance = null;
@@ -26,7 +24,6 @@ public class MapManager : MonoBehaviour {
         else {
             if (instance != this) Destroy(this.gameObject);
         }
-        Bench_Init();
         Battle_Init();
     }
 
@@ -34,18 +31,10 @@ public class MapManager : MonoBehaviour {
         Battle_seat();
     }
 
-    void Bench_Init() {
-        for (int i = 0; i < Bench_length; i++){
-            Vector3Int tilepos = new Vector3Int(i - 4 , i, 0);
-            BenchTiles.Add(tilemap.GetTile(tilepos));
-            isBench.Add(false);
-        }
-    }
-
     void Battle_Init() {
-        for(int i = 0; i < Battle_height; i++) {
+        for(int i = 0; i < battleHeight; i++) {
             isBattle.Add(new List<bool>());
-            for(int j = 0; j < Battle_width; j++) {
+            for(int j = 0; j < battleWidth; j++) {
                 Vector3Int tilepos = new Vector3Int(j - 4, i - 6, 0);
                 isBattle[i].Add(false);
             }
@@ -72,18 +61,10 @@ public class MapManager : MonoBehaviour {
             }
         }
     }
-
-
+    
     public void Bench_seat(int Bench_num, bool ischeck) {
         int Bench_Num = Bench_num + tile_gap;
         isBench[Bench_Num] = ischeck;
     }
 
-    public bool Check_Bench() {
-        for(int i = 0; i < isBench.Count; i++) {
-            if(!isBench[i]) return true;
-            else continue;
-        }
-        return false;
-    }
 }

@@ -37,6 +37,7 @@ public class SynergyManager : MonoBehaviour {
         synergyAll.Add(new MysterySynergy());
         synergyAll.Add(new SlayerSynergy());
     }
+
     void SynergyGeneral() {
         SynergyCounter();
         SynergyInvoke(); 
@@ -50,12 +51,18 @@ public class SynergyManager : MonoBehaviour {
             int nindex = synergyAll.FindIndex(x => x.synergyTag == tempSynergy);
             if(nindex != -1) {
                 synergyAll[nindex].AddCount();
-                Debug.Log(synergyAll[nindex].synergyCount);
             }
         }
     }
 
+    void SynergyDisable() {
+        for(int i = 0; i < SynergyObjects.Count; i++) {
+            SynergyObjects[i].SetActive(false);
+            SynergyObjects[i].GetComponent<SynergyUi>().ChangeMaterial(0);
+        }
+    }
     void SynergyInvoke() {
+        SynergyDisable();
         for(int i = 0; i < synergyAll.Count; i++) {
             int synergyCnt = synergyAll[i].SynergyInvoke();
             if(synergyCnt != -1) {

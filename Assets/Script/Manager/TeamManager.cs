@@ -20,7 +20,6 @@ public class TeamManager : MonoBehaviour {
 
     public void Combine_Chara_s(int Compare_Code) {
         Chara_s = GameObject.FindGameObjectsWithTag("Friendly");
-        
         int Delete_Count = 0;
         for(int i = 0; i < Chara_s.Length; i++) {
             CharaInfo getCharaInfo = Chara_s[i].GetComponent<CharaInfo>(); 

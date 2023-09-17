@@ -564,6 +564,8 @@ GameObject:
   - component: {fileID: 1603236075247383415}
   - component: {fileID: 48862488408835265}
   - component: {fileID: 7130747522660909931}
+  - component: {fileID: -8699211160609145078}
+  - component: {fileID: -8193607383214243420}
   m_Layer: 3
   m_Name: Hoshino
   m_TagString: Enemy
@@ -581,7 +583,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.9848078, z: 0.17364825, w: 0}
   m_LocalPosition: {x: -5.8117533, y: -0.7841372, z: -2.8934548}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8382847482618195134}
@@ -634,10 +636,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.0019049989
-  m_Height: 0.010475934
+  m_Radius: 0.32393864
+  m_Height: 1.434034
   m_Direction: 1
-  m_Center: {x: 0.00025922045, y: 0.0041007483, z: 0.00020319074}
+  m_Center: {x: 0.051932335, y: 0.19732124, z: 0.00020319378}
 --- !u!95 &1945202537334826145
 Animator:
   serializedVersion: 5
@@ -735,6 +737,40 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_SortAtRoot: 0
+--- !u!195 &-8699211160609145078
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603236075247383408}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.25
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &-8193607383214243420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603236075247383408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c170cfbd874c464980ff71b6d3085b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1647945608251189504
 GameObject:
   m_ObjectHideFlags: 0
@@ -3531,7 +3567,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8153292255202406889}
@@ -4477,7 +4513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 989336017720215889, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0101
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 989336017720215889, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
       propertyPath: m_LocalPosition.z

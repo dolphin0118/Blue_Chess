@@ -28,14 +28,13 @@ public class LevelingSystem : MonoBehaviour, IPointerClickHandler {
 
     public void OnPointerClick(PointerEventData eventData) {
         int playerGold = 100;
-        
 
     }
 }
 
 public class RerollCard : MonoBehaviour, IPointerClickHandler {
-    private int playerLevel;
-    int[,] levelTopercent = {
+    private int playerLevel = 1;
+    int[,] tierPercent = {
         {100, 0, 0, 0, 0},
         {100, 0, 0, 0, 0},
         {75, 25, 0, 0, 0},
@@ -45,17 +44,25 @@ public class RerollCard : MonoBehaviour, IPointerClickHandler {
         {19, 30, 35, 15, 1},
         {16, 20, 35, 25, 4},
     };
-    void Start() {
-        
-    }
-
-    void Update() {
-        
+    int CheckTier() {
+        int leftPercent = Random.Range(1, 101);
+        int tierCnt = 0;
+        int tierFix = 0;
+        while(true) {
+            int currentPercent = tierPercent[playerLevel, tierCnt];
+            leftPercent -= currentPercent;
+            if(leftPercent <= 0) {
+                tierFix = tierCnt;
+                break;
+            }
+            else {
+                tierCnt--;
+            }
+        }
+        return tierFix;
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        int playerGold = 100;
         
-
     }
 }

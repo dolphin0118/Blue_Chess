@@ -28,6 +28,7 @@ public class CharaLocate : MonoBehaviour {
         TileBase Player_tile = tilemap.GetTile(Player_Tilepos());
         return Player_tile;
     }
+
     public bool LayerCheck() {
         int benchLayer = 1 << LayerMask.NameToLayer("Bench");
         int battleLayer = 1 << LayerMask.NameToLayer("Battle");
@@ -41,6 +42,8 @@ public class CharaLocate : MonoBehaviour {
     }   
 
     void OnMouseUp() {
+        BenchLayer();
+        BattleLayer();
         this.transform.SetParent(previousParent.transform);
         int battleLayer= 1 << LayerMask.NameToLayer("Battle");
         int benchLayer = 1 << LayerMask.NameToLayer("Bench");
@@ -80,41 +83,44 @@ public class CharaLocate : MonoBehaviour {
 
     void OnMouseDrag() {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(ray.origin, ray.direction * 1000, Color.green);
-
         int layerMask = 1 << LayerMask.NameToLayer("Stage");
-        if(Physics.Raycast(ray, out hitLayerMask, Mathf.Infinity, layerMask))
-        {
+        if(Physics.Raycast(ray, out hitLayerMask, Mathf.Infinity, layerMask)) {
             float H = Camera.main.transform.position.y;
             float h = ObjectHitPosition.transform.position.y;
-
-            Vector3 newPos 
-            	= (hitLayerMask.point * (H - h) + Camera.main.transform.position * h) / H;
-
+            Vector3 newPos = (hitLayerMask.point * (H - h) + Camera.main.transform.position * h) / H;
             ObjectHitPosition.transform.position = newPos;
         }
-        BenchLayer();
     }
 
     void BenchLayer() {
         Vector3 charaPos = this.transform.position;
         RaycastHit hit;
-        Debug.DrawRay(charaPos, Vector3.down * Mathf.Infinity, Color.green);
 
         int layerMask = 1 << LayerMask.NameToLayer("Bench");
         if (Physics.Raycast(charaPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
-            
             GameObject hitBench = hit.collider.transform.gameObject;
             if (hitBench.transform.childCount == 0) {
                 previousParent = hitBench;
             }
             else {
-                hitBench.transform.GetChild(0).gameObject.transform.localPosition = new Vector3(0, 0, 0);
                 hitBench.transform.GetChild(0).SetParent(previousParent.transform);     
+                previousParent.transform.GetChild(0).gameObject.transform.localPosition = new Vector3(0, 0, 0);
                 previousParent = hitBench;
             }
         }
-
     }
+
+    void BattleLayer() {
+        Vector3 charaPos = this.transform.position;
+        RaycastHit hit;
+        int layerMask = 1 << LayerMask.NameToLayer("Chara");
+        if (Physics.Raycast(charaPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
+            GameObject hitChara = hit.collider.transform.gameObject;
+            Vector3 previousPos = hitChara.transform.position;
+            hitChara.transform.position = new Vector3(charaPos.x, 0.1f, charaPos.z);
+            this.transform.position = new Vector3(previous_pos.x, 0.1f, previous_pos.z);
+        }
+    }
+
 }
   

@@ -27,8 +27,11 @@ public class CharaInfo : MonoBehaviour {
 
     void LevelInit() {
         int Player_count = 0;
-        CharaCombine.CharaList.TryGetValue(Player_Code, out Player_count);
-        CharaCombine.CharaList[Player_Code] = Player_count + 1;
+        if(this.transform.tag == "Friendly") {
+            CharaCombine.CharaList.TryGetValue(Player_Code, out Player_count);
+            CharaCombine.CharaList[Player_Code] = Player_count + 1;
+        }
+
     }
 
     void StatInit() {
