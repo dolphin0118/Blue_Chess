@@ -23,6 +23,7 @@ TagManager:
   - Guardian
   - Mystery
   - Level
+  - Pointer
   layers:
   - Default
   - TransparentFX

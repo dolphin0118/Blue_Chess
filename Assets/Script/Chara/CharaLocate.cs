@@ -6,12 +6,15 @@ using UnityEngine.Tilemaps;
 
 public class CharaLocate : MonoBehaviour {
     Tilemap tilemap;
-    RaycastHit hitRay, hitLayerMask;
+    Collider charaCollier;
     GameObject ObjectHitPosition, previousParent;
+
+    RaycastHit hitRay, hitLayerMask;
     Vector3 previous_pos;
-    [SerializeField] GameObject BattleArea;
     Quaternion benchRotate,battleRotate;
     
+    [SerializeField] GameObject BattleArea;
+
     void Start() {
         tilemap = MapManager.instance.tilemap;
         benchRotate = Quaternion.Euler(-20, 180,0);
@@ -43,7 +46,8 @@ public class CharaLocate : MonoBehaviour {
 
     void OnMouseUp() {
         BenchLayer();
-        BattleLayer();
+        //BattleLayer();
+        BattleLayer2();
         this.transform.SetParent(previousParent.transform);
         int battleLayer= 1 << LayerMask.NameToLayer("Battle");
         int benchLayer = 1 << LayerMask.NameToLayer("Bench");
@@ -95,7 +99,6 @@ public class CharaLocate : MonoBehaviour {
     void BenchLayer() {
         Vector3 charaPos = this.transform.position;
         RaycastHit hit;
-
         int layerMask = 1 << LayerMask.NameToLayer("Bench");
         if (Physics.Raycast(charaPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
             GameObject hitBench = hit.collider.transform.gameObject;
@@ -122,5 +125,29 @@ public class CharaLocate : MonoBehaviour {
         }
     }
 
+    void BattleLayer2() {
+        Vector3 charaPos = this.transform.position;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        RaycastHit hit;
+        RaycastHit hitChara;
+        int layerChara = 1 << LayerMask.NameToLayer("Battle");
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerChara)) {
+            Vector3Int tilepos = tilemap.LocalToCell(hit.point);
+            Vector3 pos = tilemap.GetCellCenterLocal(tilepos);
+            Vector3 targetPos = new Vector3(pos.x, 0, pos.z);
+            Vector3 targetTile = GameObject.FindWithTag("Pointer").GetComponent<SelectTile>().tilePos;
+            Debug.DrawRay(targetTile,Vector3.up,Color.blue, Mathf.Infinity);
+
+            if (Physics.Raycast(targetTile, Vector3.up, out hitChara, Mathf.Infinity)) {
+                Debug.Log("on chararCollier");
+                GameObject objChara = hitChara.collider.transform.gameObject;
+                Vector3 previousPos = objChara.transform.position;
+                objChara.transform.position = new Vector3(charaPos.x, 0.1f, charaPos.z);
+                this.transform.position = new Vector3(previous_pos.x, 0.1f, previous_pos.z);
+                Debug.Log(objChara.name);
+            }
+        }
+    }
 }
   
