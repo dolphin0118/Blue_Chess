@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-public class SynergyAll : MonoBehaviour {
+public class SynergyAll{
 
     public int[] synergyStack{get; set;}
     public string synergyTag{get; set;}

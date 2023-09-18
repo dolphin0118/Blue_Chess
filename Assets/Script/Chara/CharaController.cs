@@ -71,7 +71,7 @@ public class CharaController : MonoBehaviour {
             _state = State.state.Idle;
             anim.SetBool("Idle", true);
         }
-        else if(isBattle&&charaLocate.LayerCheck()) {
+        else if(isBattle&&charaLocate.isBattleLayer) {
             _state = State.state.Move;
             anim.SetBool("Idle", false);
             charaNav.enabled = true;

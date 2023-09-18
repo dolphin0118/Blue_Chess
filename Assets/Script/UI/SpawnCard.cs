@@ -11,6 +11,7 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     Chara Chara_Clone;
     bool mouse_On;
     bool isSpawn;
+    
     void Start() {
         initColor = this.GetComponent<Image>().color;
         Chara_Image = this.GetComponent<Image>();
@@ -35,10 +36,10 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         isSpawn = true;
         int Select_Max = SpawnSystem.instance.Chara_List.Length;
         int Select_Card = Random.Range(0, Select_Max);
-
         Chara_Clone = SpawnSystem.instance.Chara_List[Select_Card];
         Chara_Image.sprite = Chara_Clone.Chara_Card;
     }
+
     void CardSpawn() {
         if(isSpawn) {
             isSpawn = false;
