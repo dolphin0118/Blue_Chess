@@ -42,7 +42,7 @@ public class CharaAstar : MonoBehaviour {
     }
 
     Vector2Int Target_Coord_Lerp() {
-        Vector3Int pos = MapManager.instance.tilemap.LocalToCell(Target_Object.transform.position);
+        Vector3Int pos = GameManager.instance.tilemap.LocalToCell(Target_Object.transform.position);
         int Lerp_pos_x = pos.x + Lerp_x;
         int Lerp_pos_y = pos.y + Lerp_y;
         Vector2Int Lerp_pos = new Vector2Int(Lerp_pos_x, Lerp_pos_y);
@@ -55,7 +55,7 @@ public class CharaAstar : MonoBehaviour {
     }
 
     void TileCheck() {
-        isBattle = MapManager.instance.isBattle;
+        //isBattle = GameManager.instance.isBattle;
         Vector2Int target = Coord_Lerp();
         List<Block> arounds = new List<Block>();
         if (Exists(target.x - 1, target.y - 1)) {
@@ -146,8 +146,8 @@ public class CharaAstar : MonoBehaviour {
         if(target_Block.prev != null) player_pos = new Vector3Int(target_Block.prev.x - Lerp_x,target_Block.prev.y - Lerp_y, pos.z);
         else player_pos = new Vector3Int(pos.x, pos.y, pos.z);    
         Vector3Int target_pos = new Vector3Int(target_Block.x - Lerp_x, target_Block.y - Lerp_y, pos.z);
-        Vector3 pos_Lerp = MapManager.instance.tilemap.CellToWorld(player_pos);
-        Vector3 target_Lerp = MapManager.instance.tilemap.CellToWorld(target_pos);
+        Vector3 pos_Lerp = GameManager.instance.tilemap.CellToWorld(player_pos);
+        Vector3 target_Lerp = GameManager.instance.tilemap.CellToWorld(target_pos);
 
         int loopNum = 0;
         float elapsedTime = 0f;

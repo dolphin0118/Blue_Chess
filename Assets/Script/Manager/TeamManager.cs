@@ -38,6 +38,7 @@ public class TeamManager : MonoBehaviour {
             }
         }
     }
+    
     public void SynersyChara_s() {  
         GameObject battleCharas = GameObject.FindGameObjectWithTag("BattleArea");
         int charaCount = battleCharas.transform.childCount;
@@ -54,20 +55,6 @@ public class TeamManager : MonoBehaviour {
             }
         }
 
-    }
-
-    public void BattleChara_s() {
-        Chara_s = GameObject.FindGameObjectsWithTag("Player");
-        for(int i = 0; i < Chara_s.Length; i++) {
-            TileBase Chara_Tile = Chara_s[i].GetComponent<CharaLocate>().Player_Tile();
-            if(Chara_Tile.name == MapManager.instance.BattleTile.name) {
-                Chara_s[i].GetComponent<CharaController>().isBattle = true;
-            }
-            else Chara_s[i].GetComponent<CharaController>().isBattle = false;
-        }      
-    }
-    public void BenchChara_s() {
-        
     }
 
     void Update(){

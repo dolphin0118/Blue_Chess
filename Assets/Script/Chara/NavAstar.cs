@@ -28,7 +28,6 @@ public class NavAstar : MonoBehaviour {
     public void NavStop() {
         charaNav.ResetPath();
     }
-
 }
 
  

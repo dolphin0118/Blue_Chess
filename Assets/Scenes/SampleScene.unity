@@ -1423,7 +1423,6 @@ GameObject:
   m_Component:
   - component: {fileID: 494504852}
   - component: {fileID: 494504851}
-  - component: {fileID: 494504853}
   - component: {fileID: 494504855}
   m_Layer: 0
   m_Name: GameManager
@@ -1444,6 +1443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce033a65afb176a4687d5ba872f4d3cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tilemap: {fileID: 1335903701}
 --- !u!4 &494504852
 Transform:
   m_ObjectHideFlags: 0
@@ -1459,26 +1459,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &494504853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 494504850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a83d9c6db4f5a442a60a0ad8ab2e4ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilemap: {fileID: 1335903701}
-  BattleTile: {fileID: 11400000, guid: 8159beeb24e86ef48af9c5d32499d627, type: 2}
-  BenchTile: {fileID: 11400000, guid: 23e69f8e8e839ae46a3abf919c3f30c0, type: 2}
-  BenchTiles: []
-  isBench: 
-  battleHeight: 10
-  battleWidth: 10
-  tile_gap: 4
 --- !u!114 &494504855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2343,7 +2323,7 @@ GameObject:
   - component: {fileID: 881017154}
   - component: {fileID: 881017153}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: RectGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5608,7 +5588,7 @@ GameObject:
   - component: {fileID: 2030978787}
   - component: {fileID: 2030978786}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: HexaGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

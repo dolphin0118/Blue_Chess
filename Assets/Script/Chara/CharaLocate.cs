@@ -18,7 +18,7 @@ public class CharaLocate : MonoBehaviour {
     [SerializeField] GameObject BattleArea;
 
     void Start() {
-        tilemap = MapManager.instance.tilemap;
+        tilemap = GameManager.instance.tilemap;
         benchRotate = Quaternion.Euler(-20, 180,0);
         battleRotate = Quaternion.Euler(0, 0, 0);
     }

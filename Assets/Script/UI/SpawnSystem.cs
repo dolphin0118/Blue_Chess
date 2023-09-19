@@ -33,8 +33,8 @@ public class SpawnSystem : MonoBehaviour{
             if(!checkSlot[i]) {
                 Vector3 Spawn_Pos = new Vector3(-4, 0.1f, -6);
                 Vector3 Prefab_Pos = new Vector3(Spawn_Pos.x + i, Spawn_Pos.y, Spawn_Pos.z);
-                Vector3Int tilepos = MapManager.instance.tilemap.LocalToCell(Prefab_Pos);
-                Prefab_Pos = MapManager.instance.tilemap.GetCellCenterLocal(tilepos);
+                Vector3Int tilepos = GameManager.instance.tilemap.LocalToCell(Prefab_Pos);
+                Prefab_Pos = GameManager.instance.tilemap.GetCellCenterLocal(tilepos);
                 Prefab_Pos = new Vector3(Prefab_Pos.x, 0.1f, Prefab_Pos.z);
                 
                 GameObject Chara_Clone = Instantiate(Chara_Prefab, Prefab_Pos, Quaternion.identity);

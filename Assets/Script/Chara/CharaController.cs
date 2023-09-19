@@ -10,8 +10,8 @@ public class CharaController : MonoBehaviour {
     NavAstar navAstar;
     CharaInfo  charainfo;
     CharaLocate charaLocate;
-    GameObject Target_Enemy = null;
-    State.state _state = State.state.Idle;
+    GameObject targetEnemy;
+    State.state _state;
     NavMeshAgent charaNav;
     static public Vector3Int Infinity = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue);
     public bool isBattle = false;
@@ -28,13 +28,16 @@ public class CharaController : MonoBehaviour {
         charainfo = GetComponent<CharaInfo>();
         charaNav = GetComponent<NavMeshAgent>();
         charaLocate = GetComponent<CharaLocate>();
-        charaNav.enabled = false;
+
         Init();
     }
     void Init() {
         Player_Speed = charainfo.Player_Speed;
         Player_Range = charainfo.Player_Range;
         Player_Attack_count = charainfo.Player_Attack_count;
+        charaNav.enabled = false;
+        targetEnemy = null;
+        _state = State.state.Idle;
     }
 
     void Update() {
@@ -81,7 +84,7 @@ public class CharaController : MonoBehaviour {
 
     void Move_state() {
         navAstar.NavStart();
-        if(Target_Enemy == null) {
+        if(targetEnemy == null) {
             _state = State.state.Idle;
             anim.SetBool("Move", false);
             return;
@@ -101,7 +104,7 @@ public class CharaController : MonoBehaviour {
     }
 
     void Attack_State() {
-        if(Target_Enemy != null) {
+        if(targetEnemy != null) {
             if(PlayerToTarget() > Player_Range) {
                 _state = State.state.Move;
                 anim.SetBool("Attack", false);
@@ -111,10 +114,10 @@ public class CharaController : MonoBehaviour {
             if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&
                 anim.GetCurrentAnimatorStateInfo(0).normalizedTime > Player_Attack_count) {
                 Player_Attack_count += 1.0f;
-                Target_Enemy.GetComponent<CharaInfo>().Player_Hp-=10;
+                targetEnemy.GetComponent<CharaInfo>().Player_Hp-=10;
             }
         }   
-        else if(Target_Enemy == null){
+        else if(targetEnemy == null){
             _state = State.state.Move;
             anim.SetBool("Attack", false);
             anim.SetBool("Move", true); 
@@ -129,7 +132,7 @@ public class CharaController : MonoBehaviour {
 
     float PlayerToTarget() {
         Vector3 Player_distance = gameObject.transform.position;
-        Vector3 Target_distance = Target_Enemy.transform.position;
+        Vector3 Target_distance = targetEnemy.transform.position;
         float Distance = Vector3.Distance(Player_distance, Target_distance);
         return Distance;
     }
@@ -144,10 +147,10 @@ public class CharaController : MonoBehaviour {
             Target_distance = Target_Enemys[i].transform.position;
             float current_distance = Vector3.Distance(Player_distance, Target_distance);
             if(min_distance > current_distance) {
-                Target_Enemy = Target_Enemys[i];
+                targetEnemy = Target_Enemys[i];
                 min_distance = current_distance;
             }
         }
-        return Target_Enemy;
+        return targetEnemy;
     }
 }
