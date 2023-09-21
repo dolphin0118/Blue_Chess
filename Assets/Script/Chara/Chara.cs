@@ -13,6 +13,11 @@ public enum Synergy {
     Guardian,
     Mystery
 }
+public enum CharaAttackType {
+        Explosion,
+        Penetrate,
+        Mystery
+ }
 
 public class State {
     public enum state {
@@ -27,5 +32,6 @@ public class State {
 public class Chara : ScriptableObject{
     public GameObject Chara_Prefab;
     public Sprite Chara_Card;
-    public string CharaSynergy;
+    public int CharaTier;
+    public int CharaGold;
 }

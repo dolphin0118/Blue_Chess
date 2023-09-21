@@ -8,8 +8,9 @@ public class SynergyManager : MonoBehaviour {
 
     public static SynergyManager instance = null;
     public List<Synergy> SynergyList = Enum.GetValues(typeof(Synergy)).Cast<Synergy>().ToList();
-    List<SynergyAll> synergyAll;
     public List<GameObject> SynergyObjects;
+    List<SynergyAll> synergyAll;
+    List<SynergyUi> synergyUi;
 
     void Awake() {
         if (instance == null) {
@@ -27,15 +28,22 @@ public class SynergyManager : MonoBehaviour {
     }
 
     void SynergyInit() {
+        synergyUi = new List<SynergyUi>();
         for(int i = 0; i < SynergyObjects.Count; i++) {
             SynergyObjects[i] = this.transform.GetChild(i).gameObject;
-            SynergyObjects[i].gameObject.SetActive(false);
+            synergyUi.Add(SynergyObjects[i].GetComponent<SynergyUi>());
         }
+
         synergyAll = new List<SynergyAll>();
         synergyAll.Add(new AbydosSynergy());
         synergyAll.Add(new MillenniumSynergy());
+        synergyAll.Add(new GehennaSynergy());
+        synergyAll.Add(new TrinitySynergy());
         synergyAll.Add(new MysterySynergy());
+        synergyAll.Add(new SniperSynergy());
         synergyAll.Add(new SlayerSynergy());
+        synergyAll.Add(new GuardianSynergy());
+        synergyAll.Add(new EngineerSynergy());
     }
 
     void SynergyGeneral() {
@@ -57,19 +65,40 @@ public class SynergyManager : MonoBehaviour {
 
     void SynergyDisable() {
         for(int i = 0; i < SynergyObjects.Count; i++) {
-            SynergyObjects[i].SetActive(false);
-            SynergyObjects[i].GetComponent<SynergyUi>().ChangeMaterial(0);
+            synergyUi[i].ChangeActive(false);
+            synergyUi[i].ChangeMaterial(0);
         }
     }
+
     void SynergyInvoke() {
         SynergyDisable();
         for(int i = 0; i < synergyAll.Count; i++) {
             int synergyCnt = synergyAll[i].SynergyInvoke();
             if(synergyCnt != -1) {
                 int nindex = SynergyObjects.FindIndex(x => x.tag == synergyAll[i].synergyTag);
-                SynergyObjects[nindex].SetActive(true);
-                SynergyObjects[nindex].GetComponent<SynergyUi>().ChangeMaterial(synergyAll[i].synergyCount);
+                synergyUi[i].ChangeActive(true);
+                synergyUi[i].ChangeMaterial(synergyAll[i].synergyCount);
             }
+        }
+        SynergySort();
+    }
+    
+    void SynergySort() {  
+        List<int> OrderList = new List<int>();
+        for(int i = 0 ; i <synergyAll.Count; i++) {
+            int orderIndex = synergyAll[i].synergyOrder;
+            OrderList.Add(orderIndex);
+        }
+        OrderList = OrderList.OrderByDescending(x => x).ToList();
+        for(int i = 0; i < synergyUi.Count; i++) {
+            if(synergyAll[i].synergyOrder == 0) {
+                int maxOrder = synergyUi.Count;
+                synergyUi[i].ChangeOrder(maxOrder);
+                continue;
+            }
+            int nindex = OrderList.FindIndex(x => x == synergyAll[i].synergyOrder);
+            synergyUi[i].ChangeOrder(nindex);
+            OrderList[nindex] = 0;
         }
     }
 }

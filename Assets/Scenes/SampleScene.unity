@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -316,6 +316,7 @@ GameObject:
   - component: {fileID: 128099474}
   - component: {fileID: 128099473}
   - component: {fileID: 128099472}
+  - component: {fileID: 128099475}
   m_Layer: 5
   m_Name: GehennaSynergy
   m_TagString: Gehenna
@@ -399,6 +400,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 128099470}
   m_CullTransparentMesh: 1
+--- !u!225 &128099475
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128099470}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &145223502
 GameObject:
   m_ObjectHideFlags: 0
@@ -1255,6 +1268,7 @@ GameObject:
   - component: {fileID: 456931240}
   - component: {fileID: 456931239}
   - component: {fileID: 456931238}
+  - component: {fileID: 456931241}
   m_Layer: 5
   m_Name: SlayerSynergy
   m_TagString: Slayer
@@ -1338,6 +1352,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 456931236}
   m_CullTransparentMesh: 1
+--- !u!225 &456931241
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456931236}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &464392435
 GameObject:
   m_ObjectHideFlags: 0
@@ -1695,6 +1721,7 @@ GameObject:
   - component: {fileID: 695989698}
   - component: {fileID: 695989697}
   - component: {fileID: 695989696}
+  - component: {fileID: 695989699}
   m_Layer: 5
   m_Name: TrinitySynergy
   m_TagString: Trinity
@@ -1778,6 +1805,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 695989694}
   m_CullTransparentMesh: 1
+--- !u!225 &695989699
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695989694}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2000,6 +2039,7 @@ GameObject:
   - component: {fileID: 770095372}
   - component: {fileID: 770095371}
   - component: {fileID: 770095370}
+  - component: {fileID: 770095373}
   m_Layer: 5
   m_Name: EngineerSynergy
   m_TagString: Engineer
@@ -2083,6 +2123,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770095368}
   m_CullTransparentMesh: 1
+--- !u!225 &770095373
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770095368}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &782219603
 GameObject:
   m_ObjectHideFlags: 0
@@ -2369,6 +2421,7 @@ GameObject:
   - component: {fileID: 882218956}
   - component: {fileID: 882218955}
   - component: {fileID: 882218954}
+  - component: {fileID: 882218957}
   m_Layer: 5
   m_Name: GuardianSynergy
   m_TagString: Guardian
@@ -2452,6 +2505,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 882218952}
   m_CullTransparentMesh: 1
+--- !u!225 &882218957
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882218952}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &897615171
 GameObject:
   m_ObjectHideFlags: 0
@@ -5379,6 +5444,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f61d18e9301e0b34f8e02fe8fc9ecfd0, type: 2}
   - {fileID: 11400000, guid: a1fddeb6aec20df45bf688e24f00561a, type: 2}
   - {fileID: 11400000, guid: 7207d29ef67a2f5489e5e5b659a25411, type: 2}
+  - {fileID: 11400000, guid: 9eb8392b76e5c7a4986faffb5e7b7ca3, type: 2}
+  - {fileID: 11400000, guid: 08c2179987f189b49afab8addcd1e7c4, type: 2}
+  - {fileID: 11400000, guid: e9096cf812178cd4aa8a5f6e7ac322e9, type: 2}
+  - {fileID: 11400000, guid: f4b6df7fb4ad6e940baef63616bb1efa, type: 2}
 --- !u!1 &1917105595
 GameObject:
   m_ObjectHideFlags: 0
@@ -5494,6 +5563,7 @@ GameObject:
   - component: {fileID: 1968298801}
   - component: {fileID: 1968298800}
   - component: {fileID: 1968298799}
+  - component: {fileID: 1968298802}
   m_Layer: 5
   m_Name: 'SniperSynergy '
   m_TagString: Sniper
@@ -5577,6 +5647,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968298797}
   m_CullTransparentMesh: 1
+--- !u!225 &1968298802
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968298797}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2030978785
 GameObject:
   m_ObjectHideFlags: 0
@@ -5797,6 +5879,7 @@ GameObject:
   - component: {fileID: 2088199808}
   - component: {fileID: 2088199807}
   - component: {fileID: 2088199809}
+  - component: {fileID: 2088199810}
   m_Layer: 5
   m_Name: AbydosSynergy
   m_TagString: Abydos
@@ -5880,6 +5963,18 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bf5ca88266155494ab9866be78fc93d0, type: 2}
   - {fileID: 2100000, guid: 546fc2495da677348a2cd593e3be9b8a, type: 2}
   - {fileID: 2100000, guid: 42b26ccb30097814da35d72c62ba9b1c, type: 2}
+--- !u!225 &2088199810
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088199805}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2104907446
 GameObject:
   m_ObjectHideFlags: 0
@@ -5892,6 +5987,7 @@ GameObject:
   - component: {fileID: 2104907450}
   - component: {fileID: 2104907449}
   - component: {fileID: 2104907448}
+  - component: {fileID: 2104907451}
   m_Layer: 5
   m_Name: MysterySynergy
   m_TagString: Mystery
@@ -5906,8 +6002,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2104907446}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.000000029802319, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.00096588593}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5975,6 +6071,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2104907446}
   m_CullTransparentMesh: 1
+--- !u!225 &2104907451
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104907446}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2105966018
 GameObject:
   m_ObjectHideFlags: 0
@@ -6406,6 +6514,7 @@ GameObject:
   - component: {fileID: 3634938005551860980}
   - component: {fileID: 3634938005551860747}
   - component: {fileID: 3634938005551860981}
+  - component: {fileID: 3634938005551860982}
   m_Layer: 5
   m_Name: MillenniumSynergy
   m_TagString: Millennium
@@ -6489,6 +6598,18 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bf5ca88266155494ab9866be78fc93d0, type: 2}
   - {fileID: 2100000, guid: 546fc2495da677348a2cd593e3be9b8a, type: 2}
   - {fileID: 2100000, guid: 42b26ccb30097814da35d72c62ba9b1c, type: 2}
+--- !u!225 &3634938005551860982
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634938005551860745}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &6587441976004520589
 PrefabInstance:
   m_ObjectHideFlags: 0
