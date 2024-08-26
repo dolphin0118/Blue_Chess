@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
+    "com.shlifedev.ugs": "1.0.8",
     "com.unity.2d.animation": "9.0.3",
     "com.unity.2d.pixel-perfect": "5.0.3",
     "com.unity.2d.psdimporter": "8.0.2",
@@ -12,7 +14,7 @@
     "com.unity.feature.2d": "2.0.0",
     "com.unity.feature.development": "1.0.1",
     "com.unity.ide.rider": "3.0.24",
-    "com.unity.ide.visualstudio": "2.0.20",
+    "com.unity.ide.visualstudio": "2.0.22",
     "com.unity.ide.vscode": "1.2.5",
     "com.unity.probuilder": "5.1.1",
     "com.unity.test-framework": "1.1.33",
@@ -51,5 +53,14 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.shlifedev.ugs"
+      ]
+    }
+  ]
 }

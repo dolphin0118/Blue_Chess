@@ -2,29 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class HpSystem : MonoBehaviour {
-    Transform[] statusObjects;
+    CharaStatus charaStatus;
     Transform cam;
     Image hpGague;
-    void Awake(){   
+
+    void Start(){   
         cam = Camera.main.transform;    
-        statusObjects = GetComponentsInChildren<Transform>();   
-        Init();
+        charaStatus = transform.GetComponentInParent<CharaStatus>();
+        hpGague = transform.GetComponent<Image>();
+        //hpGague.rectTransform.SetSiblingIndex(1);
+        hpGague.fillAmount = 0.5f;
+        if (hpGague == null) {
+           Debug.LogError("Hp_front object not found");
+        }
     }
 
     void Init() {
-        for(int i = 0; i < transform.childCount; i++) {
-            if(statusObjects[i].tag == "Hp") {
-                hpGague = statusObjects[i].GetComponent<Image>();
-                hpGague.rectTransform.SetSiblingIndex(1);
-
-            }
-            else if(statusObjects[i].tag == "Level") statusObjects[i].GetComponent<Image>().rectTransform.SetAsLastSibling();
-        }
 
     }
     void Update() {
         transform.LookAt(transform.position + cam.rotation * Vector3.forward, cam.rotation * Vector3.up);
-        hpGague.fillAmount = transform.GetComponentInParent<CharaInfo>().Player_Hp / 100f;
+        hpGague.fillAmount = 1;//charaStatus.MaxHP / charaStatus.HP;
     }
 }

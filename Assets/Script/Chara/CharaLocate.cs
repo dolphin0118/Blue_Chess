@@ -5,13 +5,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class CharaLocate : MonoBehaviour {
+public class CharaLocate : ObjectControll {
     Tilemap tilemap;
     Collider charaCollier;
-    GameObject ObjectHitPosition, previousParent;
-
-    RaycastHit hitRay, hitLayerMask;
-    Vector3 currentPos,previousPos;
+    Vector3 currentPos;
     Quaternion benchRotate, battleRotate;
     public bool isBattleLayer {get; set;}
 
@@ -35,36 +32,24 @@ public class CharaLocate : MonoBehaviour {
     }
     void OnMouseUp() {
         CheckLayer();
-        outLayer();
+        OutLayer();
         Destroy(ObjectHitPosition);
     }
 
-    void OnMouseDown() {
-        previousPos = this.transform.position;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if(Physics.Raycast(ray, out hitRay)) {
-            ObjectHitPosition = new GameObject("HitPosition");
-            previousParent= this.transform.parent.gameObject;
-            ObjectHitPosition.transform.position = hitRay.point;
-            this.transform.SetParent(ObjectHitPosition.transform);   
-            this.transform.localPosition = new Vector3(0, 0.1f, 0);
-        }
-        
+    public override void OnObjectControll() {
+        base.OnObjectControll();
+        SynergyManager.instance.synergyEvent.AddListener(GetComponent<CharaInfo>().SynergyRemove);
+        SynergyManager.instance.synergyEvent.Invoke();
+
     }
 
-    void OnMouseDrag() {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        int layerMask = 1 << LayerMask.NameToLayer("Stage");
-        if(Physics.Raycast(ray, out hitLayerMask, Mathf.Infinity, layerMask)) {
-            float H = Camera.main.transform.position.y;
-            float h = ObjectHitPosition.transform.position.y;
-            Vector3 newPos = (hitLayerMask.point * (H - h) + Camera.main.transform.position * h) / H;
-            ObjectHitPosition.transform.position = newPos;
-        }
+    public override void OnObjectMove() {
+        base.OnObjectMove();
     }
-    void outLayer() {
+
+    void OutLayer() {
         this.transform.SetParent(previousParent.transform);
-        int battleLayer= 1 << LayerMask.NameToLayer("Battle");
+        int battleLayer = 1 << LayerMask.NameToLayer("Battle");
         int benchLayer = 1 << LayerMask.NameToLayer("Bench");
         currentPos = this.transform.position;
         RaycastHit hit;
@@ -79,6 +64,8 @@ public class CharaLocate : MonoBehaviour {
             transform.position = new Vector3(pos.x, 0.1f, pos.z);
             this.transform.rotation = battleRotate;
             isBattleLayer = true;
+            SynergyManager.instance.synergyEvent.AddListener(this.transform.GetComponent<CharaInfo>().SynergyAdd);
+            SynergyManager.instance.synergyEvent.Invoke();
         }
         else {
             Vector3 pos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(previousPos));
@@ -86,12 +73,13 @@ public class CharaLocate : MonoBehaviour {
             transform.localPosition = new Vector3(0, transform.position.y, 0);
         }
     }
+    
     void CheckLayer() {
         currentPos = this.transform.position;
         RaycastHit hit;
-        int layerBench = 1 << LayerMask.NameToLayer("Bench");
-        int layerBattle = 1 << LayerMask.NameToLayer("Battle");
-        if (Physics.Raycast(currentPos, Vector3.down, out hit, Mathf.Infinity, layerBench)){
+        int BenchLayer = 1 << LayerMask.NameToLayer("Bench");
+        int BattleLayer = 1 << LayerMask.NameToLayer("Battle");
+        if (Physics.Raycast(currentPos, Vector3.down, out hit, Mathf.Infinity, BenchLayer)){
             GameObject hitBench = hit.collider.transform.gameObject;
             if (hitBench.transform.childCount == 0) {
                 previousParent = hitBench;
@@ -101,20 +89,38 @@ public class CharaLocate : MonoBehaviour {
                 previousParent.transform.GetChild(0).gameObject.transform.localPosition = new Vector3(0, 0, 0);
                 previousParent = hitBench;
             }
+            Debug.Log("Bench");
         }
-        else if(Physics.Raycast(currentPos, Vector3.down, Mathf.Infinity, layerBattle)) {
-            int layerChara = 1 << LayerMask.NameToLayer("Chara");
+        else if(Physics.Raycast(currentPos, Vector3.down, Mathf.Infinity, BattleLayer)) {
+            int CharaLayer = 1 << LayerMask.NameToLayer("Chara");
             Vector3 checkPos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(currentPos));
-            checkPos = new Vector3(checkPos.x, -1.0f, checkPos.z);
-            if(Physics.Raycast(checkPos,Vector3.up, out hit, Mathf.Infinity, layerChara)) {
-                if(hit.collider.gameObject == this.gameObject) return;
-                else Debug.Log("battle");
-                GameObject hitChara = hit.collider.transform.gameObject;
+            checkPos = new Vector3(checkPos.x, 0.1f, checkPos.z);
+            
+            if (Physics.CheckSphere(checkPos, 0.1f, CharaLayer)) {
+                Collider[] hitColliders = Physics.OverlapSphere(checkPos, 0.1f, CharaLayer);
+                GameObject hitChara = hitColliders[0].transform.gameObject;
                 this.transform.position = hitChara.transform.position;
                 hitChara.transform.position = new Vector3(previousPos.x, 0.1f, previousPos.z);
-              
+                Debug.Log("Swap");
+            }
+            else {
+                this.transform.position = checkPos;
+                Debug.Log("battle");
             }
         }
     }
 }
   
+        //   else if(Physics.Raycast(currentPos, Vector3.down, Mathf.Infinity, BattleLayer)) {
+        //     int layerChara = 1 << LayerMask.NameToLayer("Chara");
+        //     Vector3 checkPos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(currentPos));
+        //     checkPos = new Vector3(checkPos.x, -1.0f, checkPos.z);
+        //     if(Physics.Raycast(checkPos,Vector3.up, out hit, Mathf.Infinity, layerChara)) {
+        //         if(hit.collider.gameObject == this.gameObject) return;
+        //         else Debug.Log("battle");
+        //         GameObject hitChara = hit.collider.transform.gameObject;
+        //         this.transform.position = hitChara.transform.position;
+        //         hitChara.transform.position = new Vector3(previousPos.x, 0.1f, previousPos.z);
+              
+        //     }
+        // }

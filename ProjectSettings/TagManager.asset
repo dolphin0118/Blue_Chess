@@ -11,19 +11,13 @@ TagManager:
   - Main
   - Abydos
   - Synergy
-  - Millennium
   - BattleArea
   - Friendly
   - Enemy
-  - Gehenna
-  - Trinity
-  - Engineer
-  - Sniper
-  - Slayer
-  - Guardian
-  - Mystery
   - Level
   - Pointer
+  - BenchArea
+  - Unit
   layers:
   - Default
   - TransparentFX
@@ -34,7 +28,7 @@ TagManager:
   - Stage
   - Bench
   - Battle
-  - 
+  - Item
   - 
   - 
   - 
@@ -63,4 +57,7 @@ TagManager:
     locked: 0
   - name: Hp
     uniqueID: 1725845207
+    locked: 0
+  - name: Item
+    uniqueID: 1039776153
     locked: 0

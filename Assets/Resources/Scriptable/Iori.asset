@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3fc7f3d53a5d11428c610313d0bf8d2, type: 3}
+  m_Name: Iori
+  m_EditorClassIdentifier: 
+  CharaPrefab: {fileID: 999292104308550225, guid: d78563aabed906742bac9c2a79f5aa21, type: 3}
+  CharaMemorial: {fileID: 21300000, guid: eb005baa70e7ddc49aef43b130cb47bc, type: 3}
+  charaData:
+    Name: Iori
+    attackType: 1
+    schoolSynergy: 1
+    traitSynergy: 6
+    charaPrice: 1
+  charaStat:
+    Level: 1
+    Name: Iori
+    HP: 700
+    MP: 50
+    ATK: 80
+    AP: 50
+    AR: 50
+    MR: 50
+    ATKSpeed: 1
+    Range: 3
+  Name: Iori

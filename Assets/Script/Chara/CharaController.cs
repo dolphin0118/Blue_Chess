@@ -3,41 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.AI;
+using BlueChessDataBase;
 
 public class CharaController : MonoBehaviour {
     Animator anim;
-    CharaAstar Astar;
     NavAstar navAstar;
-    CharaInfo  charainfo;
+    CharaInfo charainfo;
+    CharaData charaData;
+    CharaStat charaStat;
     CharaLocate charaLocate;
     GameObject targetEnemy;
-    State.state _state;
+    State state;
     NavMeshAgent charaNav;
     static public Vector3Int Infinity = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue);
     public bool isBattle = false;
 
-    private float Player_Speed;
-    private float Player_Range;
-    private float Player_Attack_count;
-    private float Player_Hp;
-
     void Awake(){
         anim = GetComponent<Animator>();
-        Astar = GetComponent<CharaAstar>();
         navAstar = GetComponent<NavAstar>();
         charainfo = GetComponent<CharaInfo>();
         charaNav = GetComponent<NavMeshAgent>();
         charaLocate = GetComponent<CharaLocate>();
-
+        charaData = charainfo.charaData;
+        charaStat = charainfo.charaStat;
         Init();
     }
+    
     void Init() {
-        Player_Speed = charainfo.Player_Speed;
-        Player_Range = charainfo.Player_Range;
-        Player_Attack_count = charainfo.Player_Attack_count;
         charaNav.enabled = false;
         targetEnemy = null;
-        _state = State.state.Idle;
+        state = State.Idle;
     }
 
     void Update() {
@@ -45,37 +40,38 @@ public class CharaController : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        PlayerDieCheck();
+        //PlayerDieCheck();
         Player_State();
     }
+
     void PlayerDieCheck() {
-        Player_Hp = charainfo.Player_Hp;
-        if(Player_Hp <= 0) _state = State.state.Die;
+        //if(charaData.charaHp <= 0) state = State.Die;
     }
+
     void Player_State(){
-        switch(_state) {
-            case State.state.Idle :
+        switch(state) {
+            case State.Idle :
                 Idle_state();
-            break;
-            case State.state.Move :
+                break;
+            case State.Move :
                 Move_state();
-            break;
-            case State.state.Attack :
+                break;
+            case State.Attack :
                 Attack_State();
-            break;
-            case State.state.Die :
+                break;
+            case State.Die :
                 Die_state();
-            break;
+                break;
         }
     }
 
     void Idle_state() {
         if(!isBattle) {
-            _state = State.state.Idle;
+            state = State.Idle;
             anim.SetBool("Idle", true);
         }
         else if(isBattle&&charaLocate.isBattleLayer) {
-            _state = State.state.Move;
+            state = State.Move;
             anim.SetBool("Idle", false);
             charaNav.enabled = true;
         }
@@ -85,14 +81,14 @@ public class CharaController : MonoBehaviour {
     void Move_state() {
         navAstar.NavStart();
         if(targetEnemy == null) {
-            _state = State.state.Idle;
+            state = State.Idle;
             anim.SetBool("Move", false);
             return;
         }
         else {
             anim.SetBool("Move", true);
-            if(PlayerToTarget() <= Player_Range) {
-                _state = State.state.Attack;
+            if(PlayerToTarget() <= charaStat.Range) {
+                state = State.Attack;
                 anim.SetBool("Attack", true);
                 anim.SetBool("Move", false); 
                 navAstar.NavStop();
@@ -105,20 +101,20 @@ public class CharaController : MonoBehaviour {
 
     void Attack_State() {
         if(targetEnemy != null) {
-            if(PlayerToTarget() > Player_Range) {
-                _state = State.state.Move;
+            if(PlayerToTarget() > charaStat.Range) {
+                state = State.Move;
                 anim.SetBool("Attack", false);
                 anim.SetBool("Move", true); 
                 return;
             }
             if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&
-                anim.GetCurrentAnimatorStateInfo(0).normalizedTime > Player_Attack_count) {
-                Player_Attack_count += 1.0f;
-                targetEnemy.GetComponent<CharaInfo>().Player_Hp-=10;
+                anim.GetCurrentAnimatorStateInfo(0).normalizedTime > charaStat.ATKSpeed) {
+                charaStat.ATKSpeed += 1.0f;
+                targetEnemy.GetComponent<CharaInfo>().charaStat.HP-=10;
             }
         }   
         else if(targetEnemy == null){
-            _state = State.state.Move;
+            state = State.Move;
             anim.SetBool("Attack", false);
             anim.SetBool("Move", true); 
             return;

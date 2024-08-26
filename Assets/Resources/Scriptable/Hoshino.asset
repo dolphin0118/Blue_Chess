@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3fc7f3d53a5d11428c610313d0bf8d2, type: 3}
+  m_Name: Hoshino
+  m_EditorClassIdentifier: 
+  CharaPrefab: {fileID: 1603236075247383408, guid: f1f7cd70ba67b6f4eb30e01afa5508e2, type: 3}
+  CharaMemorial: {fileID: 21300000, guid: 58a2545bf83045945ac4303b95fc3619, type: 3}
+  charaData:
+    Name: Hoshino
+    attackType: 1
+    schoolSynergy: 0
+    traitSynergy: 8
+    charaPrice: 5
+  charaStat:
+    Level: 1
+    Name: Hoshino
+    HP: 1000
+    MP: 100
+    ATK: 50
+    AP: 50
+    AR: 50
+    MR: 50
+    ATKSpeed: 1
+    Range: 1
+  Name: Hoshino

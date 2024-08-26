@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement focusable="false" style="background-color: rgb(1, 10, 15); width: 250px; height: 150px; color: rgb(1, 10, 15); margin-left: 0; margin-bottom: 0; transform-origin: center; margin-top: 0; left: 0; top: 0; right: 0; bottom: 312px; position: absolute; padding-top: 0; margin-right: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+        <ui:Button text="새로고침&#10;2골드" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="false" style="width: 150px; white-space: nowrap; margin-top: 10px; margin-right: 50px; margin-bottom: 50px; margin-left: 50px; position: absolute; height: 50px; font-size: 20px; -unity-font-style: bold;" />
+        <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Button" style="width: 150px; position: absolute; height: 50px; margin-top: 70px; margin-right: 50px; margin-bottom: 50px; margin-left: 50px;" />
+    </ui:VisualElement>
+</ui:UXML>
