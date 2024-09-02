@@ -46,7 +46,7 @@ public class UnitAnimator : MonoBehaviour {
     void PlayerDieCheck() {
         //if(charaData.charaHp <= 0) state = State.Die;
     }
-
+    
     void Player_State(){
         switch(state) {
             case State.Idle :
