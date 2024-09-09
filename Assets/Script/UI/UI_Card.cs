@@ -22,7 +22,7 @@ public class UI_Card : UI_Base
     }
 
     enum Images {
-        CharaImage,
+        UnitImage,
         Skill,
         TraitSynergy,
         SchoolSynergy,
@@ -31,7 +31,7 @@ public class UI_Card : UI_Base
         Item_3
     }
 
-    private CharaCard charaCard;
+    private UnitCard UnitCard;
 
     private void Start() {
         UIManager.instance.UIcard = this;
@@ -44,36 +44,36 @@ public class UI_Card : UI_Base
 		Bind<Image>(typeof(Images)); 
     }
 
-     public void CardEnable(CharaCard charaCard) {
-        this.charaCard = charaCard;
+     public void CardEnable(UnitCard UnitCard) {
+        this.UnitCard = UnitCard;
         ImageSetup();
         TextSetup();
         StatSetup();
     }
 
     void StatSetup() {
-        GetText((int)Texts.HP).text = charaCard.charaStat.HP.ToString();
-        GetText((int)Texts.MP).text = charaCard.charaStat.MP.ToString();
-        GetText((int)Texts.ATK).text = charaCard.charaStat.ATK.ToString();
-        GetText((int)Texts.AP).text = charaCard.charaStat.AP.ToString();
-        GetText((int)Texts.AR).text = charaCard.charaStat.AR.ToString();
-        GetText((int)Texts.MR).text = charaCard.charaStat.MR.ToString();
-        GetText((int)Texts.ATKSpeed).text = charaCard.charaStat.AR.ToString();
-        GetText((int)Texts.Range).text = charaCard.charaStat.Range.ToString();
+        GetText((int)Texts.HP).text = UnitCard.UnitStat.HP.ToString();
+        GetText((int)Texts.MP).text = UnitCard.UnitStat.MP.ToString();
+        GetText((int)Texts.ATK).text = UnitCard.UnitStat.ATK.ToString();
+        GetText((int)Texts.AP).text = UnitCard.UnitStat.AP.ToString();
+        GetText((int)Texts.AR).text = UnitCard.UnitStat.AR.ToString();
+        GetText((int)Texts.MR).text = UnitCard.UnitStat.MR.ToString();
+        GetText((int)Texts.ATKSpeed).text = UnitCard.UnitStat.AR.ToString();
+        GetText((int)Texts.Range).text = UnitCard.UnitStat.Range.ToString();
     }
 
     void ImageSetup() {    
-        GetText((int)Texts.Name).text = charaCard.Name;
-        GetText((int)Texts.Price).text = charaCard.charaData.charaPrice.ToString();
-        GetText((int)Texts.TraitName).text = charaCard.charaData.traitSynergy.ToString();
-        GetText((int)Texts.SchoolName).text = charaCard.charaData.schoolSynergy.ToString();
+        GetText((int)Texts.Name).text = UnitCard.Name;
+        GetText((int)Texts.Price).text = UnitCard.UnitData.UnitPrice.ToString();
+        GetText((int)Texts.TraitName).text = UnitCard.UnitData.traitSynergy.ToString();
+        GetText((int)Texts.SchoolName).text = UnitCard.UnitData.schoolSynergy.ToString();
     }
 
     void TextSetup() {
-        string symbolPath = "Chara/Symbol/";
-        GetImage((int)Images.CharaImage).sprite = charaCard.CharaMemorial;
-        GetImage((int)Images.TraitSynergy).sprite = Resources.Load(symbolPath + charaCard.charaData.traitSynergy,typeof(Sprite)) as Sprite;
-        GetImage((int)Images.SchoolSynergy).sprite = Resources.Load(symbolPath + charaCard.charaData.schoolSynergy,typeof(Sprite)) as Sprite;
+        string symbolPath = "Unit/Symbol/";
+        GetImage((int)Images.UnitImage).sprite = UnitCard.UnitMemorial;
+        GetImage((int)Images.TraitSynergy).sprite = Resources.Load(symbolPath + UnitCard.UnitData.traitSynergy,typeof(Sprite)) as Sprite;
+        GetImage((int)Images.SchoolSynergy).sprite = Resources.Load(symbolPath + UnitCard.UnitData.schoolSynergy,typeof(Sprite)) as Sprite;
 
         //traitSymbol.transform.SetAsLastSibling();
        //schoolSymbol.transform.SetAsLastSibling();

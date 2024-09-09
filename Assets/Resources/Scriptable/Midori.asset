@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fc7f3d53a5d11428c610313d0bf8d2, type: 3}
   m_Name: Midori
   m_EditorClassIdentifier: 
-  CharaPrefab: {fileID: 5652787762829899991, guid: acdb3b6462e338249a8fe37d5d28a9a5, type: 3}
-  CharaMemorial: {fileID: 21300000, guid: e03a8e951f8d70845aa2159000f92621, type: 3}
-  charaData:
+  UnitPrefab: {fileID: 5652787762829899991, guid: acdb3b6462e338249a8fe37d5d28a9a5, type: 3}
+  UnitMemorial: {fileID: 21300000, guid: e03a8e951f8d70845aa2159000f92621, type: 3}
+  UnitData:
     Name: Midori
     attackType: 1
     schoolSynergy: 3
     traitSynergy: 6
-    charaPrice: 2
-  charaStat:
+    UnitPrice: 0
+  UnitStat:
     Level: 1
     Name: Midori
     HP: 700

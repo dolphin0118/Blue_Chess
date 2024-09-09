@@ -6,8 +6,8 @@ using UnityEngine.EventSystems;
 using TMPro;
 
 public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
-    [SerializeField] TextMeshProUGUI charaNameText;
-    [SerializeField] TextMeshProUGUI charaPriceText;
+    [SerializeField] TextMeshProUGUI UnitNameText;
+    [SerializeField] TextMeshProUGUI UnitPriceText;
     [SerializeField] GameObject traitSynergy;
     [SerializeField] GameObject schoolSynergy;
     private Image traitSymbol;
@@ -16,15 +16,14 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private TextMeshProUGUI schoolName;
     
     private Color initColor;
-    private Image charaImage;
-    private CharaCard charaCard;
-    private bool mouse_On;
+    private Image UnitImage;
+    private UnitCard unitCard;
     private bool isSpawn;
     private bool isReroll;
 
     void Start() {
         initColor = this.GetComponent<Image>().color;
-        charaImage = this.GetComponent<Image>();
+        UnitImage = this.GetComponent<Image>();
         CardInit();
         CardSetup();
         SynergyInit();
@@ -39,12 +38,10 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerEnter(PointerEventData eventData) {
         this.GetComponent<Image>().color = Color.grey;
-        mouse_On = true;
     }
 
     public void OnPointerExit(PointerEventData eventData) {
         this.GetComponent<Image>().color = initColor;
-        mouse_On = false;
     }
 
     public void OnPointerClick(PointerEventData eventData) {
@@ -57,9 +54,9 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     }
 
     void CardSetup() {
-        int chardCount = SpawnSystem.instance.charaCards.Length;
+        int chardCount = SpawnSystem.instance.UnitCards.Length;
         int selectCard = Random.Range(0, chardCount);
-        charaCard = SpawnSystem.instance.charaCards[selectCard];
+        unitCard = SpawnSystem.instance.UnitCards[selectCard];
         CardEnable();
     }
 
@@ -73,9 +70,9 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     }
 
     void SynergySetup() {
-        string symbolPath = "Chara/Symbol/";
-        string traitName = charaCard.charaData.traitSynergy.ToString();
-        string schoolName = charaCard.charaData.schoolSynergy.ToString();
+        string symbolPath = "Unit/Symbol/";
+        string traitName = unitCard.UnitData.traitSynergy.ToString();
+        string schoolName = unitCard.UnitData.schoolSynergy.ToString();
 
         traitSymbol.sprite = Resources.Load(symbolPath + traitName,typeof(Sprite)) as Sprite;
         schoolSymbol.sprite = Resources.Load(symbolPath + schoolName,typeof(Sprite)) as Sprite;
@@ -86,25 +83,25 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     void CardSpawn() {
         isSpawn = SpawnSystem.instance.isSpawnable();
         if(isSpawn) {
-            SpawnSystem.instance.SpawnChara(charaCard);
+            SpawnSystem.instance.SpawnUnit(unitCard);
             CardDisable();
         }
     }  
 
     void CardEnable() {
         isSpawn = true;
-        charaImage.sprite = charaCard.CharaMemorial;
-        charaNameText.text = charaCard.Name;
-        charaPriceText.text = charaCard.charaData.charaPrice.ToString();
+        UnitImage.sprite = unitCard.UnitMemorial;
+        UnitNameText.text = unitCard.Name;
+        UnitPriceText.text = unitCard.UnitData.UnitPrice.ToString();
         traitSynergy.SetActive(true);
         schoolSynergy.SetActive(true);
     }
 
     void CardDisable() {
         isSpawn = false;
-        charaImage.sprite = null;
-        charaNameText.text = charaCard.Name;
-        charaPriceText.text = charaCard.charaData.charaPrice.ToString();
+        UnitImage.sprite = null;
+        UnitNameText.text = unitCard.Name;
+        UnitPriceText.text = unitCard.UnitData.UnitPrice.ToString();
         traitSynergy.SetActive(false);
         schoolSynergy.SetActive(false);
     }

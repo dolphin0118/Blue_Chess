@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class HpSystem : MonoBehaviour {
-    CharaStatus charaStatus;
+    UnitStatus UnitStatus;
     Transform cam;
     Image hpGague;
 
     void Start(){   
         cam = Camera.main.transform;    
-        charaStatus = transform.GetComponentInParent<CharaStatus>();
+        UnitStatus = transform.GetComponentInParent<UnitStatus>();
         hpGague = transform.GetComponent<Image>();
         //hpGague.rectTransform.SetSiblingIndex(1);
         hpGague.fillAmount = 0.5f;

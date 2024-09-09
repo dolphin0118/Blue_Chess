@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fc7f3d53a5d11428c610313d0bf8d2, type: 3}
   m_Name: Miyu
   m_EditorClassIdentifier: 
-  CharaPrefab: {fileID: 6311487054600775982, guid: 53ae23e4a9feaaf4193ec294e93d972a, type: 3}
-  CharaMemorial: {fileID: 21300000, guid: f20c66caceaae7e41a44e3b28a6406bb, type: 3}
-  charaData:
+  UnitPrefab: {fileID: 6311487054600775982, guid: 53ae23e4a9feaaf4193ec294e93d972a, type: 3}
+  UnitMemorial: {fileID: 21300000, guid: f20c66caceaae7e41a44e3b28a6406bb, type: 3}
+  UnitData:
     Name: Miyu
     attackType: 1
     schoolSynergy: 4
     traitSynergy: 6
-    charaPrice: 2
-  charaStat:
+    UnitPrice: 0
+  UnitStat:
     Level: 1
     Name: Miyu
     HP: 700

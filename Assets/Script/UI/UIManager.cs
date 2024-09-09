@@ -16,9 +16,9 @@ public class UIManager : MonoBehaviour
         }    
     }
 
-    public void OpenUI(CharaCard charaCard) {
+    public void OpenUI(UnitCard UnitCard) {
         UIcard.gameObject.SetActive(true);
-        UIcard.CardEnable(charaCard);
+        UIcard.CardEnable(UnitCard);
     }
 
     public void CloseUI() {

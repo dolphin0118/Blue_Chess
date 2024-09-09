@@ -584,8 +584,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da7069cff569ebd4eab3d17843717490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charaNameText: {fileID: 759157973091410546}
-  charaPriceText: {fileID: 4938611197424938251}
+  UnitNameText: {fileID: 759157973091410546}
+  UnitPriceText: {fileID: 4938611197424938251}
   traitSynergy: {fileID: 9191574732529589437}
   schoolSynergy: {fileID: 5769477706095359921}
 --- !u!1001 &4707355256920292194

@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fc7f3d53a5d11428c610313d0bf8d2, type: 3}
   m_Name: Nonomi
   m_EditorClassIdentifier: 
-  CharaPrefab: {fileID: 8142643066189129797, guid: c99b831c14ec9f248936f313213700d1, type: 3}
-  CharaMemorial: {fileID: 21300000, guid: dffc0832c2283074191342a4f08653d7, type: 3}
-  charaData:
+  UnitPrefab: {fileID: 8142643066189129797, guid: c99b831c14ec9f248936f313213700d1, type: 3}
+  UnitMemorial: {fileID: 21300000, guid: dffc0832c2283074191342a4f08653d7, type: 3}
+  UnitData:
     Name: Nonomi
     attackType: 1
     schoolSynergy: 0
     traitSynergy: 10
-    charaPrice: 2
-  charaStat:
+    UnitPrice: 0
+  UnitStat:
     Level: 1
     Name: Nonomi
     HP: 800

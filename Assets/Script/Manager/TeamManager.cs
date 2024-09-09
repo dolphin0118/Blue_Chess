@@ -6,9 +6,9 @@ using System.Linq;
 using System;
 public class TeamManager : MonoBehaviour {
     public static TeamManager instance = null;
-    public static Dictionary<string, bool> CharaCheck= new Dictionary<string, bool>();
-    public static Dictionary<string, LevelData> CharaLevel = new Dictionary<string, LevelData>();
-    public static Dictionary<string, List<GameObject>> CharaObject = new Dictionary<string, List<GameObject>>();
+    public static Dictionary<string, bool> UnitCheck= new Dictionary<string, bool>();
+    public static Dictionary<string, LevelData> UnitLevel = new Dictionary<string, LevelData>();
+    public static Dictionary<string, List<GameObject>> UnitObject = new Dictionary<string, List<GameObject>>();
 
     private GameObject BattleArea;
     private GameObject BenchArea;
@@ -24,5 +24,5 @@ public class TeamManager : MonoBehaviour {
         BenchArea = GameObject.FindGameObjectWithTag("BenchArea");
     }
 
-    public void CharaListAdd(string Name) {CharaCheck.Add(Name, false);}
+    public void UnitListAdd(string Name) {UnitCheck.Add(Name, false);}
 }

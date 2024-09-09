@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fc7f3d53a5d11428c610313d0bf8d2, type: 3}
   m_Name: Saki
   m_EditorClassIdentifier: 
-  CharaPrefab: {fileID: 5921064920303029725, guid: 171dc996513105747bbc84d677178a73, type: 3}
-  CharaMemorial: {fileID: 21300000, guid: 74cdf11c2f147114fa932865f64184e6, type: 3}
-  charaData:
+  UnitPrefab: {fileID: 5921064920303029725, guid: 171dc996513105747bbc84d677178a73, type: 3}
+  UnitMemorial: {fileID: 21300000, guid: 74cdf11c2f147114fa932865f64184e6, type: 3}
+  UnitData:
     Name: Saki
     attackType: 1
     schoolSynergy: 4
     traitSynergy: 10
-    charaPrice: 2
-  charaStat:
+    UnitPrice: 0
+  UnitStat:
     Level: 1
     Name: Saki
     HP: 700

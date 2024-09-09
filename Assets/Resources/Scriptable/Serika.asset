@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fc7f3d53a5d11428c610313d0bf8d2, type: 3}
   m_Name: Serika
   m_EditorClassIdentifier: 
-  CharaPrefab: {fileID: 6518593274156475406, guid: 0f00fa52f99daf542802e2b946cab88e, type: 3}
-  CharaMemorial: {fileID: 21300000, guid: 212aba61c49e7744ea28c081eacd6712, type: 3}
-  charaData:
+  UnitPrefab: {fileID: 6518593274156475406, guid: 0f00fa52f99daf542802e2b946cab88e, type: 3}
+  UnitMemorial: {fileID: 21300000, guid: 212aba61c49e7744ea28c081eacd6712, type: 3}
+  UnitData:
     Name: Serika
     attackType: 0
     schoolSynergy: 0
     traitSynergy: 5
-    charaPrice: 1
-  charaStat:
+    UnitPrice: 0
+  UnitStat:
     Level: 1
     Name: Serika
     HP: 700

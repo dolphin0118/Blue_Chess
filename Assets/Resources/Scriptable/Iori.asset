@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fc7f3d53a5d11428c610313d0bf8d2, type: 3}
   m_Name: Iori
   m_EditorClassIdentifier: 
-  CharaPrefab: {fileID: 999292104308550225, guid: d78563aabed906742bac9c2a79f5aa21, type: 3}
-  CharaMemorial: {fileID: 21300000, guid: eb005baa70e7ddc49aef43b130cb47bc, type: 3}
-  charaData:
+  UnitPrefab: {fileID: 999292104308550225, guid: d78563aabed906742bac9c2a79f5aa21, type: 3}
+  UnitMemorial: {fileID: 21300000, guid: eb005baa70e7ddc49aef43b130cb47bc, type: 3}
+  UnitData:
     Name: Iori
     attackType: 1
     schoolSynergy: 1
     traitSynergy: 6
-    charaPrice: 1
-  charaStat:
+    UnitPrice: 0
+  UnitStat:
     Level: 1
     Name: Iori
     HP: 700

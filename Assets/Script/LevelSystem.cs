@@ -15,7 +15,7 @@ public class LevelSystem : MonoBehaviour {
     }
 
     void swapSprite() {
-        int Chara_Level = GetComponentInParent<CharaInfo>().charaStat.Level;
-        Level_Image.sprite = Level_sprites[Chara_Level - 1];
+        int UnitLevel = GetComponentInParent<UnitInfo>().UnitStat.Level;
+        Level_Image.sprite = Level_sprites[UnitLevel - 1];
     }
 }

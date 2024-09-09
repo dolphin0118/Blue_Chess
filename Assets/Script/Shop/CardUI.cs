@@ -7,40 +7,40 @@ using TMPro;
 using Unity.VisualScripting;
 
 public class CardUI : MonoBehaviour{
-    [SerializeField] TextMeshProUGUI charaNameText;
-    [SerializeField] TextMeshProUGUI charaPriceText;
+    [SerializeField] TextMeshProUGUI UnitNameText;
+    [SerializeField] TextMeshProUGUI UnitPriceText;
     [SerializeField] GameObject traitSynergy;
     [SerializeField] GameObject schoolSynergy;
-    [SerializeField] Image charaImage;
+    [SerializeField] Image UnitImage;
     private Image traitSymbol;
     private Image schoolSymbol;
     private TextMeshProUGUI traitName;
     private TextMeshProUGUI schoolName;
     
-    private CharaCard charaCard;
+    private UnitCard UnitCard;
 
     void Start() {
-        charaImage = this.GetComponent<Image>();
+        UnitImage = this.GetComponent<Image>();
         traitSymbol = traitSynergy.GetComponent<Image>();
         schoolSymbol = schoolSynergy.GetComponent<Image>();
     }
     
-    public void CardEnable(CharaCard charaCard) {
-        this.charaCard = charaCard;
+    public void CardEnable(UnitCard UnitCard) {
+        this.UnitCard = UnitCard;
         CardSetup();
         SynergySetup();
     }
 
     void CardSetup() {
-        charaImage.sprite = charaCard.CharaMemorial;
-        charaNameText.text = charaCard.Name;
-        charaPriceText.text = charaCard.charaData.charaPrice.ToString();
+        UnitImage.sprite = UnitCard.UnitMemorial;
+        UnitNameText.text = UnitCard.Name;
+        UnitPriceText.text = UnitCard.UnitData.UnitPrice.ToString();
     }
 
     void SynergySetup() {
-        string symbolPath = "Chara/Symbol/";
-        string traitName = charaCard.charaData.traitSynergy.ToString();
-        string schoolName = charaCard.charaData.schoolSynergy.ToString();
+        string symbolPath = "Unit/Symbol/";
+        string traitName = UnitCard.UnitData.traitSynergy.ToString();
+        string schoolName = UnitCard.UnitData.schoolSynergy.ToString();
 
         traitSymbol.sprite = Resources.Load(symbolPath + traitName,typeof(Sprite)) as Sprite;
         schoolSymbol.sprite = Resources.Load(symbolPath + schoolName,typeof(Sprite)) as Sprite;

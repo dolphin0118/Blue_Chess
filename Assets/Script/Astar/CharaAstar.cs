@@ -5,7 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.AI;
 
-public class CharaAstar : MonoBehaviour
+public class UnitAstar : MonoBehaviour
 {
     private List<Vector3Int> Tile_Pos;
     private List<List<bool>> isBattle;
@@ -20,7 +20,7 @@ public class CharaAstar : MonoBehaviour
 
     Vector2Int Coord_Lerp()
     {
-        Vector3Int pos = this.GetComponent<CharaLocate>().Player_Tilepos();
+        Vector3Int pos = this.GetComponent<UnitLocate>().Player_Tilepos();
         int Lerp_pos_x = pos.x + Lerp_x;
         int Lerp_pos_y = pos.y + Lerp_y;
         Vector2Int Lerp_pos = new Vector2Int(Lerp_pos_x, Lerp_pos_y);
@@ -112,7 +112,7 @@ public class CharaAstar : MonoBehaviour
 
     public Block CreatePath()
     {
-        pos = this.GetComponent<CharaLocate>().Player_Tilepos();
+        pos = this.GetComponent<UnitLocate>().Player_Tilepos();
         Vector2Int start_pos = Coord_Lerp();
         Vector2Int dest_pos = Target_Coord_Lerp();
         TileCheck();
@@ -130,7 +130,7 @@ public class CharaAstar : MonoBehaviour
 
     public void MovePath()
     {
-        if (Target_Object == null) Target_Object = this.GetComponent<CharaController>().Set_Target(targetTag);
+        if (Target_Object == null) Target_Object = this.GetComponent<UnitController>().GetTarget();
 
         if (Target_Object == null) return;
         else if (startBlock == null) startBlock = CreatePath();

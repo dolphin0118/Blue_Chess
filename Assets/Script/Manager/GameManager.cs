@@ -18,7 +18,7 @@ using BlueChessDataBase;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
-    public static bool isBattle = false;
+    [System.NonSerialized] public static bool isBattle = false;
     public Tilemap tilemap;
     private void Awake()
     {
@@ -33,6 +33,14 @@ public class GameManager : MonoBehaviour
         }
         UnityGoogleSheet.LoadAllData();
         DataBind();
+    }
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.K)) {
+            isBattle = true;
+        }
+        if(Input.GetKeyDown(KeyCode.L)) {
+            isBattle = false;
+        }
     }
 
     void DataBind()
@@ -101,11 +109,11 @@ public class GameManager : MonoBehaviour
     {
         var dataConfig = new MapperConfiguration(cfg =>
         {
-            cfg.CreateMap<BlueChessDataBase.Data, CharaData>();
+            cfg.CreateMap<BlueChessDataBase.Data, UnitData>();
         });
         var statConfig = new MapperConfiguration(cfg =>
         {
-            cfg.CreateMap<BlueChessDataBase.Stat, CharaStat>();
+            cfg.CreateMap<BlueChessDataBase.Stat, UnitStat>();
         });
 
         var dataMapper = dataConfig.CreateMapper();
@@ -115,32 +123,32 @@ public class GameManager : MonoBehaviour
         var Stat = BlueChessDataBase.Stat.StatList;
         for (int i = 0; i < Data.Count; i++)
         {
-            CharaData charaData = dataMapper.Map<CharaData>(Data[i]);
-            CharaStat charaStat = statMapper.Map<CharaStat>(Stat[i]);
-            CreateUnitAsset(charaData, charaStat);
+            UnitData UnitData = dataMapper.Map<UnitData>(Data[i]);
+            UnitStat UnitStat = statMapper.Map<UnitStat>(Stat[i]);
+            CreateUnitAsset(UnitData, UnitStat);
         }
 
     }
 
-    void CreateUnitAsset(CharaData charaData, CharaStat charaStat)
+    void CreateUnitAsset(UnitData UnitData, UnitStat UnitStat)
     {
-        string charaName = charaData.Name;
-        string path = "Assets/Resources/Scriptable/" + charaName + ".asset";
-        TeamManager.instance.CharaListAdd(charaName);
+        string UnitName = UnitData.Name;
+        string path = "Assets/Resources/Scriptable/" + UnitName + ".asset";
+        TeamManager.instance.UnitListAdd(UnitName);
 
-        CharaCard previousChara = AssetDatabase.LoadAssetAtPath<CharaCard>(path);
-        CharaCard currentChara = ScriptableObject.CreateInstance<CharaCard>();
+        UnitCard previousUnit = AssetDatabase.LoadAssetAtPath<UnitCard>(path);
+        UnitCard currentUnit = ScriptableObject.CreateInstance<UnitCard>();
 
-        currentChara.CharaPrefab = Resources.Load("Chara/Prefab/" + charaName) as GameObject;
-        currentChara.CharaMemorial = Resources.Load("Chara/Memorial/" + charaName + "_memo", typeof(Sprite)) as Sprite;
-        currentChara.charaData = charaData;
-        currentChara.charaStat = charaStat;
-        currentChara.Name = charaName;
+        currentUnit.UnitPrefab = Resources.Load("Unit/Prefab/" + UnitName) as GameObject;
+        currentUnit.UnitMemorial = Resources.Load("Unit/Memorial/" + UnitName + "_memo", typeof(Sprite)) as Sprite;
+        currentUnit.UnitData = UnitData;
+        currentUnit.UnitStat = UnitStat;
+        currentUnit.Name = UnitName;
 
 
-        if (previousChara != null)
+        if (previousUnit != null)
         {
-            if (CheckChangeData(currentChara, previousChara))
+            if (CheckChangeData(currentUnit, previousUnit))
             {
                 return;
             }
@@ -154,7 +162,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        AssetDatabase.CreateAsset(currentChara, path);
+        AssetDatabase.CreateAsset(currentUnit, path);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }

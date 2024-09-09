@@ -29,19 +29,19 @@ public class ItemController: ObjectControll {
         Vector3 currentPos = this.transform.position;
         RaycastHit hit;
         int ItemAreaLayer = 1 << LayerMask.NameToLayer("Item");
-        int CharaLayer = 1 << LayerMask.NameToLayer("Chara");
+        int UnitLayer = 1 << LayerMask.NameToLayer("Unit");
         if (Physics.Raycast(currentPos, Vector3.down, out hit, Mathf.Infinity, ItemAreaLayer)) {
             Vector3 hitPos = hit.transform.position;
             transform.SetParent(hit.transform);
             transform.localPosition = new Vector3(0, 0, -0.51f);
             this.transform.localRotation = Quaternion.identity;
         }
-        else if (Physics.CheckSphere(currentPos, 1, CharaLayer)) {
-            Collider[] hitColliders = Physics.OverlapSphere(currentPos, 0.1f, CharaLayer);
+        else if (Physics.CheckSphere(currentPos, 1, UnitLayer)) {
+            Collider[] hitColliders = Physics.OverlapSphere(currentPos, 0.1f, UnitLayer);
             GameObject unit = hitColliders[0].gameObject;
             ItemAsset itemAsset = GetComponent<ItemInfo>().itemAsset;
             Debug.Log(unit.name);
-            unit.GetComponent<CharaManager>().AddItem(itemAsset);
+            unit.GetComponent<UnitManager>().AddItem(itemAsset);
             Destroy(this.gameObject);
         }
         

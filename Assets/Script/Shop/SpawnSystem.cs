@@ -8,7 +8,7 @@ using System;
 
 public class SpawnSystem : MonoBehaviour {
     public static SpawnSystem instance = null;
-    [NonSerialized] public CharaCard[] charaCards;
+    public UnitCard[] UnitCards;
     bool[] checkSlot = new bool[9];
     GameObject BenchArea;
     
@@ -20,7 +20,7 @@ public class SpawnSystem : MonoBehaviour {
             if (instance != this) Destroy(this.gameObject);
         }
         BenchArea = GameObject.FindGameObjectWithTag("BenchArea");
-        charaCards = Resources.LoadAll<CharaCard>("Scriptable");
+        UnitCards = Resources.LoadAll<UnitCard>("Scriptable");
     }
 
 
@@ -36,7 +36,7 @@ public class SpawnSystem : MonoBehaviour {
         return isSpawn;
     }
 
-    public void SpawnChara(CharaCard charaCard) {
+    public void SpawnUnit(UnitCard UnitCard) {
         for(int i = 0; i < checkSlot.Length; i++) {
             if(!checkSlot[i]) {
                 Vector3 spawnPos = new Vector3(-4, 0.1f, -6);
@@ -45,10 +45,10 @@ public class SpawnSystem : MonoBehaviour {
                 prefabPos = GameManager.instance.tilemap.GetCellCenterLocal(tilepos);
                 prefabPos = new Vector3(prefabPos.x, 0.1f, prefabPos.z);
                 
-                GameObject CharaClone = Instantiate(charaCard.CharaPrefab, prefabPos, Quaternion.identity);
-                CharaClone.transform.SetParent(BenchArea.transform.GetChild(i));
-                CharaClone.gameObject.tag = "Friendly";    
-                CharaClone.GetComponent<CharaInfo>().CharaDataSetup(charaCard);
+                GameObject UnitClone = Instantiate(UnitCard.UnitPrefab, prefabPos, Quaternion.identity);
+                UnitClone.transform.SetParent(BenchArea.transform.GetChild(i));
+                UnitClone.gameObject.tag = "Friendly";    
+                UnitClone.GetComponent<UnitInfo>().UnitDataSetup(UnitCard);
                 break;
             }
         }

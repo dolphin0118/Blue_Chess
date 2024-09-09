@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fc7f3d53a5d11428c610313d0bf8d2, type: 3}
   m_Name: Hoshino
   m_EditorClassIdentifier: 
-  CharaPrefab: {fileID: 1603236075247383408, guid: f1f7cd70ba67b6f4eb30e01afa5508e2, type: 3}
-  CharaMemorial: {fileID: 21300000, guid: 58a2545bf83045945ac4303b95fc3619, type: 3}
-  charaData:
+  UnitPrefab: {fileID: 1603236075247383408, guid: f1f7cd70ba67b6f4eb30e01afa5508e2, type: 3}
+  UnitMemorial: {fileID: 21300000, guid: 58a2545bf83045945ac4303b95fc3619, type: 3}
+  UnitData:
     Name: Hoshino
     attackType: 1
     schoolSynergy: 0
     traitSynergy: 8
-    charaPrice: 5
-  charaStat:
+    UnitPrice: 0
+  UnitStat:
     Level: 1
     Name: Hoshino
     HP: 1000

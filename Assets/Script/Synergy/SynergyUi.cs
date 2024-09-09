@@ -38,7 +38,7 @@ public class SynergyUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private void tooltipInit() {
         tooltip = this.transform.Find("SynergyTooltip").gameObject;
         baseMater = maters[0];
-        string symbolPath = "Chara/Symbol/";
+        string symbolPath = "Unit/Symbol/";
         SynergyImage.sprite = Resources.Load(symbolPath + synergyName,typeof(Sprite)) as Sprite;
         
     }
