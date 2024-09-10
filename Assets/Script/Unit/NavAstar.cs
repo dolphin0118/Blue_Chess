@@ -5,29 +5,39 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.AI;
 
-public class NavAstar : MonoBehaviour {
+public class NavAstar : MonoBehaviour
+{
     private NavMeshAgent charaNav;
-    private GameObject targetObject;  
+    private GameObject targetObject;
     private string targetTag;
 
-    void Start() {
+    void Start()
+    {
         charaNav = this.GetComponent<NavMeshAgent>();
         charaNav.speed = 1f;
         if (this.transform.tag == "Friendly") targetTag = "Enemy";
         else if (this.transform.tag == "Enemy") targetTag = "Friendly";
     }
-
-    public void NavStart() {
+    private void Update()
+    {
+        if (!GameManager.isBattle)
+        {
+            NavStop();
+        }
+    }
+    public void NavStart()
+    {
         targetObject = this.GetComponent<UnitController>().GetTarget();
-        if(targetObject == null) return;
-        else {
+        if (targetObject == null) return;
+        else
+        {
             charaNav.SetDestination(targetObject.transform.position);
         }
     }
 
-    public void NavStop() {
+    public void NavStop()
+    {
         charaNav.ResetPath();
     }
 }
 
- 

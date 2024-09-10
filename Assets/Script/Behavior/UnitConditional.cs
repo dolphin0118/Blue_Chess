@@ -4,7 +4,8 @@ using BehaviorDesigner.Runtime;
 using BehaviorDesigner.Runtime.Tasks;
 using UnityEngine;
 
-public class UnitConditional : Conditional {
+public class UnitConditional : Conditional
+{
     protected UnitController unitController;
 
     public override void OnStart()
@@ -19,17 +20,19 @@ public class CanBattle : UnitConditional
     bool isBattle = false;
     public override TaskStatus OnUpdate()
     {
-        if(GameManager.isBattle&&!isBattle) {
+        if (GameManager.isBattle && !isBattle)
+        {
             isBattle = true;
             unitController.BattlePhase();
-            return TaskStatus.Failure;  
+            return TaskStatus.Failure;
         }
-              
-        else {
+
+        else
+        {
             unitController.DisarmPhase();
             return TaskStatus.Success;
         }
-            
+
     }
 }
 
@@ -38,10 +41,12 @@ public class CanAttack : UnitConditional
 {
     public override TaskStatus OnUpdate()
     {
-        if(unitController.CheckAttackRange()) {
+        if (unitController.CheckAttackRange())
+        {
             return TaskStatus.Success;
         }
-        else {
+        else
+        {
             return TaskStatus.Failure;
         }
     }
@@ -49,12 +54,13 @@ public class CanAttack : UnitConditional
 
 [TaskCategory("Unity/UnitConditional")]
 public class CanMove : UnitConditional
-{ 
+{
     public override TaskStatus OnUpdate()
     {
-        if(!unitController.CheckAttackRange()) {
-            return TaskStatus.Failure;
+        if (!unitController.CheckAttackRange())
+        {
+            return TaskStatus.Success;
         }
-        return TaskStatus.Success;
+        return TaskStatus.Failure;
     }
 }
