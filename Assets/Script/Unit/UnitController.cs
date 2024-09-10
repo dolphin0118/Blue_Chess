@@ -41,6 +41,7 @@ public class UnitController : MonoBehaviour
 
     public void BattlePhase()
     {
+        navMeshAgent.enabled = true;
         SetTargetTag();
         SetTargetList();
         SetTarget();
@@ -48,12 +49,14 @@ public class UnitController : MonoBehaviour
 
     public void DisarmPhase()
     {
+        navMeshAgent.enabled = false;
         targetEnemy = null;
     }
 
     //player to target 거리 체크
     public float CalcDistance()
     {
+        if(targetEnemy == null) return 0; 
         Vector3 playerDistance = gameObject.transform.position;
         Vector3 targetDistance = targetEnemy.transform.position;
         float Distance = Vector3.Distance(playerDistance, targetDistance);
@@ -62,19 +65,11 @@ public class UnitController : MonoBehaviour
 
     public bool CheckAttackRange()
     {
-        if (CalcDistance() > 3)
-        {
-            return false;
-        }
-        else return true;
-        //Move상태로 변환
         if (CalcDistance() > Unitinfo.UnitStat.Range)
         {
             return false;
         }
-
         return true;
-
     }
     private void IsTargetNull()
     {

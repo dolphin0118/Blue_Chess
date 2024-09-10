@@ -49,7 +49,7 @@ public class UnitAnimator : MonoBehaviour {
         animator.SetBool("Idle", false);
     }
 
-    public void AttackCheck() {
+    public void HitDetection() {
         if(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&
             animator.GetCurrentAnimatorStateInfo(0).normalizedTime > unitInfo.UnitStat.ATKSpeed) {
             unitInfo.UnitStat.ATKSpeed += 1.0f;   

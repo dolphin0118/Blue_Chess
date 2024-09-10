@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.AI;
+using TMPro.Examples;
 
 public class NavAstar : MonoBehaviour
 {
     private NavMeshAgent charaNav;
     private GameObject targetObject;
     private string targetTag;
+    private bool isRunning;
 
     void Start()
     {
@@ -18,6 +20,7 @@ public class NavAstar : MonoBehaviour
         if (this.transform.tag == "Friendly") targetTag = "Enemy";
         else if (this.transform.tag == "Enemy") targetTag = "Friendly";
     }
+
     private void Update()
     {
         if (!GameManager.isBattle)
@@ -25,6 +28,7 @@ public class NavAstar : MonoBehaviour
             NavStop();
         }
     }
+
     public void NavStart()
     {
         targetObject = this.GetComponent<UnitController>().GetTarget();
@@ -32,12 +36,14 @@ public class NavAstar : MonoBehaviour
         else
         {
             charaNav.SetDestination(targetObject.transform.position);
+            isRunning = true;
         }
     }
 
     public void NavStop()
     {
-        charaNav.ResetPath();
+        if(isRunning) charaNav.ResetPath();
+        else return;
     }
 }
 

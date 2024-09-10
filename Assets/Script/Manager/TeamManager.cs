@@ -25,4 +25,10 @@ public class TeamManager : MonoBehaviour {
     }
 
     public void UnitListAdd(string Name) {UnitCheck.Add(Name, false);}
+
+    public void UnitRelocation() {
+        
+    }
+
+    
 }

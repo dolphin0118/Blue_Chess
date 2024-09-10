@@ -12,7 +12,7 @@ public class ShopManager : MonoBehaviour {
     private void Awake() {
         if (instance == null) {
             instance = this; 
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else {
             if (instance != this) Destroy(this.gameObject); 

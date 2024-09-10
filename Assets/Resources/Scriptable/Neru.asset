@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fc7f3d53a5d11428c610313d0bf8d2, type: 3}
   m_Name: Neru
   m_EditorClassIdentifier: 
-  UnitPrefab: {fileID: 5951521986430524614, guid: e18b537031bae204d93d25df8fcb13a7, type: 3}
+  UnitPrefab: {fileID: 8520901224978725023, guid: df1eb92c7f801154bab4fa752718b5ec, type: 3}
   UnitMemorial: {fileID: 21300000, guid: e862a4686a54ec145a4b57a83e90f621, type: 3}
   UnitData:
     Name: Neru

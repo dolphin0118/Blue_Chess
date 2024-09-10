@@ -20,13 +20,11 @@ public class CanBattle : UnitConditional
     bool isBattle = false;
     public override TaskStatus OnUpdate()
     {
-        if (GameManager.isBattle && !isBattle)
+        if (GameManager.isBattle)
         {
-            isBattle = true;
             unitController.BattlePhase();
             return TaskStatus.Failure;
         }
-
         else
         {
             unitController.DisarmPhase();
