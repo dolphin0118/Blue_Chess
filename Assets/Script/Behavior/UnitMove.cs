@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class UnitAction : Action {
 
-    public UnitAnimator unitAnimator;
+    protected UnitAnimator unitAnimator;
     protected UnitManager unitManager;
+
     public override void OnStart() {
         unitAnimator = GetComponent<UnitAnimator>();
         unitManager = GetComponent<UnitManager>();

@@ -6,7 +6,10 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance = null; 
-    private GameObject holdUnit;
+    private GameObject holdPlayer;
+    public int playerCode = 0;
+    const int playerCount = 8;
+    
     private void Awake() {
         if (instance == null) {
             instance = this; 
@@ -16,7 +19,18 @@ public class PlayerManager : MonoBehaviour
             if (instance != this) Destroy(this.gameObject); 
         }
     }
-    
 
+    private void Update() {
+        PlayerView();
+    }
+    
+    void PlayerView() {
+        for(int i = 1; i <= playerCount; i++)
+        {
+            if(Input.GetKeyDown(KeyCode.Alpha0 + i)) {
+                playerCode = playerCount;
+            }
+        }
+    }
 }
 

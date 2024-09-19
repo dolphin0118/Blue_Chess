@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class UnitManager : MonoBehaviour {
     private UnitInfo unitInfo;
-    private UnitLocate UnitLocate;
-    private UnitController UnitController;
+    private UnitLocate unitLocate;
+    private UnitController unitController;
     private UnitStatus UnitStatus;
     private UnitItem unitItem;
     private UnitAnimator unitAnimator;
@@ -15,21 +15,32 @@ public class UnitManager : MonoBehaviour {
     void Start() {
         Init();
     }
-    
+
+    public void BattlePhase() {
+        TeamManager.instance.UnitLocateAdd(this.gameObject);
+        unitLocate.ForceLocate();
+        unitLocate.enabled = false;
+        unitController.OnBattle();
+    }
+
+    public void DisarmPhase() {
+        unitController.OnDisarm();
+        unitLocate.enabled = true;
+    }
+
     void Init() {
         Binding();
     }
 
     void Binding() {
         unitInfo = GetComponent<UnitInfo>();
-        UnitLocate = GetComponent<UnitLocate>();
-        UnitController = GetComponent<UnitController>();
+        unitLocate = GetComponent<UnitLocate>();
+        unitController = GetComponent<UnitController>();
         UnitStatus = GetComponent<UnitStatus>();
         unitItem = GetComponentInChildren<UnitItem>();
         unitAnimator = GetComponent<UnitAnimator>();
     }
-
-
+  
     public void UnitState(State state) {
         switch (state) {
             case State.Attack:
@@ -59,7 +70,7 @@ public class UnitManager : MonoBehaviour {
 //----------------------------------------//
     void OnMouseOver() {
         if (Input.GetMouseButtonDown(0)){ //Left
-            UnitLocate.OnObjectControll();
+            unitLocate.OnObjectControll();
         }
         else if (Input.GetMouseButtonDown(1)){ //Right
             UIManager.instance.OpenUI(unitInfo.UnitCard);
@@ -67,7 +78,7 @@ public class UnitManager : MonoBehaviour {
     }
 
     void OnMouseDrag() {
-        UnitLocate.OnObjectMove();
+        unitLocate.OnObjectMove();
     }
 
     void OnMouseExit() {

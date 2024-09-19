@@ -1,39 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Tilemaps;
 
 public class UnitLocate : ObjectControll {
-    Tilemap tilemap;
-    Collider UnitCollier;
-    Vector3 currentPos;
-    Quaternion benchRotate, battleRotate;
-    public bool isBattleLayer {get; set;}
-
     [SerializeField] GameObject BattleArea;
+    private Tilemap tilemap;
+    private Quaternion benchRotate, battleRotate;
+  
+    int battleLayer, benchLayer, unitLayer;
 
     void Start() {
         tilemap = GameManager.instance.tilemap;
         benchRotate = Quaternion.Euler(-20, 180,0);
         battleRotate = Quaternion.Euler(0, 0, 0);
+        unitLayer= 1 << LayerMask.NameToLayer("Unit");
+        battleLayer = 1 << LayerMask.NameToLayer("Battle");
+        benchLayer = 1 << LayerMask.NameToLayer("Bench");
+
     }
 
-    public Vector3Int Player_Tilepos() {
-        Vector3 Player_pos = this.transform.position;
-        Vector3Int tile_pos = tilemap.LocalToCell(Player_pos);
-        return tile_pos;
-    }
-
-    public TileBase Player_Tile() {
-        TileBase Player_tile = tilemap.GetTile(Player_Tilepos());
-        return Player_tile;
-    }
     void OnMouseUp() {
         CheckLayer();
         OutLayer();
         Destroy(ObjectHitPosition);
+    }
+
+    public void ForceLocate() {
+        if(ObjectHitPosition != null) {
+            this.transform.SetParent(previousParent.transform);
+            Destroy(ObjectHitPosition);
+        }
     }
 
     public override void OnObjectControll() {
@@ -46,24 +47,66 @@ public class UnitLocate : ObjectControll {
     public override void OnObjectMove() {
         base.OnObjectMove();
     }
+    void CheckLayer() {
+        GameObject hitUnit = null;
+        bool isSwap = false;
+        
+        Vector3 currentPos = this.transform.position;
+        Vector3Int tilePos = tilemap.LocalToCell(currentPos);
+        Vector3 checkPos = tilemap.GetCellCenterLocal(tilePos);
+        checkPos = new Vector3(checkPos.x, 0.1f, checkPos.z);
+
+        if (Physics.CheckSphere(checkPos, 0.1f, unitLayer)) {
+            Collider[] hitColliders = Physics.OverlapSphere(checkPos, 0.1f, unitLayer);
+            hitUnit = hitColliders[0].transform.gameObject;
+            this.transform.position = hitUnit.transform.position;
+            hitUnit.transform.position = new Vector3(previousPos.x, 0.1f, previousPos.z);
+            isSwap = true;
+            Debug.Log("Swap");
+        }
+        //벤치레이어일 경우
+        RaycastHit hitLayer;
+        if (Physics.Raycast(currentPos, Vector3.down, out hitLayer, Mathf.Infinity, benchLayer)){
+            GameObject hitObject = hitLayer.collider.transform.gameObject;
+            if (hitObject.transform.childCount == 0) {
+                previousParent = hitObject;
+            }
+            else if(isSwap){
+                hitObject.transform.GetChild(0).SetParent(previousParent.transform);     
+                previousParent.transform.GetChild(0).gameObject.transform.localPosition = new Vector3(0, 0, 0);
+                previousParent = hitObject;
+            }
+            Debug.Log("Bench");
+        }
+        else if(Physics.Raycast(currentPos, Vector3.down, out hitLayer, Mathf.Infinity, battleLayer)) {
+            if(!CheckBattleTile()) {this.transform.position = previousPos; return;}
+            GameObject hitObject = hitLayer.collider.transform.gameObject;
+            this.transform.position = checkPos;
+            if(isSwap && hitUnit != null) {
+                hitUnit.transform.SetParent(previousParent.transform);     
+                previousParent = hitObject;
+            }
+            Debug.Log(tilePos);
+            Debug.Log("battle");
+        }
+        else {
+            this.transform.position = previousPos;
+        }
+    }
 
     void OutLayer() {
         this.transform.SetParent(previousParent.transform);
-        int battleLayer = 1 << LayerMask.NameToLayer("Battle");
-        int benchLayer = 1 << LayerMask.NameToLayer("Bench");
-        currentPos = this.transform.position;
-        RaycastHit hit;
-        if (Physics.Raycast(currentPos, Vector3.down, out hit, Mathf.Infinity, benchLayer)) {
+        Vector3 currentPos = this.transform.position;
+        if (Physics.Raycast(currentPos, Vector3.down, out RaycastHit hit, Mathf.Infinity, benchLayer)) {
             Vector3 hitPos = hit.transform.position;
             transform.localPosition = new Vector3(0, 0.1f, 0);
             this.transform.rotation = benchRotate;
         }
         else if(Physics.Raycast(currentPos, Vector3.down, out hit, Mathf.Infinity, battleLayer)){
-            this.transform.SetParent(GameObject.FindGameObjectWithTag("BattleArea").transform);
+            this.transform.SetParent(TeamManager.instance.BattleArea.transform);
             Vector3 pos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(this.transform.position));
             transform.position = new Vector3(pos.x, 0.1f, pos.z);
             this.transform.rotation = battleRotate;
-            isBattleLayer = true;
             SynergyManager.instance.synergyEvent.AddListener(this.transform.GetComponent<UnitInfo>().SynergyAdd);
             SynergyManager.instance.synergyEvent.Invoke();
         }
@@ -74,53 +117,24 @@ public class UnitLocate : ObjectControll {
         }
     }
     
-    void CheckLayer() {
-        currentPos = this.transform.position;
-        RaycastHit hit;
-        int BenchLayer = 1 << LayerMask.NameToLayer("Bench");
-        int BattleLayer = 1 << LayerMask.NameToLayer("Battle");
-        if (Physics.Raycast(currentPos, Vector3.down, out hit, Mathf.Infinity, BenchLayer)){
-            GameObject hitBench = hit.collider.transform.gameObject;
-            if (hitBench.transform.childCount == 0) {
-                previousParent = hitBench;
-            }
-            else {
-                hitBench.transform.GetChild(0).SetParent(previousParent.transform);     
-                previousParent.transform.GetChild(0).gameObject.transform.localPosition = new Vector3(0, 0, 0);
-                previousParent = hitBench;
-            }
-            Debug.Log("Bench");
-        }
-        else if(Physics.Raycast(currentPos, Vector3.down, Mathf.Infinity, BattleLayer)) {
-            int UnitLayer = 1 << LayerMask.NameToLayer("Unit");
-            Vector3 checkPos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(currentPos));
-            checkPos = new Vector3(checkPos.x, 0.1f, checkPos.z);
-            
-            if (Physics.CheckSphere(checkPos, 0.1f, UnitLayer)) {
-                Collider[] hitColliders = Physics.OverlapSphere(checkPos, 0.1f, UnitLayer);
-                GameObject hitUnit = hitColliders[0].transform.gameObject;
-                this.transform.position = hitUnit.transform.position;
-                hitUnit.transform.position = new Vector3(previousPos.x, 0.1f, previousPos.z);
-                Debug.Log("Swap");
-            }
-            else {
-                this.transform.position = checkPos;
-                Debug.Log("battle");
-            }
-        }
+    Vector2Int CheckTilePoition() {
+        //row -3 -2 -1 0 1 2 3
+        //col -3 -4 -5 -6
+        Vector3Int tilePos = SelectTile.instance.tilePos;
+        int row = tilePos.x + 3;
+        int col = tilePos.y * -1 - 3;
+        Vector2Int convertTilePos = new Vector2Int(row, col);
+
+        return convertTilePos;
+    }
+
+    bool CheckBattleTile() {
+        Vector2Int tilePos = CheckTilePoition();
+        int row = tilePos.x;
+        int col = tilePos.y;
+        //bool isUnitLocate = TeamManager.instance.IsUnitLocate(row, col);
+        if(row > 6 || row < 0||col > 3 || col < 0) return false;
+        return true;
     }
 }
   
-        //   else if(Physics.Raycast(currentPos, Vector3.down, Mathf.Infinity, BattleLayer)) {
-        //     int layerUnit = 1 << LayerMask.NameToLayer("Unit");
-        //     Vector3 checkPos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(currentPos));
-        //     checkPos = new Vector3(checkPos.x, -1.0f, checkPos.z);
-        //     if(Physics.Raycast(checkPos,Vector3.up, out hit, Mathf.Infinity, layerUnit)) {
-        //         if(hit.collider.gameObject == this.gameObject) return;
-        //         else Debug.Log("battle");
-        //         GameObject hitUnit = hit.collider.transform.gameObject;
-        //         this.transform.position = hitUnit.transform.position;
-        //         hitUnit.transform.position = new Vector3(previousPos.x, 0.1f, previousPos.z);
-              
-        //     }
-        // }

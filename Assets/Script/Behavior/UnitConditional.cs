@@ -6,10 +6,13 @@ using UnityEngine;
 
 public class UnitConditional : Conditional
 {
+    protected UnitManager unitManager;
     protected UnitController unitController;
+    
 
     public override void OnStart()
     {
+        unitManager = this.gameObject.GetComponent<UnitManager>();
         unitController = this.gameObject.GetComponent<UnitController>();
     }
 }
@@ -22,12 +25,12 @@ public class CanBattle : UnitConditional
     {
         if (GameManager.isBattle)
         {
-            unitController.BattlePhase();
+            unitManager.BattlePhase();
             return TaskStatus.Failure;
         }
         else
         {
-            unitController.DisarmPhase();
+            unitManager.DisarmPhase();
             return TaskStatus.Success;
         }
 

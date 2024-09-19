@@ -39,7 +39,7 @@ public class UnitController : MonoBehaviour
         //if(GameManager.isBattle) IsTargetNull();
     }
 
-    public void BattlePhase()
+    public void OnBattle()
     {
         navMeshAgent.enabled = true;
         SetTargetTag();
@@ -47,7 +47,7 @@ public class UnitController : MonoBehaviour
         SetTarget();
     }
 
-    public void DisarmPhase()
+    public void OnDisarm()
     {
         navMeshAgent.enabled = false;
         targetEnemy = null;

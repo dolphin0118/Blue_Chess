@@ -10,7 +10,7 @@ public class SpawnSystem : MonoBehaviour {
     public static SpawnSystem instance = null;
     public UnitCard[] UnitCards;
     bool[] checkSlot = new bool[9];
-    GameObject BenchArea;
+    private GameObject BenchArea;
     
     void Awake() {
         if (instance == null) {
@@ -19,7 +19,7 @@ public class SpawnSystem : MonoBehaviour {
         else {
             if (instance != this) Destroy(this.gameObject);
         }
-        BenchArea = GameObject.FindGameObjectWithTag("BenchArea");
+        BenchArea = TeamManager.instance.BenchArea;
         UnitCards = Resources.LoadAll<UnitCard>("Scriptable");
     }
 
