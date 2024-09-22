@@ -17,13 +17,13 @@ public class UnitManager : MonoBehaviour {
     }
 
     public void BattlePhase() {
-        TeamManager.instance.UnitLocateAdd(this.gameObject);
         unitLocate.ForceLocate();
         unitLocate.enabled = false;
         unitController.OnBattle();
     }
 
     public void DisarmPhase() {
+        UnitState(State.Idle);
         unitController.OnDisarm();
         unitLocate.enabled = true;
     }

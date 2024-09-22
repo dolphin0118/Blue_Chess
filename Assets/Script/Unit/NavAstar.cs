@@ -25,7 +25,7 @@ public class NavAstar : MonoBehaviour
     {
         if (!GameManager.isBattle)
         {
-            NavStop();
+            //NavStop();
         }
     }
 
@@ -42,6 +42,7 @@ public class NavAstar : MonoBehaviour
 
     public void NavStop()
     {
+        if(charaNav == null) return;
         if(isRunning) charaNav.ResetPath();
         else return;
     }
