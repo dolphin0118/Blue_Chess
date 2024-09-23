@@ -18,6 +18,7 @@ using BlueChessDataBase;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
+    public List<string> UnitList;
     [System.NonSerialized] public static bool isBattle = false;
     public Tilemap tilemap;
     private void Awake()
@@ -34,11 +35,14 @@ public class GameManager : MonoBehaviour
         UnityGoogleSheet.LoadAllData();
         DataBind();
     }
-    private void Update() {
-        if(Input.GetKeyDown(KeyCode.K)) {
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
             isBattle = true;
         }
-        if(Input.GetKeyDown(KeyCode.L)) {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
             isBattle = false;
         }
     }
@@ -134,7 +138,7 @@ public class GameManager : MonoBehaviour
     {
         string UnitName = UnitData.Name;
         string path = "Assets/Resources/Scriptable/" + UnitName + ".asset";
-        TeamManager.instance.UnitListAdd(UnitName);
+        UnitList.Add(UnitName);
 
         UnitCard previousUnit = AssetDatabase.LoadAssetAtPath<UnitCard>(path);
         UnitCard currentUnit = ScriptableObject.CreateInstance<UnitCard>();

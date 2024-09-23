@@ -10,12 +10,12 @@ using UnityEngine.Rendering;
 
 public class UnitController : MonoBehaviour
 {
-    NavAstar navAstar;
-    NavMeshAgent navMeshAgent;
-    UnitInfo Unitinfo;
-    UnitData UnitData;
-    UnitStat UnitStat;
-    UnitLocate UnitLocate;
+    private NavAstar navAstar;
+    private NavMeshAgent navMeshAgent;
+    private UnitInfo Unitinfo;
+    private UnitData UnitData;
+    private UnitStat UnitStat;
+    private UnitLocate UnitLocate;
 
     private GameObject[] targetEnemys;
     private GameObject targetEnemy { get; set; }
@@ -25,8 +25,8 @@ public class UnitController : MonoBehaviour
     {
         navAstar = GetComponent<NavAstar>();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        Unitinfo = GetComponent<UnitInfo>();
         UnitLocate = GetComponent<UnitLocate>();
+        Unitinfo = GetComponent<UnitInfo>();
         UnitData = Unitinfo.UnitData;
         UnitStat = Unitinfo.UnitStat;
         navMeshAgent.enabled = false;
@@ -56,7 +56,7 @@ public class UnitController : MonoBehaviour
     //player to target 거리 체크
     public float CalcDistance()
     {
-        if(targetEnemy == null) return 0; 
+        if (targetEnemy == null) return 0;
         Vector3 playerDistance = gameObject.transform.position;
         Vector3 targetDistance = targetEnemy.transform.position;
         float Distance = Vector3.Distance(playerDistance, targetDistance);

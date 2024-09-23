@@ -5,7 +5,8 @@ using UnityEngine;
 using System;
 using BlueChessDataBase;
 
-namespace BlueChessDataBase {
+namespace BlueChessDataBase
+{
     [Serializable]
     public class UnitData
     {
@@ -34,35 +35,43 @@ namespace BlueChessDataBase {
 }
 
 
-public class UnitInfo : MonoBehaviour { 
-    public UnitCard UnitCard {get; set;}
-    public UnitData UnitData {get; set;}
-    public UnitStat UnitStat {get; set;}
-    public Synergy[] UnitSynergy {get; set;}
+public class UnitInfo : MonoBehaviour
+{
+    public UnitCard UnitCard { get; set; }
+    public UnitData UnitData { get; set; }
+    public UnitStat UnitStat { get; set; }
+    public Synergy[] UnitSynergy { get; set; }
     private UnitCombine UnitCombine;
-
-    void Start() {
+    private TeamManager TeamManager;
+    void Start()
+    {
         UnitCombine = gameObject.AddComponent<UnitCombine>();
         LevelInit();
     }
 
-    public void UnitDataSetup(UnitCard UnitCard) {
+    public void UnitDataSetup(UnitCard UnitCard)
+    {
         this.UnitCard = UnitCard;
         this.UnitData = UnitCard.UnitData;
         this.UnitStat = UnitCard.UnitStat;
     }
 
-    void ChangeArea() {
+    void ChangeArea()
+    {
 
     }
 
-    void LevelInit() {
-        if(this.transform.tag == "Friendly") {
-            if(!TeamManager.UnitLevel.ContainsKey(UnitData.Name)) {
+    void LevelInit()
+    {
+        if (this.transform.tag == "Friendly")
+        {
+            if (!TeamManager.UnitLevel.ContainsKey(UnitData.Name))
+            {
                 TeamManager.UnitLevel.Add(UnitData.Name, new LevelData());
             }
             LevelData levelData = TeamManager.UnitLevel[UnitData.Name];
-            switch(UnitStat.Level){
+            switch (UnitStat.Level)
+            {
                 case 1:
                     levelData.Level1++;
                     break;
@@ -77,7 +86,8 @@ public class UnitInfo : MonoBehaviour {
             }
             TeamManager.UnitLevel[UnitData.Name] = levelData;
 
-            if(!TeamManager.UnitObject.ContainsKey(UnitData.Name)) {
+            if (!TeamManager.UnitObject.ContainsKey(UnitData.Name))
+            {
                 TeamManager.UnitObject[UnitData.Name] = new List<GameObject>();
             }
             TeamManager.UnitObject[UnitData.Name].Add(transform.gameObject);
@@ -85,24 +95,28 @@ public class UnitInfo : MonoBehaviour {
         UnitCombine.CombineListUpdate(UnitData.Name);
     }
 
-    public void SynergyAdd() {
-        if(!TeamManager.UnitCheck[UnitData.Name]) {
+    public void SynergyAdd()
+    {
+        if (!TeamManager.UnitCheck[UnitData.Name])
+        {
             TeamManager.UnitCheck[UnitData.Name] = true;
             Synergy traitSynergy = UnitData.traitSynergy;
             Synergy schoolSynergy = UnitData.schoolSynergy;
             SynergyManager.instance.synergyCount[traitSynergy]++;
-            SynergyManager.instance.synergyCount[schoolSynergy]++;           
+            SynergyManager.instance.synergyCount[schoolSynergy]++;
         }
         SynergyManager.instance.synergyEvent.RemoveListener(SynergyAdd);
     }
 
-    public void SynergyRemove() {    
-        if(TeamManager.UnitCheck[UnitData.Name]) {
+    public void SynergyRemove()
+    {
+        if (TeamManager.UnitCheck[UnitData.Name])
+        {
             TeamManager.UnitCheck[UnitData.Name] = false;
             Synergy traitSynergy = UnitData.traitSynergy;
             Synergy schoolSynergy = UnitData.schoolSynergy;
             SynergyManager.instance.synergyCount[traitSynergy]--;
-            SynergyManager.instance.synergyCount[schoolSynergy]--;           
+            SynergyManager.instance.synergyCount[schoolSynergy]--;
         }
         SynergyManager.instance.synergyEvent.RemoveListener(SynergyRemove);
     }
