@@ -4,26 +4,30 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
 using System;
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityTransform;
 
 public class TeamManager : MonoBehaviour
 {
+    const int row = 8; const int col = 4;
     public Dictionary<string, bool> UnitCheck = new Dictionary<string, bool>();
     public Dictionary<string, LevelData> UnitLevel = new Dictionary<string, LevelData>();
     public Dictionary<string, List<GameObject>> UnitObject = new Dictionary<string, List<GameObject>>();
 
-    const int row = 8; const int col = 4;
     public GameObject[,] unitLocate = new GameObject[row, col];
-    public GameObject BattleArea;
-    public GameObject BenchArea;
+    public GameObject BattleArea, BenchArea;
 
-    private void Awake()
-    {
+    private void Awake() {
         AreaSetup();
     }
 
-    public void Update()
-    {
+    private void Start() {
+        UnitListAdd();
+    }
+
+    public void Update(){
+        InputSystem();
+    }
+
+    private void InputSystem() {
         if (Input.GetKeyDown(KeyCode.V))
         {
             for (int i = 0; i < row; i++)
@@ -61,6 +65,7 @@ public class TeamManager : MonoBehaviour
             }
         }
     }
+   
     public void UnitLocateSave(Vector2Int UnitPos, GameObject Unit)
     {
         unitLocate[UnitPos.x, UnitPos.y] = Unit;
@@ -82,7 +87,12 @@ public class TeamManager : MonoBehaviour
         else return false;
     }
 
-    public void UnitListAdd(string Name) { UnitCheck.Add(Name, false); }
+    public void UnitListAdd() { 
+        foreach(string unitName in GameManager.instance.UnitList) {
+            UnitCheck.Add(unitName, false); 
+        }
+            
+     }
 
     public void UnitDeleteAll()
     {

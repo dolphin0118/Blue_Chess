@@ -16,10 +16,13 @@ public class UnitCombine : MonoBehaviour
     private TeamManager TeamManager;
     const int CombineCount = 3;
 
+    private void Awake() {
+        TeamManager = GetComponent<TeamManager>();
+    }
     public void CombineListUpdate(string UnitName)
     {
         LevelData levelData = TeamManager.UnitLevel[UnitName];
-        int combineLevel = 0;
+        int combineLevel;
 
         if (levelData.Level1 >= CombineCount)
         {
@@ -28,6 +31,7 @@ public class UnitCombine : MonoBehaviour
             TeamManager.UnitLevel[UnitName].Level1 = levelData.Level1 - CombineCount;
             TeamManager.UnitLevel[UnitName].Level2 = levelData.Level2 + 1;
         }
+        
         if (levelData.Level2 >= CombineCount)
         {
             combineLevel = 2;
@@ -44,11 +48,11 @@ public class UnitCombine : MonoBehaviour
         for (int i = TeamManager.UnitObject[UnitName].Count - 1; i >= 0; i--)
         {
             UnitInfo currentUnitInfo = TeamManager.UnitObject[UnitName][i].GetComponent<UnitInfo>();
-            if (currentUnitInfo.UnitStat.Level == combineLevel)
+            if (currentUnitInfo.unitStatus.Level == combineLevel)
             {
                 if (Delete_Count >= 2)
                 {
-                    currentUnitInfo.UnitStat.Level++;
+                    currentUnitInfo.unitStatus.Level++;
                     break;
                 }
                 else

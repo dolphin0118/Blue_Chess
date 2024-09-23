@@ -9,12 +9,12 @@ using BehaviorDesigner.Runtime;
 public class UnitAnimator : MonoBehaviour {
     static public Vector3Int Infinity = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue);
     Animator animator;
-    NavAstar navAstar;
+    UnitAstar unitAstar;
     UnitInfo unitInfo;
     UnitController unitController;
     void Awake(){
         animator = GetComponent<Animator>();
-        navAstar = GetComponent<NavAstar>();
+        unitAstar = GetComponent<UnitAstar>();
         unitInfo = GetComponent<UnitInfo>();
         unitController = GetComponent<UnitController>();
     }
@@ -33,7 +33,7 @@ public class UnitAnimator : MonoBehaviour {
         animator.SetBool("Attack", false);
     }
     public void MoveState() {
-        navAstar.NavStart();
+        unitAstar.NavStart();
         //현재 상태
         animator.SetBool("Move", true);
         animator.SetBool("Idle", false);
@@ -42,7 +42,7 @@ public class UnitAnimator : MonoBehaviour {
 
     public void AttackState() {
         //현재 상태
-        navAstar.NavStop();
+        unitAstar.NavStop();
         animator.SetBool("Attack", true);
 
         animator.SetBool("Move", false); 
@@ -51,8 +51,8 @@ public class UnitAnimator : MonoBehaviour {
 
     public void HitDetection() {
         if(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&
-            animator.GetCurrentAnimatorStateInfo(0).normalizedTime > unitInfo.UnitStat.ATKSpeed) {
-            unitInfo.UnitStat.ATKSpeed += 1.0f;   
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime > unitInfo.unitStat.ATKSpeed) {
+            //unitInfo.UnitStat.ATKSpeed += 1.0f;   
         }
     }
    

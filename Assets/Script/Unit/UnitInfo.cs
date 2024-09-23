@@ -4,6 +4,8 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using System;
 using BlueChessDataBase;
+using Unity.Profiling;
+using Unity.VisualScripting;
 
 namespace BlueChessDataBase
 {
@@ -22,15 +24,18 @@ namespace BlueChessDataBase
     public class UnitStat
     {
         public int Level = 1;
-        public string Name = "";
-        public float HP = 0;
-        public float MP = 0;
-        public float ATK = 0;
-        public float AP = 0;
-        public float AR = 0;
-        public float MR = 0;
-        public float ATKSpeed = 0.0f;
-        public float Range = 0.0f;
+        public string Name;
+        public float HP;
+        public float MP;
+        public float ATK;
+        public float AP;
+        public float AR;
+        public float MR ;
+        public float ATKSpeed;
+        public float Range;
+        public void LevelAdd() {
+            Level++;
+        }
     }
 }
 
@@ -39,25 +44,22 @@ public class UnitInfo : MonoBehaviour
 {
     public UnitCard UnitCard { get; set; }
     public UnitData UnitData { get; set; }
-    public UnitStat UnitStat { get; set; }
+    public UnitStat unitStat { get; set; }
+    public UnitStatus unitStatus;
     public Synergy[] UnitSynergy { get; set; }
-    private UnitCombine UnitCombine;
-    private TeamManager TeamManager;
-    void Start()
-    {
-        UnitCombine = gameObject.AddComponent<UnitCombine>();
-        LevelInit();
-    }
-
-    public void UnitDataSetup(UnitCard UnitCard)
-    {
+    private UnitCombine unitCombine;
+    private TeamManager teamManager;
+    
+    public void Initialize(TeamManager teamManager, UnitCombine unitCombine, UnitCard UnitCard) {
+        this.teamManager = teamManager;
+        this.unitCombine = unitCombine;
         this.UnitCard = UnitCard;
         this.UnitData = UnitCard.UnitData;
-        this.UnitStat = UnitCard.UnitStat;
-    }
-
-    void ChangeArea()
-    {
+        this.unitStat = UnitCard.UnitStat;
+        Debug.Log(unitStat.Level);
+        unitStatus = GetComponent<UnitStatus>();
+        unitStatus.Initialize(unitStat);
+        LevelInit();
 
     }
 
@@ -65,12 +67,13 @@ public class UnitInfo : MonoBehaviour
     {
         if (this.transform.tag == "Friendly")
         {
-            if (!TeamManager.UnitLevel.ContainsKey(UnitData.Name))
+            if (!teamManager.UnitLevel.ContainsKey(UnitData.Name))
             {
-                TeamManager.UnitLevel.Add(UnitData.Name, new LevelData());
+                teamManager.UnitLevel.Add(UnitData.Name, new LevelData());
             }
-            LevelData levelData = TeamManager.UnitLevel[UnitData.Name];
-            switch (UnitStat.Level)
+            LevelData levelData = teamManager.UnitLevel[UnitData.Name];
+
+            switch (unitStatus.Level)
             {
                 case 1:
                     levelData.Level1++;
@@ -84,22 +87,22 @@ public class UnitInfo : MonoBehaviour
                 default:
                     break;
             }
-            TeamManager.UnitLevel[UnitData.Name] = levelData;
+            teamManager.UnitLevel[UnitData.Name] = levelData;
 
-            if (!TeamManager.UnitObject.ContainsKey(UnitData.Name))
+            if (!teamManager.UnitObject.ContainsKey(UnitData.Name))
             {
-                TeamManager.UnitObject[UnitData.Name] = new List<GameObject>();
+                teamManager.UnitObject[UnitData.Name] = new List<GameObject>();
             }
-            TeamManager.UnitObject[UnitData.Name].Add(transform.gameObject);
+            teamManager.UnitObject[UnitData.Name].Add(transform.gameObject);
         }
-        UnitCombine.CombineListUpdate(UnitData.Name);
+        unitCombine.CombineListUpdate(UnitData.Name);
     }
 
     public void SynergyAdd()
     {
-        if (!TeamManager.UnitCheck[UnitData.Name])
+        if (!teamManager.UnitCheck[UnitData.Name])
         {
-            TeamManager.UnitCheck[UnitData.Name] = true;
+            teamManager.UnitCheck[UnitData.Name] = true;
             Synergy traitSynergy = UnitData.traitSynergy;
             Synergy schoolSynergy = UnitData.schoolSynergy;
             SynergyManager.instance.synergyCount[traitSynergy]++;
@@ -110,9 +113,9 @@ public class UnitInfo : MonoBehaviour
 
     public void SynergyRemove()
     {
-        if (TeamManager.UnitCheck[UnitData.Name])
+        if (teamManager.UnitCheck[UnitData.Name])
         {
-            TeamManager.UnitCheck[UnitData.Name] = false;
+            teamManager.UnitCheck[UnitData.Name] = false;
             Synergy traitSynergy = UnitData.traitSynergy;
             Synergy schoolSynergy = UnitData.schoolSynergy;
             SynergyManager.instance.synergyCount[traitSynergy]--;

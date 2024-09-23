@@ -1,17 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using UnityEngine.AI;
 using BlueChessDataBase;
-using Unity.VisualScripting;
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
-using UnityEngine.Rendering;
 
 public class UnitController : MonoBehaviour
 {
-    private NavAstar navAstar;
     private NavMeshAgent navMeshAgent;
+    private UnitAstar unitAstar;
     private UnitInfo Unitinfo;
     private UnitData UnitData;
     private UnitStat UnitStat;
@@ -23,12 +19,12 @@ public class UnitController : MonoBehaviour
 
     void Awake()
     {
-        navAstar = GetComponent<NavAstar>();
+        unitAstar = GetComponent<UnitAstar>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         UnitLocate = GetComponent<UnitLocate>();
         Unitinfo = GetComponent<UnitInfo>();
         UnitData = Unitinfo.UnitData;
-        UnitStat = Unitinfo.UnitStat;
+        UnitStat = Unitinfo.unitStat;
         navMeshAgent.enabled = false;
         targetEnemy = null;
     }
@@ -65,7 +61,7 @@ public class UnitController : MonoBehaviour
 
     public bool CheckAttackRange()
     {
-        if (CalcDistance() > Unitinfo.UnitStat.Range)
+        if (CalcDistance() > Unitinfo.unitStat.Range)
         {
             return false;
         }

@@ -12,14 +12,16 @@ public class UnitManager : MonoBehaviour
     private UnitStatus UnitStatus;
     private UnitItem unitItem;
     private UnitAnimator unitAnimator;
-    public TeamManager TeamManager { get; private set; }
+    [SerializeField]public TeamManager TeamManager; // { get; private set; }
+
     private void Awake()
     {
-
+        BindComponent();
     }
+
     void Start()
     {
-        Init();
+        
     }
 
     public void BattlePhase()
@@ -36,14 +38,15 @@ public class UnitManager : MonoBehaviour
         unitLocate.enabled = true;
     }
 
-    void Init()
-    {
-        Binding();
+    public void Initialize(TeamManager TeamManager, UnitCombine unitCombine, UnitCard unitCard) {
+        this.TeamManager = TeamManager;
+        unitInfo.Initialize(TeamManager, unitCombine, unitCard);
+
     }
 
-    void Binding()
+    void BindComponent()
     {
-        TeamManager = GetComponent<TeamManager>();
+        
         unitInfo = GetComponent<UnitInfo>();
         unitLocate = GetComponent<UnitLocate>();
         unitController = GetComponent<UnitController>();

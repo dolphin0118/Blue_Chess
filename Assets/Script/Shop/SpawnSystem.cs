@@ -12,7 +12,8 @@ public class SpawnSystem : MonoBehaviour
     public UnitCard[] UnitCards;
     bool[] checkSlot = new bool[9];
     private GameObject BenchArea;
-    private TeamManager TeamManager;
+    public TeamManager teamManager;
+    public UnitCombine unitCombine;
     void Awake()
     {
         if (instance == null)
@@ -23,9 +24,12 @@ public class SpawnSystem : MonoBehaviour
         {
             if (instance != this) Destroy(this.gameObject);
         }
-        BenchArea = TeamManager.BenchArea;
+        unitCombine = PlayerManager.instance.playerController[0].unitCombine;
+        teamManager = PlayerManager.instance.playerController[0].TeamManager;
+        BenchArea = teamManager.BenchArea;
         UnitCards = Resources.LoadAll<UnitCard>("Scriptable");
     }
+
 
 
     public bool isSpawnable()
@@ -58,7 +62,7 @@ public class SpawnSystem : MonoBehaviour
                 GameObject UnitClone = Instantiate(UnitCard.UnitPrefab, prefabPos, Quaternion.identity);
                 UnitClone.transform.SetParent(BenchArea.transform.GetChild(i));
                 UnitClone.gameObject.tag = "Friendly";
-                UnitClone.GetComponent<UnitInfo>().UnitDataSetup(UnitCard);
+                UnitClone.GetComponent<UnitManager>().Initialize(teamManager, unitCombine, UnitCard);
                 break;
             }
         }

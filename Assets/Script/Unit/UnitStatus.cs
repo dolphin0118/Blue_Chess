@@ -20,13 +20,8 @@ public class UnitStatus : MonoBehaviour
     public float Speed {get; set;}
     public float Range {get; set;}
     
-    void Start()
-    {
-        unitStat = GetComponent<UnitInfo>().UnitStat;
-        Init();
-    }
 
-    void Init() {
+    public void Initialize(UnitStat unitStat) {
         Level = unitStat.Level;
         MaxHP = unitStat.HP;
         HP = unitStat.HP;

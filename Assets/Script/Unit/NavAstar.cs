@@ -6,7 +6,7 @@ using DG.Tweening;
 using UnityEngine.AI;
 using TMPro.Examples;
 
-public class NavAstar : MonoBehaviour
+public class UnitAstar : MonoBehaviour
 {
     private NavMeshAgent charaNav;
     private GameObject targetObject;

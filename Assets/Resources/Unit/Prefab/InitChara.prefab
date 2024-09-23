@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: -579938646543224257}
   - component: {fileID: 8870767124945828126}
   - component: {fileID: 7479773406878995468}
+  - component: {fileID: 7730723356761642685}
   m_Layer: 3
   m_Name: InitChara
   m_TagString: Unit
@@ -127,7 +128,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4890fdcce2ef50f4f820ffc844796276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BattleArea: {fileID: 0}
 --- !u!114 &6102441261752241443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9544faa739bb4d49a0c377ad3916b92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitStatus: {fileID: 0}
 --- !u!210 &4975298632584795881
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -210,6 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63526c0767be9cd40bc09771f9ea8a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TeamManager: {fileID: 0}
 --- !u!114 &8870767124945828126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,6 +270,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0b2128f94ddbc40a35cc552ca9f032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7730723356761642685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6436713800526929204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ad77d558bd83fc4c983a64dff3f215e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitStat:
+    Level: 1
+    Name: 
+    HP: 0
+    MP: 0
+    ATK: 0
+    AP: 0
+    AR: 0
+    MR: 0
+    ATKSpeed: 0
+    Range: 0
 --- !u!1001 &2308400031985706415
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -9,17 +9,18 @@ using UnityEngine.Tilemaps;
 
 public class UnitLocate : MonoBehaviour
 {
+    private UnitManager unitManager;
+    private TeamManager TeamManager;
+    private Tilemap tilemap;
     private GameObject ObjectHitPosition;
     private GameObject previousParent;
     private Vector3 previousPos;
-    private Tilemap tilemap;
-    private TeamManager TeamManager;
     private Quaternion benchRotate, battleRotate;
-
     private int battleLayer, benchLayer, unitLayer;
 
     void Start()
     {
+        TeamManager = GetComponent<UnitManager>().TeamManager;
         tilemap = GameManager.instance.tilemap;
         benchRotate = Quaternion.Euler(-20, 180, 0);
         battleRotate = Quaternion.Euler(0, 0, 0);

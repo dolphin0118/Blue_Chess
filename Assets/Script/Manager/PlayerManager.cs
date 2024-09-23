@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using TMPro;
+using System;
 
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance = null;
-    public static TeamManager TeamManager = new TeamManager();
+    public PlayerController[] playerController;
     private GameObject holdPlayer;
     public int playerCode = 0;
     const int playerCount = 8;
@@ -22,6 +25,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (instance != this) Destroy(this.gameObject);
         }
+        playerController = FindObjectsOfType<PlayerController>();
     }
 
     private void Update()
