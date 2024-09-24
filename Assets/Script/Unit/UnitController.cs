@@ -7,11 +7,7 @@ using BlueChessDataBase;
 public class UnitController : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
-    private UnitAstar unitAstar;
-    private UnitInfo Unitinfo;
-    private UnitData UnitData;
     private UnitStatus UnitStatus;
-    private UnitLocate UnitLocate;
 
     private GameObject[] targetEnemys;
     private GameObject targetEnemy { get; set; }
@@ -19,11 +15,7 @@ public class UnitController : MonoBehaviour
 
     void Awake()
     {
-        unitAstar = GetComponent<UnitAstar>();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        UnitLocate = GetComponent<UnitLocate>();
-        Unitinfo = GetComponent<UnitInfo>();
-        UnitData = Unitinfo.UnitData;
         UnitStatus = GetComponent<UnitStatus>();
         navMeshAgent.enabled = false;
         targetEnemy = null;

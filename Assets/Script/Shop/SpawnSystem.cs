@@ -24,13 +24,15 @@ public class SpawnSystem : MonoBehaviour
         {
             if (instance != this) Destroy(this.gameObject);
         }
-        unitCombine = PlayerManager.instance.playerController[0].unitCombine;
-        teamManager = PlayerManager.instance.playerController[0].TeamManager;
-        BenchArea = teamManager.BenchArea;
+
         UnitCards = Resources.LoadAll<UnitCard>("Scriptable");
     }
 
-
+    void Start() {
+        unitCombine = PlayerManager.instance.playerController[0].unitCombine;
+        teamManager = PlayerManager.instance.playerController[0].TeamManager;
+        BenchArea = teamManager.BenchArea;
+    }
 
     public bool isSpawnable()
     {

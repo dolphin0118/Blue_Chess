@@ -43,18 +43,17 @@ namespace BlueChessDataBase
 
 public class UnitInfo : MonoBehaviour
 {
-    public UnitCard UnitCard { get; set; }
-    public UnitData UnitData;
+    public UnitData unitData;
     public UnitStatus unitStatus;
     private UnitCombine unitCombine;
     private TeamManager teamManager;
 
-    public void Initialize(TeamManager teamManager, UnitCombine unitCombine, UnitCard UnitCard)
+    public void Initialize(TeamManager teamManager, UnitCombine unitCombine, UnitData unitData, UnitStatus unitStatus)
     {
         this.teamManager = teamManager;
         this.unitCombine = unitCombine;
-        this.UnitCard = UnitCard;
-        this.UnitData = UnitCard.UnitData;
+        this.unitData = unitData;
+        this.unitStatus = unitStatus;
         LevelInit();
     }
 
@@ -62,11 +61,11 @@ public class UnitInfo : MonoBehaviour
     {
         if (this.transform.tag == "Friendly")
         {
-            if (!teamManager.UnitLevel.ContainsKey(UnitData.Name))
+            if (!teamManager.UnitLevel.ContainsKey(unitData.Name))
             {
-                teamManager.UnitLevel.Add(UnitData.Name, new LevelData());
+                teamManager.UnitLevel.Add(unitData.Name, new LevelData());
             }
-            LevelData levelData = teamManager.UnitLevel[UnitData.Name];
+            LevelData levelData = teamManager.UnitLevel[unitData.Name];
 
             switch (unitStatus.Level)
             {
@@ -82,24 +81,24 @@ public class UnitInfo : MonoBehaviour
                 default:
                     break;
             }
-            teamManager.UnitLevel[UnitData.Name] = levelData;
+            teamManager.UnitLevel[unitData.Name] = levelData;
 
-            if (!teamManager.UnitObject.ContainsKey(UnitData.Name))
+            if (!teamManager.UnitObject.ContainsKey(unitData.Name))
             {
-                teamManager.UnitObject[UnitData.Name] = new List<GameObject>();
+                teamManager.UnitObject[unitData.Name] = new List<GameObject>();
             }
-            teamManager.UnitObject[UnitData.Name].Add(transform.gameObject);
+            teamManager.UnitObject[unitData.Name].Add(transform.gameObject);
         }
-        unitCombine.CombineListUpdate(UnitData.Name);
+        unitCombine.CombineListUpdate(unitData.Name);
     }
 
     public void SynergyAdd()
     {
-        if (!teamManager.UnitCheck[UnitData.Name])
+        if (!teamManager.UnitCheck[unitData.Name])
         {
-            teamManager.UnitCheck[UnitData.Name] = true;
-            Synergy traitSynergy = UnitData.traitSynergy;
-            Synergy schoolSynergy = UnitData.schoolSynergy;
+            teamManager.UnitCheck[unitData.Name] = true;
+            Synergy traitSynergy = unitData.traitSynergy;
+            Synergy schoolSynergy = unitData.schoolSynergy;
             SynergyManager.instance.synergyCount[traitSynergy]++;
             SynergyManager.instance.synergyCount[schoolSynergy]++;
         }
@@ -108,11 +107,11 @@ public class UnitInfo : MonoBehaviour
 
     public void SynergyRemove()
     {
-        if (teamManager.UnitCheck[UnitData.Name])
+        if (teamManager.UnitCheck[unitData.Name])
         {
-            teamManager.UnitCheck[UnitData.Name] = false;
-            Synergy traitSynergy = UnitData.traitSynergy;
-            Synergy schoolSynergy = UnitData.schoolSynergy;
+            teamManager.UnitCheck[unitData.Name] = false;
+            Synergy traitSynergy = unitData.traitSynergy;
+            Synergy schoolSynergy = unitData.schoolSynergy;
             SynergyManager.instance.synergyCount[traitSynergy]--;
             SynergyManager.instance.synergyCount[schoolSynergy]--;
         }

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
+    private UnitCard unitCard;
     private UnitInfo unitInfo;
     private UnitLocate unitLocate;
     private UnitController unitController;
@@ -41,11 +42,12 @@ public class UnitManager : MonoBehaviour
 
     public void Initialize(TeamManager TeamManager, UnitCombine unitCombine, UnitCard unitCard)
     {
+        this.unitCard = unitCard;
         this.TeamManager = TeamManager;
         this.unitCombine = unitCombine;
         this.unitCombine.Initialize(TeamManager);
-        unitInfo.Initialize(TeamManager, unitCombine, unitCard);
         unitStatus.Initialize(unitCard.UnitStat);
+        unitInfo.Initialize(TeamManager, unitCombine, unitCard.UnitData, unitStatus);
         unitLocate.Initialize(TeamManager);
     }
 
@@ -99,7 +101,7 @@ public class UnitManager : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(1))
         { //Right
-            UIManager.instance.OpenUI(unitInfo.UnitCard);
+            UIManager.instance.OpenUI(unitCard);
         }
     }
 

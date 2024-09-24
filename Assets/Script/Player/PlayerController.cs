@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     public TeamManager TeamManager;
     public UnitCombine unitCombine;
+    
     private void Awake()
     {
         TeamManager = GetComponentInChildren<TeamManager>();
