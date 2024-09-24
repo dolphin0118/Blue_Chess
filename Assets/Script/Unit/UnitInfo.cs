@@ -30,10 +30,11 @@ namespace BlueChessDataBase
         public float ATK;
         public float AP;
         public float AR;
-        public float MR ;
+        public float MR;
         public float ATKSpeed;
         public float Range;
-        public void LevelAdd() {
+        public void LevelAdd()
+        {
             Level++;
         }
     }
@@ -43,24 +44,18 @@ namespace BlueChessDataBase
 public class UnitInfo : MonoBehaviour
 {
     public UnitCard UnitCard { get; set; }
-    public UnitData UnitData { get; set; }
-    public UnitStat unitStat { get; set; }
+    public UnitData UnitData;
     public UnitStatus unitStatus;
-    public Synergy[] UnitSynergy { get; set; }
     private UnitCombine unitCombine;
     private TeamManager teamManager;
-    
-    public void Initialize(TeamManager teamManager, UnitCombine unitCombine, UnitCard UnitCard) {
+
+    public void Initialize(TeamManager teamManager, UnitCombine unitCombine, UnitCard UnitCard)
+    {
         this.teamManager = teamManager;
         this.unitCombine = unitCombine;
         this.UnitCard = UnitCard;
         this.UnitData = UnitCard.UnitData;
-        this.unitStat = UnitCard.UnitStat;
-        Debug.Log(unitStat.Level);
-        unitStatus = GetComponent<UnitStatus>();
-        unitStatus.Initialize(unitStat);
         LevelInit();
-
     }
 
     void LevelInit()

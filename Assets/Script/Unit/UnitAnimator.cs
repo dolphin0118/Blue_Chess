@@ -6,25 +6,23 @@ using BlueChessDataBase;
 using BehaviorDesigner.Runtime;
 
 
-public class UnitAnimator : MonoBehaviour {
+public class UnitAnimator : MonoBehaviour
+{
     static public Vector3Int Infinity = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue);
     Animator animator;
     UnitAstar unitAstar;
-    UnitInfo unitInfo;
+    UnitStatus unitStatus;
     UnitController unitController;
-    void Awake(){
+    void Awake()
+    {
         animator = GetComponent<Animator>();
         unitAstar = GetComponent<UnitAstar>();
-        unitInfo = GetComponent<UnitInfo>();
+        unitStatus = GetComponent<UnitStatus>();
         unitController = GetComponent<UnitController>();
     }
-    
 
-    void FixedUpdate() {
-
-    }
-
-    public void IdleState() {
+    public void IdleState()
+    {
         //현재 상태
         animator.SetBool("Idle", true);
 
@@ -32,7 +30,8 @@ public class UnitAnimator : MonoBehaviour {
         animator.SetBool("Move", false);
         animator.SetBool("Attack", false);
     }
-    public void MoveState() {
+    public void MoveState()
+    {
         unitAstar.NavStart();
         //현재 상태
         animator.SetBool("Move", true);
@@ -40,20 +39,23 @@ public class UnitAnimator : MonoBehaviour {
         animator.SetBool("Attack", false);
     }
 
-    public void AttackState() {
+    public void AttackState()
+    {
         //현재 상태
         unitAstar.NavStop();
         animator.SetBool("Attack", true);
 
-        animator.SetBool("Move", false); 
+        animator.SetBool("Move", false);
         animator.SetBool("Idle", false);
     }
 
-    public void HitDetection() {
-        if(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing")&&
-            animator.GetCurrentAnimatorStateInfo(0).normalizedTime > unitInfo.unitStat.ATKSpeed) {
+    public void HitDetection()
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing") &&
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime > unitStatus.ATKSpeed)
+        {
             //unitInfo.UnitStat.ATKSpeed += 1.0f;   
         }
     }
-   
+
 }

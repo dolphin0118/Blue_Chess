@@ -9,10 +9,11 @@ public class UnitManager : MonoBehaviour
     private UnitInfo unitInfo;
     private UnitLocate unitLocate;
     private UnitController unitController;
-    private UnitStatus UnitStatus;
+    private UnitStatus unitStatus;
     private UnitItem unitItem;
     private UnitAnimator unitAnimator;
-    [SerializeField]public TeamManager TeamManager; // { get; private set; }
+    private TeamManager TeamManager;
+    private UnitCombine unitCombine;
 
     private void Awake()
     {
@@ -21,7 +22,7 @@ public class UnitManager : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     public void BattlePhase()
@@ -38,19 +39,23 @@ public class UnitManager : MonoBehaviour
         unitLocate.enabled = true;
     }
 
-    public void Initialize(TeamManager TeamManager, UnitCombine unitCombine, UnitCard unitCard) {
+    public void Initialize(TeamManager TeamManager, UnitCombine unitCombine, UnitCard unitCard)
+    {
         this.TeamManager = TeamManager;
+        this.unitCombine = unitCombine;
+        this.unitCombine.Initialize(TeamManager);
         unitInfo.Initialize(TeamManager, unitCombine, unitCard);
-
+        unitStatus.Initialize(unitCard.UnitStat);
+        unitLocate.Initialize(TeamManager);
     }
 
     void BindComponent()
     {
-        
+
         unitInfo = GetComponent<UnitInfo>();
         unitLocate = GetComponent<UnitLocate>();
         unitController = GetComponent<UnitController>();
-        UnitStatus = GetComponent<UnitStatus>();
+        unitStatus = GetComponent<UnitStatus>();
         unitItem = GetComponentInChildren<UnitItem>();
         unitAnimator = GetComponent<UnitAnimator>();
     }

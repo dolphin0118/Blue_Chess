@@ -42,8 +42,8 @@ public class UnitAstar : MonoBehaviour
 
     public void NavStop()
     {
-        if(charaNav == null) return;
-        if(isRunning) charaNav.ResetPath();
+        if (charaNav == null) return;
+        if (isRunning) charaNav.ResetPath();
         else return;
     }
 }

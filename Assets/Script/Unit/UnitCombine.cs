@@ -16,9 +16,11 @@ public class UnitCombine : MonoBehaviour
     private TeamManager TeamManager;
     const int CombineCount = 3;
 
-    private void Awake() {
-        TeamManager = GetComponent<TeamManager>();
+    public void Initialize(TeamManager teamManager)
+    {
+        this.TeamManager = teamManager;
     }
+
     public void CombineListUpdate(string UnitName)
     {
         LevelData levelData = TeamManager.UnitLevel[UnitName];
@@ -31,7 +33,7 @@ public class UnitCombine : MonoBehaviour
             TeamManager.UnitLevel[UnitName].Level1 = levelData.Level1 - CombineCount;
             TeamManager.UnitLevel[UnitName].Level2 = levelData.Level2 + 1;
         }
-        
+
         if (levelData.Level2 >= CombineCount)
         {
             combineLevel = 2;

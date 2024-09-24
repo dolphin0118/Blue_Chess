@@ -10,7 +10,7 @@ public class UnitController : MonoBehaviour
     private UnitAstar unitAstar;
     private UnitInfo Unitinfo;
     private UnitData UnitData;
-    private UnitStat UnitStat;
+    private UnitStatus UnitStatus;
     private UnitLocate UnitLocate;
 
     private GameObject[] targetEnemys;
@@ -24,7 +24,7 @@ public class UnitController : MonoBehaviour
         UnitLocate = GetComponent<UnitLocate>();
         Unitinfo = GetComponent<UnitInfo>();
         UnitData = Unitinfo.UnitData;
-        UnitStat = Unitinfo.unitStat;
+        UnitStatus = GetComponent<UnitStatus>();
         navMeshAgent.enabled = false;
         targetEnemy = null;
     }
@@ -61,7 +61,7 @@ public class UnitController : MonoBehaviour
 
     public bool CheckAttackRange()
     {
-        if (CalcDistance() > Unitinfo.unitStat.Range)
+        if (CalcDistance() > UnitStatus.Range)
         {
             return false;
         }

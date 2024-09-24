@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -9,7 +10,6 @@ using UnityEngine.Tilemaps;
 
 public class UnitLocate : MonoBehaviour
 {
-    private UnitManager unitManager;
     private TeamManager TeamManager;
     private Tilemap tilemap;
     private GameObject ObjectHitPosition;
@@ -20,13 +20,17 @@ public class UnitLocate : MonoBehaviour
 
     void Start()
     {
-        TeamManager = GetComponent<UnitManager>().TeamManager;
         tilemap = GameManager.instance.tilemap;
         benchRotate = Quaternion.Euler(-20, 180, 0);
         battleRotate = Quaternion.Euler(0, 0, 0);
         unitLayer = 1 << LayerMask.NameToLayer("Unit");
         battleLayer = 1 << LayerMask.NameToLayer("Battle");
         benchLayer = 1 << LayerMask.NameToLayer("Bench");
+    }
+
+    public void Initialize(TeamManager TeamManager)
+    {
+        this.TeamManager = TeamManager;
     }
 
     void OnMouseUp()
