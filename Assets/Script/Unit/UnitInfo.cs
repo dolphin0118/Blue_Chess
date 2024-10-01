@@ -43,14 +43,17 @@ namespace BlueChessDataBase
 
 public class UnitInfo : MonoBehaviour
 {
+    private TeamManager teamManager;
+    private SynergyManager synergyManager;
     public UnitData unitData;
     public UnitStatus unitStatus;
     private UnitCombine unitCombine;
-    private TeamManager teamManager;
-
-    public void Initialize(TeamManager teamManager, UnitCombine unitCombine, UnitData unitData, UnitStatus unitStatus)
+    
+   
+    public void Initialize(TeamManager teamManager,SynergyManager synergyManager, UnitCombine unitCombine, UnitData unitData, UnitStatus unitStatus)
     {
         this.teamManager = teamManager;
+        this.synergyManager = synergyManager;
         this.unitCombine = unitCombine;
         this.unitData = unitData;
         this.unitStatus = unitStatus;
@@ -99,10 +102,10 @@ public class UnitInfo : MonoBehaviour
             teamManager.UnitCheck[unitData.Name] = true;
             Synergy traitSynergy = unitData.traitSynergy;
             Synergy schoolSynergy = unitData.schoolSynergy;
-            SynergyManager.instance.synergyCount[traitSynergy]++;
-            SynergyManager.instance.synergyCount[schoolSynergy]++;
+            synergyManager.synergyCount[traitSynergy]++;
+            synergyManager.synergyCount[schoolSynergy]++;
         }
-        SynergyManager.instance.synergyEvent.RemoveListener(SynergyAdd);
+        synergyManager.synergyEvent.RemoveListener(SynergyAdd);
     }
 
     public void SynergyRemove()
@@ -112,9 +115,9 @@ public class UnitInfo : MonoBehaviour
             teamManager.UnitCheck[unitData.Name] = false;
             Synergy traitSynergy = unitData.traitSynergy;
             Synergy schoolSynergy = unitData.schoolSynergy;
-            SynergyManager.instance.synergyCount[traitSynergy]--;
-            SynergyManager.instance.synergyCount[schoolSynergy]--;
+            synergyManager.synergyCount[traitSynergy]--;
+            synergyManager.synergyCount[schoolSynergy]--;
         }
-        SynergyManager.instance.synergyEvent.RemoveListener(SynergyRemove);
+        synergyManager.synergyEvent.RemoveListener(SynergyRemove);
     }
 }

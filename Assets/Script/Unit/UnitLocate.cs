@@ -11,6 +11,7 @@ using UnityEngine.Tilemaps;
 public class UnitLocate : MonoBehaviour
 {
     private TeamManager TeamManager;
+    private SynergyManager SynergyManager;
     private Tilemap tilemap;
     private GameObject ObjectHitPosition;
     private GameObject previousParent;
@@ -28,9 +29,10 @@ public class UnitLocate : MonoBehaviour
         benchLayer = 1 << LayerMask.NameToLayer("Bench");
     }
 
-    public void Initialize(TeamManager TeamManager)
+    public void Initialize(TeamManager TeamManager, SynergyManager SynergyManager)
     {
         this.TeamManager = TeamManager;
+        this.SynergyManager = SynergyManager;
     }
 
     void OnMouseUp()
@@ -61,8 +63,8 @@ public class UnitLocate : MonoBehaviour
             this.transform.SetParent(ObjectHitPosition.transform);
             this.transform.localPosition = new Vector3(0, 0.1f, 0);
         }
-        SynergyManager.instance.synergyEvent.AddListener(GetComponent<UnitInfo>().SynergyRemove);
-        SynergyManager.instance.synergyEvent.Invoke();
+        SynergyManager.synergyEvent.AddListener(GetComponent<UnitInfo>().SynergyRemove);
+        SynergyManager.synergyEvent.Invoke();
     }
     public void OnObjectMove()
     {
@@ -117,7 +119,11 @@ public class UnitLocate : MonoBehaviour
         else if (Physics.Raycast(currentPos, Vector3.down, out hitLayer, Mathf.Infinity, battleLayer))
         {
             //현재 타일이 배틀레이어 내부의 유효한 타일인지
-            if (!CheckBattleTile()) { this.transform.position = previousPos; return; }
+            if (!CheckBattleTile()) { 
+                this.transform.position = previousPos; 
+                Debug.Log(tilePos);
+                return; 
+            }
 
             GameObject hitObject = hitLayer.collider.transform.gameObject;
             this.transform.position = checkPos;
@@ -157,8 +163,8 @@ public class UnitLocate : MonoBehaviour
             Vector3 pos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(this.transform.position));
             transform.position = new Vector3(pos.x, 0.1f, pos.z);
             this.transform.rotation = battleRotate;
-            SynergyManager.instance.synergyEvent.AddListener(this.transform.GetComponent<UnitInfo>().SynergyAdd);
-            SynergyManager.instance.synergyEvent.Invoke();
+            SynergyManager.synergyEvent.AddListener(this.transform.GetComponent<UnitInfo>().SynergyAdd);
+            SynergyManager.synergyEvent.Invoke();
         }
         else
         {
@@ -172,7 +178,7 @@ public class UnitLocate : MonoBehaviour
     {
         //row -3 -2 -1 0 1 2 3
         //col -3 -4 -5 -6
-        Vector3Int tilePos = tilemap.LocalToCell(checkPos);
+        Vector3Int tilePos = tilemap.LocalToCell(checkPos - TeamManager.LerpPos);
         int row = tilePos.x + 3;
         int col = tilePos.y * -1 - 3;
         Vector2Int convertTilePos = new Vector2Int(row, col);
@@ -184,7 +190,7 @@ public class UnitLocate : MonoBehaviour
     {
         //row -3 -2 -1 0 1 2 3
         //col -3 -4 -5 -6
-        Vector3Int tilePos = tilemap.LocalToCell(checkUnit.transform.position);
+        Vector3Int tilePos = tilemap.LocalToCell(checkUnit.transform.position - TeamManager.LerpPos);
         int row = tilePos.x + 3;
         int col = tilePos.y * -1 - 3;
         Vector2Int convertTilePos = new Vector2Int(row, col);

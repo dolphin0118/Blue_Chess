@@ -8,9 +8,11 @@ public class UnitItem : MonoBehaviour
 {
     List<ItemAsset> items;
     Image[] itemImages;
+    ItemManager itemManager;
 
     void Start()
     {
+
         itemImages = GetComponentsInChildren<Image>();
         items = new List<ItemAsset>();
     }
@@ -36,8 +38,7 @@ public class UnitItem : MonoBehaviour
     private void OnDestroy() {
         foreach (var item in items) {
             Debug.Log(item.Name);
-            ItemManager.instance.AddItem(item);
+            itemManager.AddItem(item);
         }
-        
     }
 }

@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager instance = null;
     public UI_Card UIcard{get; set;}
+    [SerializeField]private GameObject CharaDetailUI;
+    [SerializeField]private GameObject SynergyUI;
+    [SerializeField]private GameObject ShopUI;
+    [SerializeField]private GameObject UserUI;
 
     void Awake() {
-        if (instance == null) {
-            instance = this;
-        }
-        else{
-            if (instance != this) Destroy(this.gameObject);
-        }    
+        UIcard = GetComponentInChildren<UI_Card>();
+        MatchUI();
+    }
+    void MatchUI() {
+  
     }
 
     public void OpenUI(UnitCard UnitCard) {
@@ -23,5 +25,18 @@ public class UIManager : MonoBehaviour
 
     public void CloseUI() {
         UIcard.gameObject.SetActive(false);
+    }
+
+    public void SetUIActive(bool isActive) {
+        if(isActive) {
+            CharaDetailUI.SetActive(true);
+            SynergyUI.SetActive(true);
+            ShopUI.SetActive(true);
+        }
+        else {
+            CharaDetailUI.SetActive(false);
+            SynergyUI.SetActive(false);
+            ShopUI.SetActive(false);
+        }
     }
 }

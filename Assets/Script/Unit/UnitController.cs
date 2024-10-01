@@ -105,17 +105,11 @@ public class UnitController : MonoBehaviour
 
     public void SetTargetTag()
     {
-        string teamName = this.transform.root.name;
-        if (teamName == "Home_Team")
+        if (this.transform.tag == "Home")
         {
-            this.transform.tag = "Home";
             targetTag = "Away";
         }
-        else
-        {
-            this.transform.tag = "Away";
-            targetTag = "Home";
-        }
+        else targetTag = "Home";
     }
 
     public void AttackTarget()

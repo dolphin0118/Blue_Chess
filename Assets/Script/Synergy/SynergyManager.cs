@@ -8,20 +8,13 @@ using UnityEngine.Events;
 
 public class SynergyManager : MonoBehaviour {
 
-    public static SynergyManager instance = null;
     public Dictionary<Synergy, int> synergyCount;
     public UnityEvent synergyEvent;
     private List<GameObject> SynergyUIGameObject;
     private List<SynergyUI> synergyUI;
     private List<SynergyBase> synergyBase;
     
-    void Awake() {
-        if (instance == null) {
-            instance = this;
-        }
-        else{
-            if (instance != this) Destroy(this.gameObject);
-        }    
+    void Awake() { 
         SynergyInit();
     }
 
@@ -57,7 +50,6 @@ public class SynergyManager : MonoBehaviour {
             synergyUI.Add(SynergyUIGameObject[i].GetComponent<SynergyUI>());
             synergyUI[i].Init(synergyBase[i]);
         }
-        SynergyUIInvoke();
     }
 
     void SynergyCounter() {

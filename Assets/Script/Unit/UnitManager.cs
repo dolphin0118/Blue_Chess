@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
+    private TeamManager teamManager;
+    private SynergyManager synergyManager;
+    
     private UnitCard unitCard;
     private UnitInfo unitInfo;
     private UnitLocate unitLocate;
@@ -13,7 +16,6 @@ public class UnitManager : MonoBehaviour
     private UnitStatus unitStatus;
     private UnitItem unitItem;
     private UnitAnimator unitAnimator;
-    private TeamManager TeamManager;
     private UnitCombine unitCombine;
 
     private void Awake()
@@ -40,15 +42,16 @@ public class UnitManager : MonoBehaviour
         unitLocate.enabled = true;
     }
 
-    public void Initialize(TeamManager TeamManager, UnitCombine unitCombine, UnitCard unitCard)
+    public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCombine unitCombine, UnitCard unitCard)
     {
         this.unitCard = unitCard;
-        this.TeamManager = TeamManager;
+        this.teamManager = teamManager;
+        this.synergyManager = synergyManager;
         this.unitCombine = unitCombine;
-        this.unitCombine.Initialize(TeamManager);
+        this.unitCombine.Initialize(teamManager);
         unitStatus.Initialize(unitCard.UnitStat);
-        unitInfo.Initialize(TeamManager, unitCombine, unitCard.UnitData, unitStatus);
-        unitLocate.Initialize(TeamManager);
+        unitInfo.Initialize(teamManager, synergyManager, unitCombine, unitCard.UnitData, unitStatus);
+        unitLocate.Initialize(teamManager, synergyManager);
     }
 
     void BindComponent()
@@ -101,7 +104,7 @@ public class UnitManager : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(1))
         { //Right
-            UIManager.instance.OpenUI(unitCard);
+            //UIManager.instance.OpenUI(unitCard);
         }
     }
 
@@ -112,7 +115,7 @@ public class UnitManager : MonoBehaviour
 
     void OnMouseExit()
     {
-        UIManager.instance.CloseUI();
+        //UIManager.instance.CloseUI();
     }
     //------------------------------------------//
 

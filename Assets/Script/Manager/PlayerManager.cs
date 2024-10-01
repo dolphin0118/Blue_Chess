@@ -9,9 +9,10 @@ using System;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance = null;
-    public PlayerController[] playerController;
+    public PlayerController[] playerControllers;
     private GameObject holdPlayer;
-    public int playerCode = 0;
+    private FollowCam followCam;
+    public int playerViewCode = 0;
     const int playerCount = 8;
 
     private void Awake()
@@ -25,7 +26,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (instance != this) Destroy(this.gameObject);
         }
-        playerController = FindObjectsOfType<PlayerController>();
+        playerControllers = FindObjectsOfType<PlayerController>();
     }
 
     private void Update()
@@ -35,11 +36,11 @@ public class PlayerManager : MonoBehaviour
 
     void PlayerView()
     {
-        for (int i = 1; i <= playerCount; i++)
+        for (int i = 0; i < playerCount; i++)
         {
             if (Input.GetKeyDown(KeyCode.Alpha0 + i))
             {
-                playerCode = playerCount;
+                playerViewCode = i;
             }
         }
     }

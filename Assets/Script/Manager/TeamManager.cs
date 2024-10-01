@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
 using System;
+using JetBrains.Annotations;
 
 public class TeamManager : MonoBehaviour
 {
@@ -11,15 +12,18 @@ public class TeamManager : MonoBehaviour
     public Dictionary<string, bool> UnitCheck = new Dictionary<string, bool>();
     public Dictionary<string, LevelData> UnitLevel = new Dictionary<string, LevelData>();
     public Dictionary<string, List<GameObject>> UnitObject = new Dictionary<string, List<GameObject>>();
-
+    public Vector3 LerpPos;
     public GameObject[,] unitLocate = new GameObject[row, col];
     public GameObject BattleArea, BenchArea;
+    public GameObject HomeTeam, AwayTeam;
 
     private void Awake() {
         AreaSetup();
     }
 
     private void Start() {
+        LerpPos = this.transform.parent.position;
+        HomeTeam = this.gameObject;
         UnitListAdd();
     }
 
@@ -41,13 +45,13 @@ public class TeamManager : MonoBehaviour
                 }
             }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.D))
         {
             UnitDeleteAll();
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            UnitRelocatAll();
+            UnitRelocateAll();
         }
     }
 
@@ -63,6 +67,7 @@ public class TeamManager : MonoBehaviour
             {
                 BenchArea = child.gameObject;
             }
+
         }
     }
    
@@ -105,7 +110,7 @@ public class TeamManager : MonoBehaviour
         }
     }
 
-    public void UnitRelocatAll()
+    public void UnitRelocateAll()
     {
         for (int i = 0; i < row; i++)
         {
@@ -116,7 +121,7 @@ public class TeamManager : MonoBehaviour
                     GameObject respawnObject = unitLocate[i, j];
                     respawnObject.SetActive(true);
                     respawnObject.transform.SetParent(BattleArea.transform);
-                    respawnObject.transform.position = UnitPositionConvert(i, j);
+                    respawnObject.transform.localPosition = UnitPositionConvert(i, j);
 
                 }
             }

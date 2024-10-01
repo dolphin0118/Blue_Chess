@@ -13,13 +13,14 @@ Material:
   m_ModifiedSerializedProperties: 2
   m_ValidKeywords: []
   m_InvalidKeywords:
-  - _EMISSION
-  m_LightmapFlags: 1
+  - _ALPHABLEND_ON
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - GRABPASS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -39,7 +40,8 @@ Material:
     - _ScaleRatioC: 0.64125
     - _TextureHeight: 1024
     - _TextureWidth: 1024
-    m_Colors: []
+    m_Colors:
+    - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &11400000
 MonoBehaviour:

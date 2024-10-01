@@ -4,18 +4,10 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    public static ItemManager instance = null; 
     public GameObject[] ItemSlots;
 
     private void Awake() {
-        if (instance == null) {
-            instance = this; 
-            DontDestroyOnLoad(gameObject);
-        }
-        else {
-            if (instance != this) Destroy(this.gameObject); 
-        }
-         
+
     }
 
     private void Start() {

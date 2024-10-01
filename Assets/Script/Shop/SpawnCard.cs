@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using TMPro;
 
 public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
+    private SpawnSystem spawnSystem;
+
     [SerializeField] TextMeshProUGUI UnitNameText;
     [SerializeField] TextMeshProUGUI UnitPriceText;
     [SerializeField] GameObject traitSynergy;
@@ -22,6 +24,7 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private bool isReroll;
 
     void Start() {
+        spawnSystem = GetComponentInParent<SpawnSystem>();
         initColor = this.GetComponent<Image>().color;
         UnitImage = this.GetComponent<Image>();
         CardInit();
@@ -54,9 +57,9 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     }
 
     void CardSetup() {
-        int chardCount = SpawnSystem.instance.UnitCards.Length;
+        int chardCount = spawnSystem.UnitCards.Length;
         int selectCard = Random.Range(0, chardCount);
-        unitCard = SpawnSystem.instance.UnitCards[selectCard];
+        unitCard = spawnSystem.UnitCards[selectCard];
         CardEnable();
     }
 
@@ -81,9 +84,9 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     }
 
     void CardSpawn() {
-        isSpawn = SpawnSystem.instance.isSpawnable();
+        isSpawn = spawnSystem.isSpawnable();
         if(isSpawn) {
-            SpawnSystem.instance.SpawnUnit(unitCard);
+            spawnSystem.SpawnUnit(unitCard);
             CardDisable();
         }
     }  

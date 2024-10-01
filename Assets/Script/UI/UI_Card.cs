@@ -34,7 +34,6 @@ public class UI_Card : UI_Base
     private UnitCard UnitCard;
 
     private void Start() {
-        UIManager.instance.UIcard = this;
         Init();
         gameObject.SetActive(false);
     }

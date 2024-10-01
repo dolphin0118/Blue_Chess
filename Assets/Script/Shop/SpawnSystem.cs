@@ -8,30 +8,25 @@ using System;
 
 public class SpawnSystem : MonoBehaviour
 {
-    public static SpawnSystem instance = null;
+    public TeamManager teamManager;
+    public SynergyManager synergyManager;
+    public UnitCombine unitCombine;
+
     public UnitCard[] UnitCards;
     bool[] checkSlot = new bool[9];
     private GameObject BenchArea;
-    public TeamManager teamManager;
-    public UnitCombine unitCombine;
+
+    
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            if (instance != this) Destroy(this.gameObject);
-        }
-
         UnitCards = Resources.LoadAll<UnitCard>("Scriptable");
     }
 
-    void Start() {
-        unitCombine = PlayerManager.instance.playerController[0].unitCombine;
-        teamManager = PlayerManager.instance.playerController[0].TeamManager;
-        BenchArea = teamManager.BenchArea;
+    public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCombine unitCombine) {
+        this.teamManager = teamManager;
+        this.synergyManager = synergyManager;
+        this.unitCombine = unitCombine;
+        BenchArea = this.teamManager.BenchArea;
     }
 
     public bool isSpawnable()
@@ -61,10 +56,11 @@ public class SpawnSystem : MonoBehaviour
                 prefabPos = GameManager.instance.tilemap.GetCellCenterLocal(tilepos);
                 prefabPos = new Vector3(prefabPos.x, 0.1f, prefabPos.z);
 
-                GameObject UnitClone = Instantiate(UnitCard.UnitPrefab, prefabPos, Quaternion.identity);
+                GameObject UnitClone = Instantiate(UnitCard.UnitPrefab, Vector3.zero, Quaternion.identity);
                 UnitClone.transform.SetParent(BenchArea.transform.GetChild(i));
+                UnitClone.transform.localPosition = Vector3.zero;
                 UnitClone.gameObject.tag = "Friendly";
-                UnitClone.GetComponent<UnitManager>().Initialize(teamManager, unitCombine, UnitCard);
+                UnitClone.GetComponent<UnitManager>().Initialize(teamManager, synergyManager, unitCombine, UnitCard);
                 break;
             }
         }
