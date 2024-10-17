@@ -16,7 +16,7 @@ public class TeamManager : MonoBehaviour
     public GameObject[,] unitLocate = new GameObject[row, col];
     public GameObject BattleArea, BenchArea;
     public GameObject HomeTeam, AwayTeam;
-
+    public GameObject UnitLocateController;
     private void Awake() {
         AreaSetup();
     }
@@ -67,7 +67,6 @@ public class TeamManager : MonoBehaviour
             {
                 BenchArea = child.gameObject;
             }
-
         }
     }
    

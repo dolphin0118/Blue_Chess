@@ -13,14 +13,13 @@ public class UnitLocate : MonoBehaviour
     private TeamManager TeamManager;
     private SynergyManager SynergyManager;
     private Tilemap tilemap;
-    private GameObject ObjectHitPosition;
+    private GameObject UnitLocateController;
     private GameObject previousParent;
     private Vector3 previousPos;
     private Quaternion benchRotate, battleRotate;
     private int battleLayer, benchLayer, unitLayer;
 
-    void Start()
-    {
+    void Start() {
         tilemap = GameManager.instance.tilemap;
         benchRotate = Quaternion.Euler(-20, 180, 0);
         battleRotate = Quaternion.Euler(0, 0, 0);
@@ -33,49 +32,51 @@ public class UnitLocate : MonoBehaviour
     {
         this.TeamManager = TeamManager;
         this.SynergyManager = SynergyManager;
+        this.UnitLocateController = this.TeamManager.UnitLocateController;
     }
 
     void OnMouseUp()
     {
         CheckLayer();
         OutLayer();
-        Destroy(ObjectHitPosition);
     }
 
     public void ForceLocate()
     {
-        if (ObjectHitPosition != null)
+        if (UnitLocateController != null)
         {
             this.transform.SetParent(previousParent.transform);
-            Destroy(ObjectHitPosition);
+            UnitLocateController.transform.localPosition = Vector3.zero;
         }
     }
 
-    public void OnObjectControll()
+    public void OnUnitControll()
     {
         previousPos = this.transform.position;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitRay))
         {
-            ObjectHitPosition = new GameObject("HitPosition");
+            //UnitLocateController = new GameObject("HitPosition");
+            //UnitLocateController.transform.SetParent(TeamManager.BattleArea.transform);
             previousParent = this.transform.parent.gameObject;
-            ObjectHitPosition.transform.position = hitRay.point;
-            this.transform.SetParent(ObjectHitPosition.transform);
+            UnitLocateController.transform.position = hitRay.point;
+            this.transform.SetParent(UnitLocateController.transform);
             this.transform.localPosition = new Vector3(0, 0.1f, 0);
         }
         SynergyManager.synergyEvent.AddListener(GetComponent<UnitInfo>().SynergyRemove);
         SynergyManager.synergyEvent.Invoke();
     }
-    public void OnObjectMove()
+    
+    public void OnUnitMove()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         int layerMask = 1 << LayerMask.NameToLayer("Stage");
         if (Physics.Raycast(ray, out RaycastHit hitLayerMask, Mathf.Infinity, layerMask))
         {
             float H = Camera.main.transform.position.y;
-            float h = ObjectHitPosition.transform.position.y;
+            float h = UnitLocateController.transform.position.y;
             Vector3 newPos = (hitLayerMask.point * (H - h) + Camera.main.transform.position * h) / H;
-            ObjectHitPosition.transform.position = newPos;
+            UnitLocateController.transform.position = newPos;
         }
     }
 

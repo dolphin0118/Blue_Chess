@@ -28,6 +28,10 @@ public class UnitManager : MonoBehaviour
 
     }
 
+    public void BattleCommand() {
+        
+    }
+
     public void BattlePhase()
     {
         unitLocate.ForceLocate();
@@ -48,6 +52,7 @@ public class UnitManager : MonoBehaviour
         this.teamManager = teamManager;
         this.synergyManager = synergyManager;
         this.unitCombine = unitCombine;
+
         this.unitCombine.Initialize(teamManager);
         unitStatus.Initialize(unitCard.UnitStat);
         unitInfo.Initialize(teamManager, synergyManager, unitCombine, unitCard.UnitData, unitStatus);
@@ -78,7 +83,9 @@ public class UnitManager : MonoBehaviour
             case State.Idle:
                 unitAnimator.IdleState();
                 break;
-
+            case State.None:
+                unitAnimator.NoneState();
+                break;
         }
     }
 
@@ -100,7 +107,7 @@ public class UnitManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         { //Left
-            unitLocate.OnObjectControll();
+            unitLocate.OnUnitControll();
         }
         else if (Input.GetMouseButtonDown(1))
         { //Right
@@ -110,7 +117,7 @@ public class UnitManager : MonoBehaviour
 
     void OnMouseDrag()
     {
-        unitLocate.OnObjectMove();
+        unitLocate.OnUnitMove();
     }
 
     void OnMouseExit()

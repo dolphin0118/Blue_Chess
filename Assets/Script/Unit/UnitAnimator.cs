@@ -21,6 +21,10 @@ public class UnitAnimator : MonoBehaviour
         unitController = GetComponent<UnitController>();
     }
 
+    public void NoneState() {
+        animator.SetBool("Idle", true);
+    }
+
     public void IdleState()
     {
         //현재 상태
