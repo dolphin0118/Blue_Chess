@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Photon.Pun;
+
 public class PlayerCtrl : MonoBehaviour
 {
     private float h = 0f;
@@ -28,7 +30,7 @@ public class PlayerCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (pv.isMine)
+        if (pv.IsMine)
         {
             h = Input.GetAxis("Horizontal");
             v = Input.GetAxis("Vertical");
@@ -63,7 +65,7 @@ public class PlayerCtrl : MonoBehaviour
 
     private void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.isWriting)
+        if (stream.IsWriting)
         {
             stream.SendNext(tr.position);
             stream.SendNext(tr.rotation);

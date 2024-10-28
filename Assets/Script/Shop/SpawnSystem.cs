@@ -5,13 +5,14 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using System;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class SpawnSystem : MonoBehaviour
 {
     public TeamManager teamManager;
     public SynergyManager synergyManager;
     public UnitCombine unitCombine;
-
     public UnitCard[] UnitCards;
     bool[] checkSlot = new bool[9];
     private GameObject BenchArea;
@@ -65,4 +66,25 @@ public class SpawnSystem : MonoBehaviour
             }
         }
     }
+    public void aSpawnUnit(UnitCard UnitCard)
+    {
+        for (int i = 0; i < checkSlot.Length; i++)
+        {
+            if (!checkSlot[i])
+            {
+                GameObject UnitClone = PhotonNetwork.Instantiate("Unit/Prefab/"+UnitCard.UnitPrefab.name, Vector3.zero, Quaternion.identity);
+                PhotonView photonView = UnitClone.GetComponent<PhotonView>();
+                if (photonView.IsMine) // 오브젝트 생성자가 소유자임
+                {
+                    photonView.TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber); // targetPlayerId로 소유권 이동
+                }
+                UnitClone.transform.SetParent(BenchArea.transform.GetChild(i));
+                UnitClone.transform.localPosition = Vector3.zero;
+                UnitClone.gameObject.tag = "Friendly";
+                UnitClone.GetComponent<UnitManager>().Initialize(teamManager, synergyManager, unitCombine, UnitCard);
+                break;
+            }
+        }
+    }
+
 }

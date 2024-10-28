@@ -4,25 +4,35 @@ using UnityEngine;
 using Photon;
 using UnityEngine.UI;
 
-public class PhotonInit : Photon.PunBehaviour
+using Photon.Pun;
+using Photon.Realtime;
+
+public class PhotonInit : MonoBehaviourPunCallbacks
 {
     private void Awake()
     {
-        PhotonNetwork.ConnectUsingSettings("MyFps 1.0");
+        PhotonNetwork.ConnectUsingSettings();
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("Connected to Master Server");
+
+        // 방이 없으면 방을 생성하거나 기존 방에 참가
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 8; //최대 8명의 플레이어가 참가 가능
+        PhotonNetwork.JoinOrCreateRoom("TestRoom", roomOptions, TypedLobby.Default);
     }
 
     public override void OnJoinedLobby()
     {
         base.OnJoinedLobby();
         Debug.Log("Joined Lobby");
-        //PhotonNetwork.CreateRoom("MyRoom");
-        PhotonNetwork.JoinRandomRoom();
-        //PhotonNetwork.JoinRoom("MyRoom");
     }
 
-    public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
+    public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        base.OnPhotonJoinRoomFailed(codeAndMsg);
+        base.OnJoinRandomFailed(returnCode, message);
         Debug.Log("No Room");
         PhotonNetwork.CreateRoom("MyRoom");
     }
@@ -37,8 +47,11 @@ public class PhotonInit : Photon.PunBehaviour
     {
         base.OnJoinedRoom();
         Debug.Log("Joined Room");
-
-        StartCoroutine(CreatePlayer());
+        if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
+        {
+            PlayerManager.instance.AssignPlayer();
+        }
+        //StartCoroutine(CreatePlayer());
     }
 
     IEnumerator CreatePlayer()
@@ -52,7 +65,7 @@ public class PhotonInit : Photon.PunBehaviour
 
     private void OnGUI()
     {
-        GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+        GUILayout.Label(PhotonNetwork.NetworkClientState.ToString());
     }
 
 

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
+    private PhotonView photonView;
     private TeamManager teamManager;
     private SynergyManager synergyManager;
     
@@ -18,14 +20,11 @@ public class UnitManager : MonoBehaviour
     private UnitAnimator unitAnimator;
     private UnitCombine unitCombine;
 
+    public string unitOwner;
+    
     private void Awake()
     {
         BindComponent();
-    }
-
-    void Start()
-    {
-
     }
 
     public void BattleCommand() {
@@ -61,7 +60,7 @@ public class UnitManager : MonoBehaviour
 
     void BindComponent()
     {
-
+        photonView = GetComponent<PhotonView>();
         unitInfo = GetComponent<UnitInfo>();
         unitLocate = GetComponent<UnitLocate>();
         unitController = GetComponent<UnitController>();
@@ -105,6 +104,7 @@ public class UnitManager : MonoBehaviour
     //----------------------------------------//
     void OnMouseOver()
     {
+        if (!photonView.IsMine) return;
         if (Input.GetMouseButtonDown(0))
         { //Left
             unitLocate.OnUnitControll();

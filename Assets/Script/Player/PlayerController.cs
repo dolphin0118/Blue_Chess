@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEditor;
+using Photon.Pun;
 
 public class PlayerController : MonoBehaviour
 {

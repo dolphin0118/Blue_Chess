@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 public class SynergyManager : MonoBehaviour {
 
@@ -24,8 +25,8 @@ public class SynergyManager : MonoBehaviour {
 
     public void SynergyUpdate() {
         SynergyCounter();
-        SynergyUIInvoke();
-        SynergySort();
+        //SynergySort();
+        SynergySort("a");
     } 
 
     void SynergyInit() {
@@ -56,28 +57,25 @@ public class SynergyManager : MonoBehaviour {
         for(int i = 0; i < synergyBase.Count; i++) {
             Synergy currentSynergy = synergyBase[i].synergyName;
             synergyBase[i].synergyCount = synergyCount[currentSynergy];
+            synergyBase[i].SynergyStackCheck();
         }
     }
 
-    void SynergyUIInvoke() {
-        for(int i = 0; i < synergyBase.Count; i++) {
-            int synergyCount = synergyBase[i].SynergyStackCheck();
-            if(synergyCount >= 0) {
-                synergyUI[i].ChangeActive(true);
-                synergyUI[i].ChangeMaterial(synergyCount); 
-            }
-            else {
-                synergyUI[i].ChangeActive(false);
-                synergyUI[i].ChangeMaterial(0);
-            }
+    void SynergyUIActive(int order, int stack) {
+        if(stack >= 0) {
+            synergyUI[order].ChangeActive(true);
+            synergyUI[order].ChangeMaterial(stack); 
+        }
+        else {
+            synergyUI[order].ChangeActive(false);
+            synergyUI[order].ChangeMaterial(0);
         }
     }
-    
+
     void SynergySort() {  
         List<int> OrderList = new List<int>();
         for(int i = 0 ; i < synergyBase.Count; i++) {
-            int orderIndex = synergyBase[i].synergyOrder;
-            OrderList.Add(orderIndex);
+            OrderList.Add(synergyBase[i].synergyOrder);
         }
         OrderList = OrderList.OrderByDescending(x => x).ToList();
 
@@ -92,4 +90,17 @@ public class SynergyManager : MonoBehaviour {
             OrderList[nindex] = 0;
         }
     }
+
+    void SynergySort(string a) {  
+        synergyBase = synergyBase.OrderByDescending(x => x.synergyOrder).
+        ThenByDescending(x => x.synergyCount).ToList();
+
+        for(int i = 0; i < synergyBase.Count; i++) {
+            int nindex = synergyUI.FindIndex(x => x.synergyName == synergyBase[i].synergyName.ToString());
+            int order = synergyBase[i].synergyOrder;
+            synergyUI[nindex].ChangeOrder(i);
+            SynergyUIActive(nindex, order);
+        }
+    }
+
 }

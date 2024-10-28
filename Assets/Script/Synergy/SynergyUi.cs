@@ -52,6 +52,10 @@ public class SynergyUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         this.transform.SetSiblingIndex(orderIndex);
     }
 
+    public void ChangeLastOrder() {
+        this.transform.SetAsLastSibling();
+    }
+
     public void ChangeActive(bool isActive) {
         this.isActive = isActive;
         if(this.isActive) {
