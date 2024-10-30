@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
-using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-public class UnitManager : MonoBehaviour
+using Photon.Pun;
+using Photon.Realtime;
+
+public class UnitManager : MonoBehaviour, IPunObservable
 {
-    private PhotonView photonView;
+
+    private PhotonView pv;
     private TeamManager teamManager;
     private SynergyManager synergyManager;
-    
+
     private UnitCard unitCard;
     private UnitInfo unitInfo;
     private UnitLocate unitLocate;
@@ -21,16 +24,35 @@ public class UnitManager : MonoBehaviour
     private UnitCombine unitCombine;
 
     public string unitOwner;
-    
+    private Transform currTr;
+
     private void Awake()
     {
         BindComponent();
     }
+    private void Update()
+    {
+        if (!pv.IsMine)
+        {
+            // this.transform.position = Vector3.Lerp(this.transform.position, currTr.position, Time.deltaTime * 10.0f);
+            // this.transform.rotation = Quaternion.Lerp(this.transform.rotation, currTr.rotation, Time.deltaTime * 10.0f);
+        }
 
-    public void BattleCommand() {
-        
     }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(this.transform.position);
+            stream.SendNext(this.transform.position);
+        }
+        else
+        {
+            currTr.position = (Vector3)stream.ReceiveNext();
+            currTr.rotation = (Quaternion)stream.ReceiveNext();
+        }
 
+    }
     public void BattlePhase()
     {
         unitLocate.ForceLocate();
@@ -60,7 +82,7 @@ public class UnitManager : MonoBehaviour
 
     void BindComponent()
     {
-        photonView = GetComponent<PhotonView>();
+        pv = GetComponent<PhotonView>();
         unitInfo = GetComponent<UnitInfo>();
         unitLocate = GetComponent<UnitLocate>();
         unitController = GetComponent<UnitController>();
@@ -104,7 +126,7 @@ public class UnitManager : MonoBehaviour
     //----------------------------------------//
     void OnMouseOver()
     {
-        if (!photonView.IsMine) return;
+        if (!pv.IsMine) return;
         if (Input.GetMouseButtonDown(0))
         { //Left
             unitLocate.OnUnitControll();
@@ -130,5 +152,6 @@ public class UnitManager : MonoBehaviour
     {
         unitItem.AddItem(item);
     }
+
 
 }

@@ -17,13 +17,14 @@ public class SpawnSystem : MonoBehaviour
     bool[] checkSlot = new bool[9];
     private GameObject BenchArea;
 
-    
+
     void Awake()
     {
         UnitCards = Resources.LoadAll<UnitCard>("Scriptable");
     }
 
-    public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCombine unitCombine) {
+    public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCombine unitCombine)
+    {
         this.teamManager = teamManager;
         this.synergyManager = synergyManager;
         this.unitCombine = unitCombine;
@@ -45,46 +46,44 @@ public class SpawnSystem : MonoBehaviour
         return isSpawn;
     }
 
-    public void SpawnUnit(UnitCard UnitCard)
-    {
-        for (int i = 0; i < checkSlot.Length; i++)
-        {
-            if (!checkSlot[i])
-            {
-                Vector3 spawnPos = new Vector3(-4, 0.1f, -6);
-                Vector3 prefabPos = new Vector3(spawnPos.x + i, spawnPos.y, spawnPos.z);
-                Vector3Int tilepos = GameManager.instance.tilemap.LocalToCell(prefabPos);
-                prefabPos = GameManager.instance.tilemap.GetCellCenterLocal(tilepos);
-                prefabPos = new Vector3(prefabPos.x, 0.1f, prefabPos.z);
-
-                GameObject UnitClone = Instantiate(UnitCard.UnitPrefab, Vector3.zero, Quaternion.identity);
-                UnitClone.transform.SetParent(BenchArea.transform.GetChild(i));
-                UnitClone.transform.localPosition = Vector3.zero;
-                UnitClone.gameObject.tag = "Friendly";
-                UnitClone.GetComponent<UnitManager>().Initialize(teamManager, synergyManager, unitCombine, UnitCard);
-                break;
-            }
-        }
-    }
     public void aSpawnUnit(UnitCard UnitCard)
     {
         for (int i = 0; i < checkSlot.Length; i++)
         {
             if (!checkSlot[i])
             {
-                GameObject UnitClone = PhotonNetwork.Instantiate("Unit/Prefab/"+UnitCard.UnitPrefab.name, Vector3.zero, Quaternion.identity);
+                GameObject UnitClone = Instantiate(UnitCard.UnitPrefab, Vector3.zero, Quaternion.identity);
+                UnitSetup(UnitClone, UnitCard, i);
                 PhotonView photonView = UnitClone.GetComponent<PhotonView>();
+                photonView.TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber); // targetPlayerId로 소유권 이동
+                break;
+            }
+        }
+    }
+    public void SpawnUnit(UnitCard UnitCard)
+    {
+        for (int i = 0; i < checkSlot.Length; i++)
+        {
+            if (!checkSlot[i])
+            {
+                GameObject UnitClone = PhotonNetwork.Instantiate("Unit/Prefab/" + UnitCard.UnitPrefab.name, Vector3.zero, Quaternion.identity);
+                PhotonView photonView = UnitClone.GetComponent<PhotonView>();
+                //photonView.RPC("UnitSetup", RpcTarget.All, UnitClone, UnitCard, i);
+                UnitSetup(UnitClone, UnitCard, i);
                 if (photonView.IsMine) // 오브젝트 생성자가 소유자임
                 {
                     photonView.TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber); // targetPlayerId로 소유권 이동
                 }
-                UnitClone.transform.SetParent(BenchArea.transform.GetChild(i));
-                UnitClone.transform.localPosition = Vector3.zero;
-                UnitClone.gameObject.tag = "Friendly";
-                UnitClone.GetComponent<UnitManager>().Initialize(teamManager, synergyManager, unitCombine, UnitCard);
                 break;
             }
         }
     }
 
+    public void UnitSetup(GameObject UnitClone, UnitCard UnitCard, int parent)
+    {
+        UnitClone.transform.SetParent(BenchArea.transform.GetChild(parent));
+        UnitClone.transform.localPosition = Vector3.zero;
+        UnitClone.gameObject.tag = "Friendly";
+        UnitClone.GetComponent<UnitManager>().Initialize(teamManager, synergyManager, unitCombine, UnitCard);
+    }
 }
