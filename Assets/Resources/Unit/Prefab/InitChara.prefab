@@ -22,7 +22,8 @@ GameObject:
   - component: {fileID: 8870767124945828126}
   - component: {fileID: 7479773406878995468}
   - component: {fileID: 7730723356761642685}
-  - component: {fileID: 1343126865617683222}
+  - component: {fileID: 5957830002021634881}
+  - component: {fileID: -6730663227696644891}
   m_Layer: 3
   m_Name: InitChara
   m_TagString: Unit
@@ -289,7 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad77d558bd83fc4c983a64dff3f215e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1343126865617683222
+--- !u!114 &5957830002021634881
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -306,12 +307,29 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 1
-  observableSearch: 2
+  observableSearch: 0
   ObservedComponents:
+  - {fileID: -6730663227696644891}
   - {fileID: -579938646543224257}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-6730663227696644891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6436713800526929204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1001 &2308400031985706415
 PrefabInstance:
   m_ObjectHideFlags: 0

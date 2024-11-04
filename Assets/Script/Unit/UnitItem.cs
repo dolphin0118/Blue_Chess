@@ -36,6 +36,7 @@ public class UnitItem : MonoBehaviour
     }
 
     private void OnDestroy() {
+        if(items == null) return;
         foreach (var item in items) {
             Debug.Log(item.Name);
             itemManager.AddItem(item);

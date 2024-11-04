@@ -7,6 +7,7 @@ using TMPro;
 using System;
 using Photon.Pun;
 using Photon.Realtime;
+using Unity.VisualScripting;
 
 public class SpawnSystem : MonoBehaviour
 {
@@ -14,21 +15,33 @@ public class SpawnSystem : MonoBehaviour
     public SynergyManager synergyManager;
     public UnitCombine unitCombine;
     public UnitCard[] UnitCards;
-    bool[] checkSlot = new bool[9];
-    private GameObject BenchArea;
+    private Dictionary<string, UnitCard> unitDictionary = new Dictionary<string, UnitCard>();
 
+    private bool[] checkSlot = new bool[9];
+    private GameObject BenchArea;
+    private PhotonView photonView;
 
     void Awake()
     {
         UnitCards = Resources.LoadAll<UnitCard>("Scriptable");
+        UnitDictionarySetup();
+        
+    }   
+
+    private void UnitDictionarySetup() {
+        foreach (var unit in UnitCards) {
+            unitDictionary.Add(unit.Name,unit);
+        }
     }
 
-    public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCombine unitCombine)
+    public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCombine unitCombine, PhotonView photonView)
     {
         this.teamManager = teamManager;
         this.synergyManager = synergyManager;
         this.unitCombine = unitCombine;
-        BenchArea = this.teamManager.BenchArea;
+        this.BenchArea = this.teamManager.BenchArea;
+        //this.photonView = photonView;
+        this.photonView = this.GetComponent<PhotonView>();
     }
 
     public bool isSpawnable()
@@ -46,38 +59,62 @@ public class SpawnSystem : MonoBehaviour
         return isSpawn;
     }
 
-    public void aSpawnUnit(UnitCard UnitCard)
-    {
-        for (int i = 0; i < checkSlot.Length; i++)
-        {
-            if (!checkSlot[i])
-            {
-                GameObject UnitClone = Instantiate(UnitCard.UnitPrefab, Vector3.zero, Quaternion.identity);
-                UnitSetup(UnitClone, UnitCard, i);
-                PhotonView photonView = UnitClone.GetComponent<PhotonView>();
-                photonView.TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber); // targetPlayerId로 소유권 이동
+    public void SpawnUnit(string unitName) {
+        UnitCard currentUnit = unitDictionary[unitName];
+        GameObject UnitClone = Instantiate(currentUnit.UnitPrefab, Vector3.zero, Quaternion.identity);
+        for (int i = 0; i < checkSlot.Length; i++) {
+            if (!checkSlot[i]) {
+                UnitClone.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber);
+                UnitSetup(UnitClone, currentUnit, i);  // 슬롯에 유닛 설정
+                break;
+            }
+        }
+        photonView.RPC("SpawnUnitRPC", RpcTarget.OthersBuffered, unitName);
+    }
+
+    [PunRPC]
+    public void SpawnUnitRPC(string unitName) {
+        UnitCard currentUnit = unitDictionary[unitName];
+        GameObject UnitClone = Instantiate(currentUnit.UnitPrefab, Vector3.zero, Quaternion.identity);
+        for (int i = 0; i < checkSlot.Length; i++) {
+            if (!checkSlot[i]) {
+                UnitSetup(UnitClone, currentUnit, i);  // 슬롯에 유닛 설정
                 break;
             }
         }
     }
-    public void SpawnUnit(UnitCard UnitCard)
-    {
-        for (int i = 0; i < checkSlot.Length; i++)
+
+    public void SpawnUnitIncludePhotonView(string unitName) {
+        GameObject UnitClone = PhotonNetwork.Instantiate("Unit/Prefab/" + unitName, Vector3.zero, Quaternion.identity);
+        PhotonView unitPhotonView = UnitClone.GetComponent<PhotonView>();
+        if (this.photonView.IsMine) // 오브젝트 생성자가 소유자임
         {
-            if (!checkSlot[i])
-            {
-                GameObject UnitClone = PhotonNetwork.Instantiate("Unit/Prefab/" + UnitCard.UnitPrefab.name, Vector3.zero, Quaternion.identity);
-                PhotonView photonView = UnitClone.GetComponent<PhotonView>();
-                //photonView.RPC("UnitSetup", RpcTarget.All, UnitClone, UnitCard, i);
-                UnitSetup(UnitClone, UnitCard, i);
-                if (photonView.IsMine) // 오브젝트 생성자가 소유자임
-                {
-                    photonView.TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber); // targetPlayerId로 소유권 이동
-                }
+            unitPhotonView.TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber);
+        }
+        photonView.RPC("SetupUnitOnAllClients", RpcTarget.All, unitName, unitPhotonView.ViewID);
+    }
+
+    [PunRPC]
+    public void SetupUnitOnAllClients(string unitName, int viewID) {
+        this.isSpawnable();
+        PhotonView unitPhotonView = PhotonView.Find(viewID);
+        if (unitPhotonView == null) {
+            Debug.LogError("UnitClone을 찾을 수 없습니다.");
+            return;
+        }
+
+        GameObject UnitClone = unitPhotonView.gameObject;
+        UnitCard currentUnit = unitDictionary[unitName];
+
+        // 빈 슬롯에 유닛 배치
+        for (int i = 0; i < checkSlot.Length; i++) {
+            if (!checkSlot[i]) {
+                UnitSetup(UnitClone, currentUnit, i);  // 슬롯에 유닛 설정
                 break;
             }
         }
     }
+
 
     public void UnitSetup(GameObject UnitClone, UnitCard UnitCard, int parent)
     {
@@ -86,4 +123,6 @@ public class SpawnSystem : MonoBehaviour
         UnitClone.gameObject.tag = "Friendly";
         UnitClone.GetComponent<UnitManager>().Initialize(teamManager, synergyManager, unitCombine, UnitCard);
     }
+
+
 }

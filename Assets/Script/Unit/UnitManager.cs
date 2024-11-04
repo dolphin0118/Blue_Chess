@@ -22,34 +22,36 @@ public class UnitManager : MonoBehaviour, IPunObservable
     private UnitItem unitItem;
     private UnitAnimator unitAnimator;
     private UnitCombine unitCombine;
+    private PhotonView photonView;
 
     public string unitOwner;
-    private Transform currTr;
+    private bool isUnitControll;
 
     private void Awake()
     {
+        isUnitControll = false;
         BindComponent();
     }
+
     private void Update()
     {
-        if (!pv.IsMine)
-        {
-            // this.transform.position = Vector3.Lerp(this.transform.position, currTr.position, Time.deltaTime * 10.0f);
-            // this.transform.rotation = Quaternion.Lerp(this.transform.rotation, currTr.rotation, Time.deltaTime * 10.0f);
-        }
 
     }
+    
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+        if(isUnitControll) return;
         if (stream.IsWriting)
         {
             stream.SendNext(this.transform.position);
-            stream.SendNext(this.transform.position);
+            stream.SendNext(this.transform.rotation);
+           // stream.SendNext(this.transform.parent);
         }
         else
         {
-            currTr.position = (Vector3)stream.ReceiveNext();
-            currTr.rotation = (Quaternion)stream.ReceiveNext();
+            this.transform.position = (Vector3)stream.ReceiveNext();
+            this.transform.rotation = (Quaternion)stream.ReceiveNext();
+           // this.transform.SetParent((Transform)stream.ReceiveNext());
         }
 
     }
@@ -82,13 +84,13 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     void BindComponent()
     {
-        pv = GetComponent<PhotonView>();
         unitInfo = GetComponent<UnitInfo>();
         unitLocate = GetComponent<UnitLocate>();
         unitController = GetComponent<UnitController>();
         unitStatus = GetComponent<UnitStatus>();
         unitItem = GetComponentInChildren<UnitItem>();
         unitAnimator = GetComponent<UnitAnimator>();
+        photonView = GetComponent<PhotonView>();
     }
 
     public void UnitState(State state)
@@ -126,13 +128,16 @@ public class UnitManager : MonoBehaviour, IPunObservable
     //----------------------------------------//
     void OnMouseOver()
     {
-        if (!pv.IsMine) return;
+        //Left
         if (Input.GetMouseButtonDown(0))
-        { //Left
+        { 
+            isUnitControll = true;
             unitLocate.OnUnitControll();
+            //photonView.RPC("OnUnitControll", RpcTarget.AllBufferedViaServer);
         }
+        //Right
         else if (Input.GetMouseButtonDown(1))
-        { //Right
+        { 
             //UIManager.instance.OpenUI(unitCard);
         }
     }
@@ -140,6 +145,23 @@ public class UnitManager : MonoBehaviour, IPunObservable
     void OnMouseDrag()
     {
         unitLocate.OnUnitMove();
+    }
+
+    void OnMouseUp()
+    {
+        isUnitControll = false;
+        unitLocate.OnUnitUpdate();
+        //photonView.RPC("OnUnitUpdate", RpcTarget.AllBufferedViaServer);
+    }
+
+    [PunRPC]
+    public void OnUnitControll() {
+        unitLocate.OnUnitControll();
+    }
+
+    [PunRPC]
+    public void OnUnitUpdate() {
+        unitLocate.OnUnitUpdate();
     }
 
     void OnMouseExit()

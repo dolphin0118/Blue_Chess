@@ -5,12 +5,14 @@ using UnityEngine;
 public class FollowCam : MonoBehaviour
 {
     private Camera mainCamera;
+    private Vector3 basePosition;
     private Transform mainCameraTr;
     public Transform viewTarget;
     // Start is called before the first frame update
     void Start()
     {
         mainCamera = Camera.main;
+        basePosition = mainCamera.transform.position;
         mainCameraTr = mainCamera.transform;
     }
 
@@ -33,8 +35,11 @@ public class FollowCam : MonoBehaviour
     }
 
     void LerpTarget() {
-        mainCameraTr.position = new Vector3(viewTarget.position.x, mainCameraTr.position.y, mainCameraTr.position.z);
-   
+        //mainCameraTr.position = new Vector3(viewTarget.position.x, mainCameraTr.position.y, mainCameraTr.position.z);
+        // 현재 카메라의 고도와 각도를 유지하기 위해 카메라의 상대적인 위치를 조정
+        Vector3 newPosition = new Vector3(viewTarget.position.x, basePosition.y, basePosition.z + viewTarget.position.z);
+        //Vector3 newPosition = new Vector3(viewTarget.position.x, mainCameraTr.position.y,  Mathf.Tan(Mathf.Deg2Rad * 55f) * viewTarget.position.z);
+        mainCameraTr.position = newPosition;
         //tr.LookAt(targetTr.position);
     }
 }

@@ -14,11 +14,13 @@ using GoogleSheet.Type;
 using System.Reflection;
 using AutoMapper;
 using BlueChessDataBase;
+using Photon.Pun;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
     public List<string> UnitList;
+    public PhotonView photonView;
     [System.NonSerialized] public static bool isBattle = false;
     public Tilemap tilemap;
     private void Awake()
@@ -32,6 +34,7 @@ public class GameManager : MonoBehaviour
         {
             if (instance != this) Destroy(this.gameObject);
         }
+        photonView = GetComponent<PhotonView>();
         UnityGoogleSheet.LoadAllData();
         DataBind();
     }
@@ -49,7 +52,7 @@ public class GameManager : MonoBehaviour
 
     void DataBind()
     {
-        ItemDataBind();
+       //ItemDataBind();
         UnitDataBind();
     }
 
@@ -129,10 +132,16 @@ public class GameManager : MonoBehaviour
         {
             UnitData UnitData = dataMapper.Map<UnitData>(Data[i]);
             UnitStat UnitStat = statMapper.Map<UnitStat>(Stat[i]);
-            CreateUnitAsset(UnitData, UnitStat);
+            // ※유닛 데이터베이스 동기화
+            // CreateUnitAsset(UnitData, UnitStat);
+ 
+            UnitList.Add(UnitData.Name);
+
         }
 
     }
+
+
 
     void CreateUnitAsset(UnitData UnitData, UnitStat UnitStat)
     {

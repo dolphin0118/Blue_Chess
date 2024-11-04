@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 public class TeamManager : MonoBehaviour
 {
     const int row = 8; const int col = 4;
-    public Dictionary<string, bool> UnitCheck = new Dictionary<string, bool>();
+    public Dictionary<string, int> UnitCheck = new Dictionary<string, int>();
     public Dictionary<string, LevelData> UnitLevel = new Dictionary<string, LevelData>();
     public Dictionary<string, List<GameObject>> UnitObject = new Dictionary<string, List<GameObject>>();
     public Vector3 LerpPos;
@@ -74,13 +74,16 @@ public class TeamManager : MonoBehaviour
     {
         unitLocate[UnitPos.x, UnitPos.y] = Unit;
     }
+
     public void UnitLocateDelete(Vector2Int UnitPos)
     {
         if (UnitPos.x < 0 || UnitPos.x > row || UnitPos.y < 0 || UnitPos.y > col) return;
         unitLocate[UnitPos.x, UnitPos.y] = null;
     }
+
     public void UnitLocateSwap(Vector2Int Unit1Pos, Vector2Int Unit2Pos)
     {
+        Debug.Log(Unit1Pos + "."+Unit2Pos);
         (unitLocate[Unit1Pos.x, Unit1Pos.y], unitLocate[Unit2Pos.x, Unit2Pos.y]) =
         (unitLocate[Unit2Pos.x, Unit2Pos.y], unitLocate[Unit1Pos.x, Unit1Pos.y]);
     }
@@ -90,12 +93,11 @@ public class TeamManager : MonoBehaviour
         if (unitLocate[UnitPos.x, UnitPos.y] == null) return true;
         else return false;
     }
-
+//---------------------------------------------------------------------------------------------//
     public void UnitListAdd() { 
         foreach(string unitName in GameManager.instance.UnitList) {
-            UnitCheck.Add(unitName, false); 
-        }
-            
+            UnitCheck.Add(unitName, 0); 
+        }        
      }
 
     public void UnitDeleteAll()
@@ -133,7 +135,6 @@ public class TeamManager : MonoBehaviour
         int convertCol = (col + 3) * -1;
         Vector3Int unitPos = new Vector3Int(convertRow, convertCol, 0);
         Vector3 unitPosition = GameManager.instance.tilemap.CellToLocal(unitPos);
-        Debug.Log(unitPos + " " + unitPosition);
         return unitPosition;
     }
 

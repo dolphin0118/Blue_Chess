@@ -10,6 +10,12 @@ using UnityEngine.Tilemaps;
 
 public class UnitLocate : MonoBehaviour
 {
+    enum LocateType {
+        Swap,
+        Battle,
+        Bench,
+    }
+
     private TeamManager TeamManager;
     private SynergyManager SynergyManager;
     private Tilemap tilemap;
@@ -35,11 +41,6 @@ public class UnitLocate : MonoBehaviour
         this.UnitLocateController = this.TeamManager.UnitLocateController;
     }
 
-    void OnMouseUp()
-    {
-        CheckLayer();
-        OutLayer();
-    }
 
     public void ForceLocate()
     {
@@ -49,6 +50,7 @@ public class UnitLocate : MonoBehaviour
             UnitLocateController.transform.localPosition = Vector3.zero;
         }
     }
+    public bool IsBattleLayer() { return this.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle");}
 
     public void OnUnitControll()
     {
@@ -56,16 +58,15 @@ public class UnitLocate : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitRay))
         {
-            //UnitLocateController = new GameObject("HitPosition");
-            //UnitLocateController.transform.SetParent(TeamManager.BattleArea.transform);
             previousParent = this.transform.parent.gameObject;
             UnitLocateController.transform.position = hitRay.point;
+            if(previousParent.layer == LayerMask.NameToLayer("Battle")) {
+                this.GetComponent<UnitInfo>().SynergyRemove();
+            }
             this.transform.SetParent(UnitLocateController.transform);
             this.transform.localPosition = new Vector3(0, 0.1f, 0);
         }
-        SynergyManager.synergyEvent.AddListener(GetComponent<UnitInfo>().SynergyRemove);
-        SynergyManager.synergyEvent.Invoke();
-    }
+    } 
     
     public void OnUnitMove()
     {
@@ -79,8 +80,13 @@ public class UnitLocate : MonoBehaviour
             UnitLocateController.transform.position = newPos;
         }
     }
+    
+    public void OnUnitUpdate() {
+        CheckLayer();
+        OutLayer();
+    }
 
-    void CheckLayer()
+    public void CheckLayer()
     {
         GameObject swapUnit = null;
         bool isSwap = false;
@@ -89,6 +95,7 @@ public class UnitLocate : MonoBehaviour
         Vector3Int tilePos = tilemap.LocalToCell(currentPos);
         Vector3 checkPos = tilemap.GetCellCenterLocal(tilePos);
         checkPos = new Vector3(checkPos.x, 0.1f, checkPos.z);
+
         //유닛 to 유닛 Swap
         if (Physics.CheckSphere(checkPos, 0.1f, unitLayer))
         {
@@ -99,6 +106,7 @@ public class UnitLocate : MonoBehaviour
             swapUnit.transform.position = new Vector3(previousPos.x, 0.1f, previousPos.z);
             Debug.Log("Swap");
         }
+
         //벤치레이어일 경우
         RaycastHit hitLayer;
         if (Physics.Raycast(currentPos, Vector3.down, out hitLayer, Mathf.Infinity, benchLayer))
@@ -113,6 +121,9 @@ public class UnitLocate : MonoBehaviour
                 hitObject.transform.GetChild(0).SetParent(previousParent.transform);
                 previousParent.transform.GetChild(0).gameObject.transform.localPosition = new Vector3(0, 0, 0);
                 previousParent = hitObject;
+                // swapUnit.transform.SetParent(previousParent.transform);
+                // swapUnit.transform.localPosition = new Vector3(0, 0, 0);
+                // previousParent = hitObject;
             }
             Debug.Log("Bench");
         }
@@ -122,7 +133,6 @@ public class UnitLocate : MonoBehaviour
             //현재 타일이 배틀레이어 내부의 유효한 타일인지
             if (!CheckBattleTile()) { 
                 this.transform.position = previousPos; 
-                Debug.Log(tilePos);
                 return; 
             }
 
@@ -130,16 +140,15 @@ public class UnitLocate : MonoBehaviour
             this.transform.position = checkPos;
             if (!isSwap)
             {
-                TeamManager.UnitLocateDelete(CheckTilePoition(previousPos));
-                TeamManager.UnitLocateSave(CheckTilePoition(this.gameObject), this.gameObject);
+                TeamManager.UnitLocateDelete(CheckTilePosition(previousPos));
+                TeamManager.UnitLocateSave(CheckTilePosition(this.gameObject), this.gameObject);
             }
             if (isSwap && swapUnit != null)
             {
-                TeamManager.UnitLocateSwap(CheckTilePoition(this.gameObject), CheckTilePoition(swapUnit));
+                TeamManager.UnitLocateSwap(CheckTilePosition(this.gameObject), CheckTilePosition(swapUnit));
                 swapUnit.transform.SetParent(previousParent.transform);
             }
             previousParent = hitObject;
-            Debug.Log(tilePos);
             Debug.Log("battle");
         }
         else
@@ -148,7 +157,7 @@ public class UnitLocate : MonoBehaviour
         }
     }
 
-    void OutLayer()
+    public void OutLayer()
     {
         this.transform.SetParent(previousParent.transform);
         Vector3 currentPos = this.transform.position;
@@ -164,8 +173,7 @@ public class UnitLocate : MonoBehaviour
             Vector3 pos = tilemap.GetCellCenterLocal(tilemap.LocalToCell(this.transform.position));
             transform.position = new Vector3(pos.x, 0.1f, pos.z);
             this.transform.rotation = battleRotate;
-            SynergyManager.synergyEvent.AddListener(this.transform.GetComponent<UnitInfo>().SynergyAdd);
-            SynergyManager.synergyEvent.Invoke();
+            this.transform.GetComponent<UnitInfo>().SynergyAdd();
         }
         else
         {
@@ -175,7 +183,9 @@ public class UnitLocate : MonoBehaviour
         }
     }
 
-    Vector2Int CheckTilePoition(Vector3 checkPos)
+    
+
+    Vector2Int CheckTilePosition(Vector3 checkPos)
     {
         //row -3 -2 -1 0 1 2 3
         //col -3 -4 -5 -6
@@ -187,7 +197,7 @@ public class UnitLocate : MonoBehaviour
         return convertTilePos;
     }
 
-    Vector2Int CheckTilePoition(GameObject checkUnit)
+    Vector2Int CheckTilePosition(GameObject checkUnit)
     {
         //row -3 -2 -1 0 1 2 3
         //col -3 -4 -5 -6
@@ -201,7 +211,7 @@ public class UnitLocate : MonoBehaviour
 
     bool CheckBattleTile()
     {
-        Vector2Int tilePos = CheckTilePoition(this.gameObject);
+        Vector2Int tilePos = CheckTilePosition(this.gameObject);
         int row = tilePos.x;
         int col = tilePos.y;
         //bool isUnitLocate = TeamManager.instance.IsUnitLocate(row, col);

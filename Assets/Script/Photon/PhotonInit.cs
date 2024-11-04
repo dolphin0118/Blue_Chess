@@ -47,11 +47,17 @@ public class PhotonInit : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         Debug.Log("Joined Room");
-        if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsConnected&& PhotonNetwork.IsMasterClient)
         {
-            PlayerManager.instance.AssignPlayer();
+            PlayerManager.instance.AssignPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
+            PlayerManager.instance.playerViewCode = 1;
         }
-        //StartCoroutine(CreatePlayer());
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Debug.Log("ENDTER");
+        PlayerManager.instance.AssignPlayer(newPlayer.ActorNumber); // 새로운 플레이어가 들어오면 소유권을 할당
     }
 
     IEnumerator CreatePlayer()

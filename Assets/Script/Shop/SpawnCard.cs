@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using Photon.Pun;
 
 public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
     private SpawnSystem spawnSystem;
@@ -86,7 +87,8 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     void CardSpawn() {
         isSpawn = spawnSystem.isSpawnable();
         if(isSpawn) {
-            spawnSystem.SpawnUnit(unitCard);
+            //spawnSystem.SpawnUnit(unitCard.name);
+            spawnSystem.SpawnUnitIncludePhotonView(unitCard.name);
             CardDisable();
         }
     }  

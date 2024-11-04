@@ -31,12 +31,20 @@ public class UIManager : MonoBehaviour
         if(isActive) {
             CharaDetailUI.SetActive(true);
             SynergyUI.SetActive(true);
-            ShopUI.SetActive(true);
         }
         else {
             CharaDetailUI.SetActive(false);
             SynergyUI.SetActive(false);
+        }
+    }
+
+    public void SetShopUIActive(bool isActive) {
+        if(isActive) {
+            ShopUI.SetActive(true);
+        }
+        else {
             ShopUI.SetActive(false);
         }
+
     }
 }

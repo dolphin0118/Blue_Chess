@@ -97,27 +97,27 @@ public class UnitInfo : MonoBehaviour
 
     public void SynergyAdd()
     {
-        if (!teamManager.UnitCheck[unitData.Name])
-        {
-            teamManager.UnitCheck[unitData.Name] = true;
+        
+        if (teamManager.UnitCheck[unitData.Name] == 0) {
             Synergy traitSynergy = unitData.traitSynergy;
             Synergy schoolSynergy = unitData.schoolSynergy;
             synergyManager.synergyCount[traitSynergy]++;
             synergyManager.synergyCount[schoolSynergy]++;
         }
-        synergyManager.synergyEvent.RemoveListener(SynergyAdd);
+        teamManager.UnitCheck[unitData.Name]++;
     }
 
     public void SynergyRemove()
     {
-        if (teamManager.UnitCheck[unitData.Name])
-        {
-            teamManager.UnitCheck[unitData.Name] = false;
-            Synergy traitSynergy = unitData.traitSynergy;
-            Synergy schoolSynergy = unitData.schoolSynergy;
-            synergyManager.synergyCount[traitSynergy]--;
-            synergyManager.synergyCount[schoolSynergy]--;
+        if (teamManager.UnitCheck[unitData.Name] > 0) {
+            teamManager.UnitCheck[unitData.Name]--;
+            if(teamManager.UnitCheck[unitData.Name] == 0) {
+                Synergy traitSynergy = unitData.traitSynergy;
+                Synergy schoolSynergy = unitData.schoolSynergy;
+                synergyManager.synergyCount[traitSynergy]--;
+                synergyManager.synergyCount[schoolSynergy]--; 
+            }
         }
-        synergyManager.synergyEvent.RemoveListener(SynergyRemove);
     }
+
 }

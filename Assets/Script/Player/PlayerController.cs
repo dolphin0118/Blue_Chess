@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEditor;
 using Photon.Pun;
+using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,8 +16,8 @@ public class PlayerController : MonoBehaviour
     private SpawnSystem spawnSystem;
     public PhotonView photonView;
     public GameObject viewTarget;
-    [SerializeField] private int playerCode = 0;
-
+    [SerializeField] public int playerCode = 0;
+        bool IsConnected = false;
     private void Awake()
     {
         TeamManager = GetComponentInChildren<TeamManager>();
@@ -24,27 +25,39 @@ public class PlayerController : MonoBehaviour
         unitCombine = GetComponentInChildren<UnitCombine>();
         UIManager = GetComponentInChildren<UIManager>();
         spawnSystem = GetComponentInChildren<SpawnSystem>();
-        
-        spawnSystem.Initialize(TeamManager, synergyManager, unitCombine);
-
+        photonView = GetComponent<PhotonView>();
+        spawnSystem.Initialize(TeamManager, synergyManager, unitCombine, photonView);
     }
+
     private void Update() {
-        SetView();
+        UpdateView();
     }
 
-    public void SetView() {
-        //photonView.isMine;
-        if(playerCode == PlayerManager.instance.playerViewCode) {
+    public void UpdateView() {
+        
+        if(photonView.IsMine && !IsConnected && !PhotonNetwork.IsMasterClient) {
+            PlayerManager.instance.playerViewCode = playerCode;
+            IsConnected = true;
+        }
+
+        if(PlayerManager.instance.playerViewCode == playerCode) {
             UIManager.SetUIActive(true);
-            SetViewTarget();
-        }
-        else
-        {
+            UpdateViewTarget();
+            if(photonView.IsMine) {
+                PlayerManager.instance.playerViewCode = playerCode;
+                UIManager.SetShopUIActive(true);  
+            }
+            else  {
+                UIManager.SetShopUIActive(false);
+            }
+        }       
+        else  {
             UIManager.SetUIActive(false);
+            UIManager.SetShopUIActive(false);
         }
     }
 
-    public void SetViewTarget() {
+    public void UpdateViewTarget() {
         Camera.main.GetComponent<FollowCam>().viewTarget = this.viewTarget.transform;
     }
 
