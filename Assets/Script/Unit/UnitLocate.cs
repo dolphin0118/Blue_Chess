@@ -11,13 +11,7 @@ using Photon.Pun;
 
 public class UnitLocate : MonoBehaviour
 {
-    enum LocateType
-    {
-        Swap,
-        Battle,
-        Bench,
-    }
-
+    private PhotonView photonView;
     private TeamManager TeamManager;
     private SynergyManager SynergyManager;
     private Tilemap tilemap;
@@ -35,6 +29,7 @@ public class UnitLocate : MonoBehaviour
         unitLayer = 1 << LayerMask.NameToLayer("Unit");
         battleLayer = 1 << LayerMask.NameToLayer("Battle");
         benchLayer = 1 << LayerMask.NameToLayer("Bench");
+        photonView = GetComponent<PhotonView>();
     }
 
     public void Initialize(TeamManager TeamManager, SynergyManager SynergyManager)
@@ -42,6 +37,7 @@ public class UnitLocate : MonoBehaviour
         this.TeamManager = TeamManager;
         this.SynergyManager = SynergyManager;
         this.UnitLocateController = this.TeamManager.UnitLocateController;
+        
     }
 
 
@@ -65,7 +61,8 @@ public class UnitLocate : MonoBehaviour
             UnitLocateController.transform.position = hitRay.point;
             if (previousParent.layer == LayerMask.NameToLayer("Battle"))
             {
-                this.GetComponent<UnitInfo>().SynergyRemove();
+                //this.transform.GetComponent<UnitInfo>().SynergyRemove();
+                photonView.RPC("UnitSynergyUpdate", RpcTarget.All, "Remove");
             }
             this.transform.SetParent(UnitLocateController.transform);
             this.transform.localPosition = new Vector3(0, 0.1f, 0);
@@ -87,29 +84,45 @@ public class UnitLocate : MonoBehaviour
 
     public void OnUnitUpdate()
     {
-        CheckLayer();
-        OutLayer();
+        NotIncludeTileCheckLayer();
+        //CheckLayer();
+        //OutLayer();
     }
 
     [PunRPC]
-    public void UnitLocateUpdate(string type, int row, int col)
-    {
-
+    public void UnitSynergyUpdate(string type) {
+        if(type.Equals("Add")) {
+            this.transform.GetComponent<UnitInfo>().SynergyAdd();
+        }
+        else if(type.Equals("Remove")) {
+            this.transform.GetComponent<UnitInfo>().SynergyRemove();
+        }
     }
 
+    //BattleLocate
     [PunRPC]
-    public void UnitLocateUpdate(string type, int row, int col, int row1, int col2)
+    public void UnitLocateUpdate(int row, int col)
     {
-
+        GameObject unitParent = TeamManager.BattleArea.transform.GetChild(row).GetChild(col).gameObject;
+        this.transform.SetParent(unitParent.transform);
+        this.transform.localPosition = new Vector3(0, 0.1f, 0);
+        this.transform.rotation = benchRotate;
+                
+    }
+    
+    //BenchLocate
+    [PunRPC] 
+    public void UnitLocateUpdate(int col)
+    {
+        GameObject unitParent = TeamManager.BenchArea.transform.GetChild(col).gameObject;
+        this.transform.SetParent(unitParent.transform);
+        this.transform.localPosition = new Vector3(0, 0.1f, 0);
+        this.transform.rotation = benchRotate;
     }
 
     public void NotIncludeTileCheckLayer()
     {
-        GameObject swapUnit = null;
-
         Vector3 currentPos = this.transform.position;
-        Vector3 checkPos = new Vector3(currentPos.x, 0.1f, currentPos.z);
-
         //벤치레이어일 경우
         RaycastHit hitLayer;
         if (Physics.Raycast(currentPos, Vector3.down, out hitLayer, Mathf.Infinity, benchLayer))
@@ -120,40 +133,85 @@ public class UnitLocate : MonoBehaviour
             if (hitObject.transform.childCount == 0)
             {
                 previousParent = hitObject;
+                this.transform.SetParent(previousParent.transform);
+                this.transform.localPosition = new Vector3(0, 0.1f, 0);
+                this.transform.rotation = benchRotate;
+                photonView.RPC("UnitLocateUpdate", RpcTarget.Others, col);
+
             }
+            //Swap 필요
             else
             {
-                hitObject.transform.GetChild(0).SetParent(previousParent.transform);
-                previousParent.transform.GetChild(0).gameObject.transform.localPosition = new Vector3(0, 0, 0);
+                GameObject swapUnit = hitObject.transform.GetChild(0).gameObject;
+                swapUnit.transform.SetParent(previousParent.transform);
+                swapUnit.gameObject.transform.localPosition = new Vector3(0, 0, 0);
+                if(previousParent.layer == LayerMask.NameToLayer("Bench")) {
+                    int swapcol = swapUnit.transform.parent.GetSiblingIndex();
+                    photonView.RPC("UnitLocateUpdate", RpcTarget.Others, swapcol);//SwapUnit
+                }
+                else {
+                    int swaprow = swapUnit.transform.parent.parent.GetSiblingIndex();
+                    int swapcol = swapUnit.transform.parent.GetSiblingIndex();
+                    photonView.RPC("UnitLocateUpdate", RpcTarget.Others, swaprow, swapcol);//SwapUnit
+                }
+
                 previousParent = hitObject;
+                this.transform.SetParent(previousParent.transform);
+                this.transform.localPosition = new Vector3(0, 0.1f, 0);
+                this.transform.rotation = benchRotate;
+                photonView.RPC("UnitLocateUpdate", RpcTarget.Others, col);//CurrentUnit
+                
             }
 
         }
         //배틀레이어일 경우
         else if (Physics.Raycast(currentPos, Vector3.down, out hitLayer, Mathf.Infinity, battleLayer))
         {
-            //현재 타일이 배틀레이어 내부의 유효한 타일인지
             GameObject hitObject = hitLayer.collider.transform.gameObject;
-            this.transform.position = checkPos;
+            int row = hitObject.transform.parent.GetSiblingIndex();
+            int col = hitObject.transform.GetSiblingIndex();
+
             if (hitObject.transform.childCount == 0)
             {
-                TeamManager.UnitLocateDelete(CheckTilePosition(previousPos));
-                TeamManager.UnitLocateSave(CheckTilePosition(this.gameObject), this.gameObject);
+                previousParent = hitObject;
+                this.transform.SetParent(previousParent.transform);
+                this.transform.localPosition = Vector3.zero;
+                this.transform.rotation = battleRotate;
+                //this.transform.GetComponent<UnitInfo>().SynergyAdd();
+                photonView.RPC("UnitSynergyUpdate", RpcTarget.All, "Add");
+                photonView.RPC("UnitLocateUpdate", RpcTarget.Others, row, col);//CurrentUnit
             }
             else
             {
-                TeamManager.UnitLocateSwap(CheckTilePosition(this.gameObject), CheckTilePosition(swapUnit));
+                GameObject swapUnit = hitObject.transform.GetChild(0).gameObject;
                 swapUnit.transform.SetParent(previousParent.transform);
+                swapUnit.gameObject.transform.localPosition = new Vector3(0, 0, 0);
+                if(previousParent.layer == LayerMask.NameToLayer("Bench")) {
+                    int swapcol = swapUnit.transform.parent.GetSiblingIndex();
+                    photonView.RPC("UnitLocateUpdate", RpcTarget.Others, swapcol);//SwapUnit
+                }
+                else {
+                    int swaprow = swapUnit.transform.parent.parent.GetSiblingIndex();
+                    int swapcol = swapUnit.transform.parent.GetSiblingIndex();
+                    photonView.RPC("UnitLocateUpdate", RpcTarget.Others, swaprow, swapcol);//SwapUnit
+                }
+
+                previousParent = hitObject;
+                this.transform.SetParent(previousParent.transform);
+                this.transform.localPosition = Vector3.zero;
+                this.transform.rotation = battleRotate;
+                photonView.RPC("UnitSynergyUpdate", RpcTarget.All, "Add");
+                photonView.RPC("UnitLocateUpdate", RpcTarget.Others, row, col);//CurrentUnit
             }
             previousParent = hitObject;
             Debug.Log("battle");
         }
         else
         {
-            this.transform.position = previousPos;
+            this.transform.SetParent(previousParent.transform);
+            this.transform.localPosition = new Vector3(0, 0, 0);
         }
     }
-
 
     public void CheckLayer()
     {
@@ -252,8 +310,6 @@ public class UnitLocate : MonoBehaviour
             transform.localPosition = new Vector3(0, transform.position.y, 0);
         }
     }
-
-
 
     Vector2Int CheckTilePosition(Vector3 checkPos)
     {

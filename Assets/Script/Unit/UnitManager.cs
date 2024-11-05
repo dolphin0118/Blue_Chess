@@ -29,7 +29,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     private void Awake()
     {
-        isUnitControll = false;
+        isUnitControll = true;
         BindComponent();
     }
 
@@ -132,8 +132,8 @@ public class UnitManager : MonoBehaviour, IPunObservable
         if (Input.GetMouseButtonDown(0))
         { 
             isUnitControll = true;
+            photonView.RPC("SetUnitControll", RpcTarget.Others, true);
             unitLocate.OnUnitControll();
-            //photonView.RPC("OnUnitControll", RpcTarget.AllBufferedViaServer);
         }
         //Right
         else if (Input.GetMouseButtonDown(1))
@@ -150,18 +150,13 @@ public class UnitManager : MonoBehaviour, IPunObservable
     void OnMouseUp()
     {
         isUnitControll = false;
+        photonView.RPC("SetUnitControll", RpcTarget.Others, false);
         unitLocate.OnUnitUpdate();
-        //photonView.RPC("OnUnitUpdate", RpcTarget.AllBufferedViaServer);
     }
 
     [PunRPC]
-    public void OnUnitControll() {
-        unitLocate.OnUnitControll();
-    }
-
-    [PunRPC]
-    public void OnUnitUpdate() {
-        unitLocate.OnUnitUpdate();
+    public void SetUnitControll(bool isControll) {
+        isUnitControll = isControll;
     }
 
     void OnMouseExit()

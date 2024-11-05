@@ -95,7 +95,7 @@ public class UnitCombine : MonoBehaviour
                 }
                 else {
                     Delete_Count++;
-                    PhotonNetwork.Destroy(targetUnits[i]); 
+                    ObjectPoolManager.instance.multiPool[UnitName].Release(targetUnits[i]);
                     TeamManager.UnitObject[UnitName].Remove(targetUnits[i]);
                 }
         }

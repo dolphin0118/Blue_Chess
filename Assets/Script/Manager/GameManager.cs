@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public PhotonView photonView;
     [System.NonSerialized] public static bool isBattle = false;
     public Tilemap tilemap;
+    
     private void Awake()
     {
         if (instance == null)

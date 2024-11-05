@@ -8,6 +8,7 @@ using System;
 using Photon.Pun;
 using Photon.Realtime;
 using Unity.VisualScripting;
+using BehaviorDesigner.Runtime;
 
 public class SpawnSystem : MonoBehaviour
 {
@@ -61,7 +62,8 @@ public class SpawnSystem : MonoBehaviour
 
     public void SpawnUnit(string unitName) {
         UnitCard currentUnit = unitDictionary[unitName];
-        GameObject UnitClone = Instantiate(currentUnit.UnitPrefab, Vector3.zero, Quaternion.identity);
+        //GameObject UnitClone = Instantiate(currentUnit.UnitPrefab, Vector3.zero, Quaternion.identity);
+        GameObject UnitClone = ObjectPoolManager.instance.multiPool[unitName].Get();
         for (int i = 0; i < checkSlot.Length; i++) {
             if (!checkSlot[i]) {
                 UnitClone.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber);
@@ -75,7 +77,8 @@ public class SpawnSystem : MonoBehaviour
     [PunRPC]
     public void SpawnUnitRPC(string unitName) {
         UnitCard currentUnit = unitDictionary[unitName];
-        GameObject UnitClone = Instantiate(currentUnit.UnitPrefab, Vector3.zero, Quaternion.identity);
+        //GameObject UnitClone = Instantiate(currentUnit.UnitPrefab, Vector3.zero, Quaternion.identity);
+        GameObject UnitClone = ObjectPoolManager.instance.multiPool[unitName].Get();
         for (int i = 0; i < checkSlot.Length; i++) {
             if (!checkSlot[i]) {
                 UnitSetup(UnitClone, currentUnit, i);  // 슬롯에 유닛 설정
