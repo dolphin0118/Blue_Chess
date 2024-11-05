@@ -7,10 +7,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Tilemaps;
+using Photon.Pun;
 
 public class UnitLocate : MonoBehaviour
 {
-    enum LocateType {
+    enum LocateType
+    {
         Swap,
         Battle,
         Bench,
@@ -25,7 +27,8 @@ public class UnitLocate : MonoBehaviour
     private Quaternion benchRotate, battleRotate;
     private int battleLayer, benchLayer, unitLayer;
 
-    void Start() {
+    void Start()
+    {
         tilemap = GameManager.instance.tilemap;
         benchRotate = Quaternion.Euler(-20, 180, 0);
         battleRotate = Quaternion.Euler(0, 0, 0);
@@ -50,7 +53,7 @@ public class UnitLocate : MonoBehaviour
             UnitLocateController.transform.localPosition = Vector3.zero;
         }
     }
-    public bool IsBattleLayer() { return this.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle");}
+    public bool IsBattleLayer() { return this.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle"); }
 
     public void OnUnitControll()
     {
@@ -60,14 +63,15 @@ public class UnitLocate : MonoBehaviour
         {
             previousParent = this.transform.parent.gameObject;
             UnitLocateController.transform.position = hitRay.point;
-            if(previousParent.layer == LayerMask.NameToLayer("Battle")) {
+            if (previousParent.layer == LayerMask.NameToLayer("Battle"))
+            {
                 this.GetComponent<UnitInfo>().SynergyRemove();
             }
             this.transform.SetParent(UnitLocateController.transform);
             this.transform.localPosition = new Vector3(0, 0.1f, 0);
         }
-    } 
-    
+    }
+
     public void OnUnitMove()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -80,11 +84,76 @@ public class UnitLocate : MonoBehaviour
             UnitLocateController.transform.position = newPos;
         }
     }
-    
-    public void OnUnitUpdate() {
+
+    public void OnUnitUpdate()
+    {
         CheckLayer();
         OutLayer();
     }
+
+    [PunRPC]
+    public void UnitLocateUpdate(string type, int row, int col)
+    {
+
+    }
+
+    [PunRPC]
+    public void UnitLocateUpdate(string type, int row, int col, int row1, int col2)
+    {
+
+    }
+
+    public void NotIncludeTileCheckLayer()
+    {
+        GameObject swapUnit = null;
+
+        Vector3 currentPos = this.transform.position;
+        Vector3 checkPos = new Vector3(currentPos.x, 0.1f, currentPos.z);
+
+        //벤치레이어일 경우
+        RaycastHit hitLayer;
+        if (Physics.Raycast(currentPos, Vector3.down, out hitLayer, Mathf.Infinity, benchLayer))
+        {
+            GameObject hitObject = hitLayer.collider.transform.gameObject;
+            int row = hitObject.transform.parent.GetSiblingIndex();
+            int col = hitObject.transform.GetSiblingIndex();
+            if (hitObject.transform.childCount == 0)
+            {
+                previousParent = hitObject;
+            }
+            else
+            {
+                hitObject.transform.GetChild(0).SetParent(previousParent.transform);
+                previousParent.transform.GetChild(0).gameObject.transform.localPosition = new Vector3(0, 0, 0);
+                previousParent = hitObject;
+            }
+
+        }
+        //배틀레이어일 경우
+        else if (Physics.Raycast(currentPos, Vector3.down, out hitLayer, Mathf.Infinity, battleLayer))
+        {
+            //현재 타일이 배틀레이어 내부의 유효한 타일인지
+            GameObject hitObject = hitLayer.collider.transform.gameObject;
+            this.transform.position = checkPos;
+            if (hitObject.transform.childCount == 0)
+            {
+                TeamManager.UnitLocateDelete(CheckTilePosition(previousPos));
+                TeamManager.UnitLocateSave(CheckTilePosition(this.gameObject), this.gameObject);
+            }
+            else
+            {
+                TeamManager.UnitLocateSwap(CheckTilePosition(this.gameObject), CheckTilePosition(swapUnit));
+                swapUnit.transform.SetParent(previousParent.transform);
+            }
+            previousParent = hitObject;
+            Debug.Log("battle");
+        }
+        else
+        {
+            this.transform.position = previousPos;
+        }
+    }
+
 
     public void CheckLayer()
     {
@@ -131,9 +200,10 @@ public class UnitLocate : MonoBehaviour
         else if (Physics.Raycast(currentPos, Vector3.down, out hitLayer, Mathf.Infinity, battleLayer))
         {
             //현재 타일이 배틀레이어 내부의 유효한 타일인지
-            if (!CheckBattleTile()) { 
-                this.transform.position = previousPos; 
-                return; 
+            if (!CheckBattleTile())
+            {
+                this.transform.position = previousPos;
+                return;
             }
 
             GameObject hitObject = hitLayer.collider.transform.gameObject;
@@ -183,7 +253,7 @@ public class UnitLocate : MonoBehaviour
         }
     }
 
-    
+
 
     Vector2Int CheckTilePosition(Vector3 checkPos)
     {
