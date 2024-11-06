@@ -37,7 +37,7 @@ public class UnitLocate : MonoBehaviour
         this.TeamManager = TeamManager;
         this.SynergyManager = SynergyManager;
         this.UnitLocateController = this.TeamManager.UnitLocateController;
-        
+
     }
 
 
@@ -90,11 +90,14 @@ public class UnitLocate : MonoBehaviour
     }
 
     [PunRPC]
-    public void UnitSynergyUpdate(string type) {
-        if(type.Equals("Add")) {
+    public void UnitSynergyUpdate(string type)
+    {
+        if (type.Equals("Add"))
+        {
             this.transform.GetComponent<UnitInfo>().SynergyAdd();
         }
-        else if(type.Equals("Remove")) {
+        else if (type.Equals("Remove"))
+        {
             this.transform.GetComponent<UnitInfo>().SynergyRemove();
         }
     }
@@ -107,11 +110,11 @@ public class UnitLocate : MonoBehaviour
         this.transform.SetParent(unitParent.transform);
         this.transform.localPosition = new Vector3(0, 0.1f, 0);
         this.transform.rotation = benchRotate;
-                
+
     }
-    
+
     //BenchLocate
-    [PunRPC] 
+    [PunRPC]
     public void UnitLocateUpdate(int col)
     {
         GameObject unitParent = TeamManager.BenchArea.transform.GetChild(col).gameObject;
@@ -145,11 +148,13 @@ public class UnitLocate : MonoBehaviour
                 GameObject swapUnit = hitObject.transform.GetChild(0).gameObject;
                 swapUnit.transform.SetParent(previousParent.transform);
                 swapUnit.gameObject.transform.localPosition = new Vector3(0, 0, 0);
-                if(previousParent.layer == LayerMask.NameToLayer("Bench")) {
+                if (previousParent.layer == LayerMask.NameToLayer("Bench"))
+                {
                     int swapcol = swapUnit.transform.parent.GetSiblingIndex();
                     photonView.RPC("UnitLocateUpdate", RpcTarget.Others, swapcol);//SwapUnit
                 }
-                else {
+                else
+                {
                     int swaprow = swapUnit.transform.parent.parent.GetSiblingIndex();
                     int swapcol = swapUnit.transform.parent.GetSiblingIndex();
                     photonView.RPC("UnitLocateUpdate", RpcTarget.Others, swaprow, swapcol);//SwapUnit
@@ -160,7 +165,7 @@ public class UnitLocate : MonoBehaviour
                 this.transform.localPosition = new Vector3(0, 0.1f, 0);
                 this.transform.rotation = benchRotate;
                 photonView.RPC("UnitLocateUpdate", RpcTarget.Others, col);//CurrentUnit
-                
+
             }
 
         }
@@ -186,11 +191,13 @@ public class UnitLocate : MonoBehaviour
                 GameObject swapUnit = hitObject.transform.GetChild(0).gameObject;
                 swapUnit.transform.SetParent(previousParent.transform);
                 swapUnit.gameObject.transform.localPosition = new Vector3(0, 0, 0);
-                if(previousParent.layer == LayerMask.NameToLayer("Bench")) {
+                if (previousParent.layer == LayerMask.NameToLayer("Bench"))
+                {
                     int swapcol = swapUnit.transform.parent.GetSiblingIndex();
                     photonView.RPC("UnitLocateUpdate", RpcTarget.Others, swapcol);//SwapUnit
                 }
-                else {
+                else
+                {
                     int swaprow = swapUnit.transform.parent.parent.GetSiblingIndex();
                     int swapcol = swapUnit.transform.parent.GetSiblingIndex();
                     photonView.RPC("UnitLocateUpdate", RpcTarget.Others, swaprow, swapcol);//SwapUnit
