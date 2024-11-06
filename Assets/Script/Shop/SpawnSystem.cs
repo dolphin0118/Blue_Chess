@@ -26,12 +26,14 @@ public class SpawnSystem : MonoBehaviour
     {
         UnitCards = Resources.LoadAll<UnitCard>("Scriptable");
         UnitDictionarySetup();
-        
-    }   
 
-    private void UnitDictionarySetup() {
-        foreach (var unit in UnitCards) {
-            unitDictionary.Add(unit.Name,unit);
+    }
+
+    private void UnitDictionarySetup()
+    {
+        foreach (var unit in UnitCards)
+        {
+            unitDictionary.Add(unit.Name, unit);
         }
     }
 
@@ -60,12 +62,15 @@ public class SpawnSystem : MonoBehaviour
         return isSpawn;
     }
 
-    public void SpawnUnit(string unitName) {
+    public void SpawnUnit(string unitName)
+    {
         UnitCard currentUnit = unitDictionary[unitName];
         //GameObject UnitClone = Instantiate(currentUnit.UnitPrefab, Vector3.zero, Quaternion.identity);
         GameObject UnitClone = ObjectPoolManager.instance.multiPool[unitName].Get();
-        for (int i = 0; i < checkSlot.Length; i++) {
-            if (!checkSlot[i]) {
+        for (int i = 0; i < checkSlot.Length; i++)
+        {
+            if (!checkSlot[i])
+            {
                 UnitClone.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber);
                 UnitSetup(UnitClone, currentUnit, i);  // 슬롯에 유닛 설정
                 break;
@@ -75,19 +80,23 @@ public class SpawnSystem : MonoBehaviour
     }
 
     [PunRPC]
-    public void SpawnUnitRPC(string unitName) {
+    public void SpawnUnitRPC(string unitName)
+    {
         UnitCard currentUnit = unitDictionary[unitName];
         //GameObject UnitClone = Instantiate(currentUnit.UnitPrefab, Vector3.zero, Quaternion.identity);
         GameObject UnitClone = ObjectPoolManager.instance.multiPool[unitName].Get();
-        for (int i = 0; i < checkSlot.Length; i++) {
-            if (!checkSlot[i]) {
+        for (int i = 0; i < checkSlot.Length; i++)
+        {
+            if (!checkSlot[i])
+            {
                 UnitSetup(UnitClone, currentUnit, i);  // 슬롯에 유닛 설정
                 break;
             }
         }
     }
 
-    public void SpawnUnitIncludePhotonView(string unitName) {
+    public void SpawnUnitIncludePhotonView(string unitName)
+    {
         GameObject UnitClone = PhotonNetwork.Instantiate("Unit/Prefab/" + unitName, Vector3.zero, Quaternion.identity);
         PhotonView unitPhotonView = UnitClone.GetComponent<PhotonView>();
         if (this.photonView.IsMine) // 오브젝트 생성자가 소유자임
@@ -98,10 +107,12 @@ public class SpawnSystem : MonoBehaviour
     }
 
     [PunRPC]
-    public void SetupUnitOnAllClients(string unitName, int viewID) {
+    public void SetupUnitOnAllClients(string unitName, int viewID)
+    {
         this.isSpawnable();
         PhotonView unitPhotonView = PhotonView.Find(viewID);
-        if (unitPhotonView == null) {
+        if (unitPhotonView == null)
+        {
             Debug.LogError("UnitClone을 찾을 수 없습니다.");
             return;
         }
@@ -110,8 +121,10 @@ public class SpawnSystem : MonoBehaviour
         UnitCard currentUnit = unitDictionary[unitName];
 
         // 빈 슬롯에 유닛 배치
-        for (int i = 0; i < checkSlot.Length; i++) {
-            if (!checkSlot[i]) {
+        for (int i = 0; i < checkSlot.Length; i++)
+        {
+            if (!checkSlot[i])
+            {
                 UnitSetup(UnitClone, currentUnit, i);  // 슬롯에 유닛 설정
                 break;
             }

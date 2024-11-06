@@ -14,7 +14,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
     private TeamManager teamManager;
     private SynergyManager synergyManager;
 
-    private UnitCard unitCard;
+
     private UnitInfo unitInfo;
     private UnitLocate unitLocate;
     private UnitController unitController;
@@ -37,26 +37,28 @@ public class UnitManager : MonoBehaviour, IPunObservable
     {
 
     }
-    
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if(isUnitControll) return;
+        if (isUnitControll) return;
         if (stream.IsWriting)
         {
             stream.SendNext(this.transform.position);
             stream.SendNext(this.transform.rotation);
-           // stream.SendNext(this.transform.parent);
+            // stream.SendNext(this.transform.parent);
         }
         else
         {
             this.transform.position = (Vector3)stream.ReceiveNext();
             this.transform.rotation = (Quaternion)stream.ReceiveNext();
-           // this.transform.SetParent((Transform)stream.ReceiveNext());
+            // this.transform.SetParent((Transform)stream.ReceiveNext());
         }
 
     }
+
     public void BattlePhase()
     {
+        isUnitControll = false;
         unitLocate.ForceLocate();
         unitLocate.enabled = false;
         unitController.OnBattle();
@@ -64,6 +66,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     public void DisarmPhase()
     {
+        isUnitControll = true;
         UnitState(State.Idle);
         unitController.OnDisarm();
         unitLocate.enabled = true;
@@ -71,15 +74,14 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCombine unitCombine, UnitCard unitCard)
     {
-        this.unitCard = unitCard;
         this.teamManager = teamManager;
         this.synergyManager = synergyManager;
         this.unitCombine = unitCombine;
 
         this.unitCombine.Initialize(teamManager);
-        unitStatus.Initialize(unitCard.UnitStat);
-        unitInfo.Initialize(teamManager, synergyManager, unitCombine, unitCard.UnitData, unitStatus);
-        unitLocate.Initialize(teamManager, synergyManager);
+        this.unitStatus.Initialize(unitCard.UnitStat);
+        this.unitInfo.Initialize(teamManager, synergyManager, unitCombine, unitCard.UnitData, unitStatus);
+        this.unitLocate.Initialize(teamManager, synergyManager);
     }
 
     void BindComponent()
@@ -130,14 +132,13 @@ public class UnitManager : MonoBehaviour, IPunObservable
     {
         //Left
         if (Input.GetMouseButtonDown(0))
-        { 
+        {
             isUnitControll = true;
-            photonView.RPC("SetUnitControll", RpcTarget.Others, true);
             unitLocate.OnUnitControll();
         }
         //Right
         else if (Input.GetMouseButtonDown(1))
-        { 
+        {
             //UIManager.instance.OpenUI(unitCard);
         }
     }
@@ -149,15 +150,9 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     void OnMouseUp()
     {
-        isUnitControll = false;
-        photonView.RPC("SetUnitControll", RpcTarget.Others, false);
         unitLocate.OnUnitUpdate();
     }
 
-    [PunRPC]
-    public void SetUnitControll(bool isControll) {
-        isUnitControll = isControll;
-    }
 
     void OnMouseExit()
     {
