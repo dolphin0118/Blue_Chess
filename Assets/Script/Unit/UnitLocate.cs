@@ -43,7 +43,7 @@ public class UnitLocate : MonoBehaviour
 
     public void ForceLocate()
     {
-        if (UnitLocateController != null)
+        if (UnitLocateController != null && UnitLocateController == this.transform.parent)
         {
             this.transform.SetParent(previousParent.transform);
             UnitLocateController.transform.localPosition = Vector3.zero;
@@ -220,78 +220,6 @@ public class UnitLocate : MonoBehaviour
         }
     }
 
-    public void CheckLayer()
-    {
-        GameObject swapUnit = null;
-        bool isSwap = false;
-
-        Vector3 currentPos = this.transform.position;
-        Vector3Int tilePos = tilemap.LocalToCell(currentPos);
-        Vector3 checkPos = tilemap.GetCellCenterLocal(tilePos);
-        checkPos = new Vector3(checkPos.x, 0.1f, checkPos.z);
-
-        //유닛 to 유닛 Swap
-        if (Physics.CheckSphere(checkPos, 0.1f, unitLayer))
-        {
-            isSwap = true;
-            Collider[] hitColliders = Physics.OverlapSphere(checkPos, 0.1f, unitLayer);
-            swapUnit = hitColliders[0].transform.gameObject;
-            this.transform.position = swapUnit.transform.position;
-            swapUnit.transform.position = new Vector3(previousPos.x, 0.1f, previousPos.z);
-            Debug.Log("Swap");
-        }
-
-        //벤치레이어일 경우
-        RaycastHit hitLayer;
-        if (Physics.Raycast(currentPos, Vector3.down, out hitLayer, Mathf.Infinity, benchLayer))
-        {
-            GameObject hitObject = hitLayer.collider.transform.gameObject;
-            if (hitObject.transform.childCount == 0)
-            {
-                previousParent = hitObject;
-            }
-            else if (isSwap)
-            {
-                hitObject.transform.GetChild(0).SetParent(previousParent.transform);
-                previousParent.transform.GetChild(0).gameObject.transform.localPosition = new Vector3(0, 0, 0);
-                previousParent = hitObject;
-                // swapUnit.transform.SetParent(previousParent.transform);
-                // swapUnit.transform.localPosition = new Vector3(0, 0, 0);
-                // previousParent = hitObject;
-            }
-            Debug.Log("Bench");
-        }
-        //배틀레이어일 경우
-        else if (Physics.Raycast(currentPos, Vector3.down, out hitLayer, Mathf.Infinity, battleLayer))
-        {
-            //현재 타일이 배틀레이어 내부의 유효한 타일인지
-            if (!CheckBattleTile())
-            {
-                this.transform.position = previousPos;
-                return;
-            }
-
-            GameObject hitObject = hitLayer.collider.transform.gameObject;
-            this.transform.position = checkPos;
-            if (!isSwap)
-            {
-                TeamManager.UnitLocateDelete(CheckTilePosition(previousPos));
-                TeamManager.UnitLocateSave(CheckTilePosition(this.gameObject), this.gameObject);
-            }
-            if (isSwap && swapUnit != null)
-            {
-                TeamManager.UnitLocateSwap(CheckTilePosition(this.gameObject), CheckTilePosition(swapUnit));
-                swapUnit.transform.SetParent(previousParent.transform);
-            }
-            previousParent = hitObject;
-            Debug.Log("battle");
-        }
-        else
-        {
-            this.transform.position = previousPos;
-        }
-    }
-
     public void OutLayer()
     {
         this.transform.SetParent(previousParent.transform);
@@ -318,37 +246,4 @@ public class UnitLocate : MonoBehaviour
         }
     }
 
-    Vector2Int CheckTilePosition(Vector3 checkPos)
-    {
-        //row -3 -2 -1 0 1 2 3
-        //col -3 -4 -5 -6
-        Vector3Int tilePos = tilemap.LocalToCell(checkPos - TeamManager.LerpPos);
-        int row = tilePos.x + 3;
-        int col = tilePos.y * -1 - 3;
-        Vector2Int convertTilePos = new Vector2Int(row, col);
-
-        return convertTilePos;
-    }
-
-    Vector2Int CheckTilePosition(GameObject checkUnit)
-    {
-        //row -3 -2 -1 0 1 2 3
-        //col -3 -4 -5 -6
-        Vector3Int tilePos = tilemap.LocalToCell(checkUnit.transform.position - TeamManager.LerpPos);
-        int row = tilePos.x + 3;
-        int col = tilePos.y * -1 - 3;
-        Vector2Int convertTilePos = new Vector2Int(row, col);
-
-        return convertTilePos;
-    }
-
-    bool CheckBattleTile()
-    {
-        Vector2Int tilePos = CheckTilePosition(this.gameObject);
-        int row = tilePos.x;
-        int col = tilePos.y;
-        //bool isUnitLocate = TeamManager.instance.IsUnitLocate(row, col);
-        if (row > 6 || row < 0 || col > 3 || col < 0) return false;
-        return true;
-    }
 }

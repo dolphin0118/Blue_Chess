@@ -16,7 +16,6 @@ MonoBehaviour:
   UnitMemorial: {fileID: 21300000, guid: e03a8e951f8d70845aa2159000f92621, type: 3}
   UnitData:
     Name: Midori
-    attackType: 1
     schoolSynergy: 3
     traitSynergy: 6
     UnitPrice: 0
@@ -31,4 +30,5 @@ MonoBehaviour:
     MR: 50
     ATKSpeed: 1
     Range: 1.5
+    attackType: 1
   Name: Midori

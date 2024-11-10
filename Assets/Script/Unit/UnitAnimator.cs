@@ -56,7 +56,7 @@ public class UnitAnimator : MonoBehaviour
     public void HitDetection()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing") &&
-            animator.GetCurrentAnimatorStateInfo(0).normalizedTime > unitStatus.ATKSpeed)
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime > unitStatus.currentATKSpeed)
         {
             //unitInfo.UnitStat.ATKSpeed += 1.0f;   
         }

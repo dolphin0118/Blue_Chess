@@ -16,7 +16,6 @@ MonoBehaviour:
   UnitMemorial: {fileID: 21300000, guid: eb005baa70e7ddc49aef43b130cb47bc, type: 3}
   UnitData:
     Name: Iori
-    attackType: 1
     schoolSynergy: 1
     traitSynergy: 6
     UnitPrice: 0
@@ -31,4 +30,5 @@ MonoBehaviour:
     MR: 50
     ATKSpeed: 1
     Range: 3
+    attackType: 1
   Name: Iori

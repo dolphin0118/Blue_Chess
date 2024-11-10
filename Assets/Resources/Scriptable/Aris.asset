@@ -16,7 +16,6 @@ MonoBehaviour:
   UnitMemorial: {fileID: 21300000, guid: 996856ca703817b43aef4377a76b4638, type: 3}
   UnitData:
     Name: Aris
-    attackType: 2
     schoolSynergy: 3
     traitSynergy: 9
     UnitPrice: 0
@@ -31,4 +30,5 @@ MonoBehaviour:
     MR: 50
     ATKSpeed: 1
     Range: 2
+    attackType: 2
   Name: Aris

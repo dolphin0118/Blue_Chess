@@ -16,7 +16,6 @@ MonoBehaviour:
   UnitMemorial: {fileID: 21300000, guid: d168a850624fae1459256c05e68b21b6, type: 3}
   UnitData:
     Name: Kazusa
-    attackType: 1
     schoolSynergy: 2
     traitSynergy: 6
     UnitPrice: 0
@@ -31,4 +30,5 @@ MonoBehaviour:
     MR: 50
     ATKSpeed: 1
     Range: 1.5
+    attackType: 1
   Name: Kazusa

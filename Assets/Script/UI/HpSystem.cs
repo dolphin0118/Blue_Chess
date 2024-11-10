@@ -4,13 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class HpSystem : MonoBehaviour {
-    UnitStatus UnitStatus;
+    UnitStatus unitStatus;
     Transform cam;
     Image hpGague;
+    Image mpGague;
 
     void Start(){   
         cam = Camera.main.transform;    
-        UnitStatus = transform.GetComponentInParent<UnitStatus>();
+        unitStatus = transform.GetComponentInParent<UnitStatus>();
         hpGague = transform.GetComponent<Image>();
         //hpGague.rectTransform.SetSiblingIndex(1);
         hpGague.fillAmount = 0.5f;
@@ -24,6 +25,8 @@ public class HpSystem : MonoBehaviour {
     }
     void Update() {
         transform.LookAt(transform.position + cam.rotation * Vector3.forward, cam.rotation * Vector3.up);
-        hpGague.fillAmount = 1;//charaStatus.MaxHP / charaStatus.HP;
+        float gagueValue =  unitStatus.currentHP / unitStatus.HP;
+        hpGague.fillAmount = gagueValue;
+        
     }
 }

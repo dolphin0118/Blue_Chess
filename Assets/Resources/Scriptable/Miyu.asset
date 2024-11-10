@@ -16,7 +16,6 @@ MonoBehaviour:
   UnitMemorial: {fileID: 21300000, guid: f20c66caceaae7e41a44e3b28a6406bb, type: 3}
   UnitData:
     Name: Miyu
-    attackType: 1
     schoolSynergy: 4
     traitSynergy: 6
     UnitPrice: 0
@@ -31,4 +30,5 @@ MonoBehaviour:
     MR: 50
     ATKSpeed: 1
     Range: 3
+    attackType: 1
   Name: Miyu

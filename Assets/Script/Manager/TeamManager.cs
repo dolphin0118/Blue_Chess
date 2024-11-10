@@ -8,21 +8,24 @@ using JetBrains.Annotations;
 
 public class TeamManager : MonoBehaviour
 {
-    const int row = 8; const int col = 4;
-    public Dictionary<string, int> UnitCheck = new Dictionary<string, int>();
-    public Dictionary<string, LevelData> UnitLevel = new Dictionary<string, LevelData>();
-    public Dictionary<string, List<GameObject>> UnitObject = new Dictionary<string, List<GameObject>>();
-    public Vector3 LerpPos;
-    public GameObject[,] unitLocate = new GameObject[row, col];
+    public Dictionary<string, int> UnitCheck = new Dictionary<string, int>(); //Synergy체크용
+    public Dictionary<string, LevelData> UnitLevel = new Dictionary<string, LevelData>(); //Combine용
+    public Dictionary<string, List<GameObject>> UnitObject = new Dictionary<string, List<GameObject>>();//
+
     public GameObject BattleArea, BenchArea;
     public GameObject HomeTeam, AwayTeam;
     public GameObject UnitLocateController;
+
+    private Transform previousParent;
+    private bool isAwayTeam;
+
     private void Awake() {
         AreaSetup();
+        previousParent = this.transform.parent;
+        isAwayTeam = false;
     }
 
     private void Start() {
-        LerpPos = this.transform.parent.position;
         HomeTeam = this.gameObject;
         UnitListAdd();
     }
@@ -32,19 +35,7 @@ public class TeamManager : MonoBehaviour
     }
 
     private void InputSystem() {
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            for (int i = 0; i < row; i++)
-            {
-                for (int j = 0; j < col; j++)
-                {
-                    if (unitLocate[i, j] != null)
-                    {
-                        Debug.Log(i + " " + j + ",");
-                    }
-                }
-            }
-        }
+
         if (Input.GetKeyDown(KeyCode.D))
         {
             UnitDeleteAll();
@@ -69,30 +60,39 @@ public class TeamManager : MonoBehaviour
             }
         }
     }
+
+    public void SetHomeTeam() {
+        foreach(List<GameObject> respawnObjects in UnitObject.Values) {
+            foreach(GameObject respawnObject in respawnObjects) {
+                if(respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle")) 
+                    respawnObject.tag = "Home";
+            }      
+        }
+    }
+
+    public void SetAwayTeam(Transform AwayTeam) {
+        HomeTeam.transform.SetParent(AwayTeam);
+        HomeTeam.transform.localPosition = Vector3.zero;
+        HomeTeam.transform.localRotation = Quaternion.identity;
+        isAwayTeam = true;
+
+        foreach(List<GameObject> respawnObjects in UnitObject.Values) {
+            foreach(GameObject respawnObject in respawnObjects) {
+                if(respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle")) 
+                    respawnObject.tag = "Away";
+            }      
+        }
+    }
    
-    public void UnitLocateSave(Vector2Int UnitPos, GameObject Unit)
-    {
-        unitLocate[UnitPos.x, UnitPos.y] = Unit;
+    public void RevertTeam() {
+        if(this.isAwayTeam) {
+            isAwayTeam = false;
+            HomeTeam.transform.SetParent(previousParent);
+            HomeTeam.transform.localPosition = Vector3.zero;
+            HomeTeam.transform.localRotation = Quaternion.identity;
+        }
     }
 
-    public void UnitLocateDelete(Vector2Int UnitPos)
-    {
-        if (UnitPos.x < 0 || UnitPos.x > row || UnitPos.y < 0 || UnitPos.y > col) return;
-        unitLocate[UnitPos.x, UnitPos.y] = null;
-    }
-
-    public void UnitLocateSwap(Vector2Int Unit1Pos, Vector2Int Unit2Pos)
-    {
-        Debug.Log(Unit1Pos + "."+Unit2Pos);
-        (unitLocate[Unit1Pos.x, Unit1Pos.y], unitLocate[Unit2Pos.x, Unit2Pos.y]) =
-        (unitLocate[Unit2Pos.x, Unit2Pos.y], unitLocate[Unit1Pos.x, Unit1Pos.y]);
-    }
-
-    public bool UnitLocateCheck(Vector2Int UnitPos)
-    {
-        if (unitLocate[UnitPos.x, UnitPos.y] == null) return true;
-        else return false;
-    }
 //---------------------------------------------------------------------------------------------//
     public void UnitListAdd() { 
         foreach(string unitName in GameManager.instance.UnitList) {
@@ -113,29 +113,14 @@ public class TeamManager : MonoBehaviour
 
     public void UnitRelocateAll()
     {
-        for (int i = 0; i < row; i++)
-        {
-            for (int j = 0; j < col; j++)
-            {
-                if (unitLocate[i, j] != null)
-                {
-                    GameObject respawnObject = unitLocate[i, j];
-                    respawnObject.SetActive(true);
-                    respawnObject.transform.SetParent(BattleArea.transform);
-                    respawnObject.transform.localPosition = UnitPositionConvert(i, j);
-
-                }
-            }
+        foreach(List<GameObject> respawnObjects in UnitObject.Values) {
+            foreach(GameObject respawnObject in respawnObjects) {
+                respawnObject.SetActive(true);
+                respawnObject.transform.localPosition = Vector3.zero;
+            }      
         }
-    }
 
-    public Vector3 UnitPositionConvert(int row, int col)
-    {
-        int convertRow = row - 3;
-        int convertCol = (col + 3) * -1;
-        Vector3Int unitPos = new Vector3Int(convertRow, convertCol, 0);
-        Vector3 unitPosition = GameManager.instance.tilemap.CellToLocal(unitPos);
-        return unitPosition;
+
     }
 
 

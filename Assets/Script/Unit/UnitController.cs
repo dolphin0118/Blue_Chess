@@ -53,7 +53,7 @@ public class UnitController : MonoBehaviour
 
     public bool CheckAttackRange()
     {
-        if (CalcDistance() > UnitStatus.Range)
+        if (CalcDistance() > UnitStatus.currentRange)
         {
             return false;
         }
@@ -114,6 +114,6 @@ public class UnitController : MonoBehaviour
 
     public void AttackTarget()
     {
-        targetEnemy.GetComponent<UnitStatus>().Hit(10);
+        targetEnemy.GetComponent<UnitManager>().OnHitDamage(UnitStatus.currentATK, UnitStatus.attackType);
     }
 }

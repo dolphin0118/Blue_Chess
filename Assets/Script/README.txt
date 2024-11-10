@@ -13,6 +13,9 @@ D
 R
 -relocate축약 / 전투 후 모든 유닛을 다시 제자리로 돌리기 위한 명령어
 
+
 M
 -match축약 / Team 두개를 엮어 Home - Away로 하나의 전장을 만드는 명령어
 
+N
+-M과 가까워서 선택 revertTeam / M -> N로 AwayTeam을 원래 위치로 돌려놓기 위한 명령어

@@ -16,7 +16,6 @@ MonoBehaviour:
   UnitMemorial: {fileID: 21300000, guid: cdd3314f81db2ff469e89e509c843a27, type: 3}
   UnitData:
     Name: Mika
-    attackType: 1
     schoolSynergy: 2
     traitSynergy: 7
     UnitPrice: 0
@@ -31,4 +30,5 @@ MonoBehaviour:
     MR: 50
     ATKSpeed: 1
     Range: 1
+    attackType: 1
   Name: Mika

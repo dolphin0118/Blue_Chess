@@ -45,13 +45,13 @@ public class UnitManager : MonoBehaviour, IPunObservable
         {
             stream.SendNext(this.transform.position);
             stream.SendNext(this.transform.rotation);
-            // stream.SendNext(this.transform.parent);
+           // stream.SendNext(this.transform.parent);
         }
         else
         {
             this.transform.position = (Vector3)stream.ReceiveNext();
             this.transform.rotation = (Quaternion)stream.ReceiveNext();
-            // this.transform.SetParent((Transform)stream.ReceiveNext());
+          //  this.transform.SetParent((Transform)stream.ReceiveNext());
         }
 
     }
@@ -82,6 +82,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
         this.unitStatus.Initialize(unitCard.UnitStat);
         this.unitInfo.Initialize(teamManager, synergyManager, unitCombine, unitCard.UnitData, unitStatus);
         this.unitLocate.Initialize(teamManager, synergyManager);
+
     }
 
     void BindComponent()
@@ -112,19 +113,6 @@ public class UnitManager : MonoBehaviour, IPunObservable
                 unitAnimator.NoneState();
                 break;
         }
-    }
-
-    bool UnitCheckRay(string type)
-    {
-        RaycastHit hitRay;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Physics.Raycast(ray, out hitRay);
-
-        if (hitRay.transform.tag == type)
-        {
-            return true;
-        }
-        else return false;
     }
 
     //----------------------------------------//
@@ -159,6 +147,11 @@ public class UnitManager : MonoBehaviour, IPunObservable
         //UIManager.instance.CloseUI();
     }
     //------------------------------------------//
+
+    public void OnHitDamage(float Damage, AttackType otherType) {
+        unitStatus.Hit(Damage, otherType);
+    }
+
 
     public void AddItem(ItemAsset item)
     {

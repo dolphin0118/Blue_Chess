@@ -16,7 +16,6 @@ MonoBehaviour:
   UnitMemorial: {fileID: 21300000, guid: dffc0832c2283074191342a4f08653d7, type: 3}
   UnitData:
     Name: Nonomi
-    attackType: 1
     schoolSynergy: 0
     traitSynergy: 10
     UnitPrice: 0
@@ -31,4 +30,5 @@ MonoBehaviour:
     MR: 50
     ATKSpeed: 1
     Range: 1.5
+    attackType: 1
   Name: Nonomi

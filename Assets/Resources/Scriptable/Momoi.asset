@@ -16,7 +16,6 @@ MonoBehaviour:
   UnitMemorial: {fileID: 21300000, guid: 50ddd4e4867b06740891a9b7933d6d31, type: 3}
   UnitData:
     Name: Momoi
-    attackType: 1
     schoolSynergy: 3
     traitSynergy: 7
     UnitPrice: 0
@@ -31,4 +30,5 @@ MonoBehaviour:
     MR: 50
     ATKSpeed: 1
     Range: 1.5
+    attackType: 1
   Name: Momoi

@@ -57,7 +57,6 @@ namespace BlueChessDataBase
 /* Fields. */
 
 		public System.String Name;
-		public AttackType attackType;
 		public Synergy schoolSynergy;
 		public Synergy traitSynergy;
 		public System.Int32 charaPrice;

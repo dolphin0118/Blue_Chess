@@ -39,21 +39,29 @@ public class GameManager : MonoBehaviour
         UnityGoogleSheet.LoadAllData();
         DataBind();
     }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+         if (Input.GetKeyDown(KeyCode.B))
         {
-            isBattle = true;
+            photonView.RPC("BattleControll", RpcTarget.All, true);
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            isBattle = false;
+            photonView.RPC("BattleControll", RpcTarget.All, false);
         }
+        
+    }
+
+    [PunRPC]
+    void BattleControll(bool isBattle) {
+
+        GameManager.isBattle = isBattle;
     }
 
     void DataBind()
     {
-       //ItemDataBind();
+        ItemDataBind();
         UnitDataBind();
     }
 
@@ -134,7 +142,7 @@ public class GameManager : MonoBehaviour
             UnitData UnitData = dataMapper.Map<UnitData>(Data[i]);
             UnitStat UnitStat = statMapper.Map<UnitStat>(Stat[i]);
             // ※유닛 데이터베이스 동기화
-            // CreateUnitAsset(UnitData, UnitStat);
+            //CreateUnitAsset(UnitData, UnitStat);
  
             UnitList.Add(UnitData.Name);
 

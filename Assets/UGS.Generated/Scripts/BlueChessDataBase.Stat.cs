@@ -65,6 +65,7 @@ namespace BlueChessDataBase
 		public System.Single MR;
 		public System.Single ATKSpeed;
 		public System.Single Range;
+		public AttackType attackType;
   
 
 #region fuctions

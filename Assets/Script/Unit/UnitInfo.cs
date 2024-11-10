@@ -13,7 +13,6 @@ namespace BlueChessDataBase
     public class UnitData
     {
         public string Name = "";
-        public AttackType attackType;
         public Synergy schoolSynergy;
         public Synergy traitSynergy;
         public int UnitPrice;
@@ -33,6 +32,8 @@ namespace BlueChessDataBase
         public float MR;
         public float ATKSpeed;
         public float Range;
+        public AttackType attackType;
+        
         public void LevelAdd()
         {
             Level++;

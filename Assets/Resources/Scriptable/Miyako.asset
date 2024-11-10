@@ -16,7 +16,6 @@ MonoBehaviour:
   UnitMemorial: {fileID: 21300000, guid: d3f2d2f445622ca408070dccfd44b377, type: 3}
   UnitData:
     Name: Miyako
-    attackType: 2
     schoolSynergy: 4
     traitSynergy: 11
     UnitPrice: 0
@@ -31,4 +30,5 @@ MonoBehaviour:
     MR: 50
     ATKSpeed: 1
     Range: 1.5
+    attackType: 2
   Name: Miyako

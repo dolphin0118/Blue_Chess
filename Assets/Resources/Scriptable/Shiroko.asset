@@ -16,7 +16,6 @@ MonoBehaviour:
   UnitMemorial: {fileID: 21300000, guid: 8e07b27e007e795439edf24059c5e98d, type: 3}
   UnitData:
     Name: Shiroko
-    attackType: 2
     schoolSynergy: 0
     traitSynergy: 7
     UnitPrice: 0
@@ -31,4 +30,5 @@ MonoBehaviour:
     MR: 50
     ATKSpeed: 1.5
     Range: 2
+    attackType: 2
   Name: Shiroko
