@@ -101,6 +101,9 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    public GameObject GetTarget() {
+        return targetEnemy;
+    }
     public void SetTargetTag()
     {
         if (this.transform.tag == "Home")

@@ -54,6 +54,9 @@ MonoBehaviour:
   - MatchTeam
   - RevertTeam
   - BattleControll
+  - AttackTarget
+  - OnBattle
+  - UnitDisable
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

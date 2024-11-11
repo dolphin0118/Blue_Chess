@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using BlueChessDataBase;
 using BehaviorDesigner.Runtime;
+using Unity.VisualScripting;
 
 
 public class UnitAnimator : MonoBehaviour
@@ -19,6 +20,9 @@ public class UnitAnimator : MonoBehaviour
         unitAstar = GetComponent<UnitAstar>();
         unitStatus = GetComponent<UnitStatus>();
         unitController = GetComponent<UnitController>();
+    }
+    void Update() {
+        animator.SetFloat("AttackSpeed", unitStatus.currentATKSpeed);
     }
 
     public void NoneState()
@@ -57,10 +61,10 @@ public class UnitAnimator : MonoBehaviour
     public void HitDetection()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing") &&
-            animator.GetCurrentAnimatorStateInfo(0).normalizedTime > unitStatus.currentATKSpeed)
-        {
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >=1.0f)
+        {    
             unitController.Attack();
-            //unitInfo.UnitStat.ATKSpeed += 1.0f;   
+            animator.Play("Attack_ing", 0, 0f);
         }
     }
 
