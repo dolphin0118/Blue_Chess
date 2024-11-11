@@ -12,15 +12,21 @@ public class ItemInfo : MonoBehaviour
     public ItemData ItemData;
     public string Name;
 
-    void Start() {
+    void Start()
+    {
         Name = this.transform.name;
-        Name = Name.Replace("(Clone)","");
-        string path = "Assets/Resources/Item/Scriptable/"+Name+".asset";
+        Name = Name.Replace("(Clone)", "");
+        string path = "Assets/Resources/Item/Scriptable/" + Name + ".asset";
         itemAsset = AssetDatabase.LoadAssetAtPath<ItemAsset>(path);
+    }
+
+    public virtual void UseItem(UnitStatus unitStatus)
+    {
+
     }
 
     void Update()
     {
-        
+
     }
 }

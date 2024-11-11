@@ -19,22 +19,26 @@ public class TeamManager : MonoBehaviour
     private Transform previousParent;
     private bool isAwayTeam;
 
-    private void Awake() {
+    private void Awake()
+    {
         AreaSetup();
         previousParent = this.transform.parent;
         isAwayTeam = false;
     }
 
-    private void Start() {
+    private void Start()
+    {
         HomeTeam = this.gameObject;
         UnitListAdd();
     }
 
-    public void Update(){
+    public void Update()
+    {
         InputSystem();
     }
 
-    private void InputSystem() {
+    private void InputSystem()
+    {
 
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -42,7 +46,7 @@ public class TeamManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            UnitRelocateAll();
+            UnitRespawnAll();
         }
     }
 
@@ -61,31 +65,39 @@ public class TeamManager : MonoBehaviour
         }
     }
 
-    public void SetHomeTeam() {
-        foreach(List<GameObject> respawnObjects in UnitObject.Values) {
-            foreach(GameObject respawnObject in respawnObjects) {
-                if(respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle")) 
+    public void SetHomeTeam()
+    {
+        foreach (List<GameObject> respawnObjects in UnitObject.Values)
+        {
+            foreach (GameObject respawnObject in respawnObjects)
+            {
+                if (respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle"))
                     respawnObject.tag = "Home";
-            }      
+            }
         }
     }
 
-    public void SetAwayTeam(Transform AwayTeam) {
+    public void SetAwayTeam(Transform AwayTeam)
+    {
         HomeTeam.transform.SetParent(AwayTeam);
         HomeTeam.transform.localPosition = Vector3.zero;
         HomeTeam.transform.localRotation = Quaternion.identity;
         isAwayTeam = true;
 
-        foreach(List<GameObject> respawnObjects in UnitObject.Values) {
-            foreach(GameObject respawnObject in respawnObjects) {
-                if(respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle")) 
+        foreach (List<GameObject> respawnObjects in UnitObject.Values)
+        {
+            foreach (GameObject respawnObject in respawnObjects)
+            {
+                if (respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle"))
                     respawnObject.tag = "Away";
-            }      
+            }
         }
     }
-   
-    public void RevertTeam() {
-        if(this.isAwayTeam) {
+
+    public void RevertTeam()
+    {
+        if (this.isAwayTeam)
+        {
             isAwayTeam = false;
             HomeTeam.transform.SetParent(previousParent);
             HomeTeam.transform.localPosition = Vector3.zero;
@@ -93,12 +105,14 @@ public class TeamManager : MonoBehaviour
         }
     }
 
-//---------------------------------------------------------------------------------------------//
-    public void UnitListAdd() { 
-        foreach(string unitName in GameManager.instance.UnitList) {
-            UnitCheck.Add(unitName, 0); 
-        }        
-     }
+    //---------------------------------------------------------------------------------------------//
+    public void UnitListAdd()
+    {
+        foreach (string unitName in GameManager.instance.UnitList)
+        {
+            UnitCheck.Add(unitName, 0);
+        }
+    }
 
     public void UnitDeleteAll()
     {
@@ -111,13 +125,15 @@ public class TeamManager : MonoBehaviour
         }
     }
 
-    public void UnitRelocateAll()
+    public void UnitRespawnAll()
     {
-        foreach(List<GameObject> respawnObjects in UnitObject.Values) {
-            foreach(GameObject respawnObject in respawnObjects) {
+        foreach (List<GameObject> respawnObjects in UnitObject.Values)
+        {
+            foreach (GameObject respawnObject in respawnObjects)
+            {
                 respawnObject.SetActive(true);
                 respawnObject.transform.localPosition = Vector3.zero;
-            }      
+            }
         }
 
 

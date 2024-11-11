@@ -21,7 +21,8 @@ public class UnitAnimator : MonoBehaviour
         unitController = GetComponent<UnitController>();
     }
 
-    public void NoneState() {
+    public void NoneState()
+    {
         animator.SetBool("Idle", true);
     }
 
@@ -58,6 +59,7 @@ public class UnitAnimator : MonoBehaviour
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing") &&
             animator.GetCurrentAnimatorStateInfo(0).normalizedTime > unitStatus.currentATKSpeed)
         {
+            unitController.Attack();
             //unitInfo.UnitStat.ATKSpeed += 1.0f;   
         }
     }

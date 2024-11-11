@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using BlueChessDataBase;
+using Photon.Pun;
 
 public class UnitController : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
     private UnitStatus UnitStatus;
+    private PhotonView photonView;
 
     private GameObject[] targetEnemys;
     private GameObject targetEnemy { get; set; }
@@ -17,16 +19,18 @@ public class UnitController : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         UnitStatus = GetComponent<UnitStatus>();
+        photonView = GetComponent<PhotonView>();
+
         navMeshAgent.enabled = false;
         targetEnemy = null;
     }
 
     void Update()
     {
-        SetTargetTag();
         //if(GameManager.isBattle) IsTargetNull();
     }
 
+    [PunRPC]
     public void OnBattle()
     {
         navMeshAgent.enabled = true;
@@ -75,13 +79,13 @@ public class UnitController : MonoBehaviour
     }
 
 
-    private GameObject SetTarget()
+    private void SetTarget()
     {
         float minDistance = float.MaxValue;
         if (targetEnemys == null)
         {
             Debug.Log(this.transform.name);
-            return null;
+            return;
         }
         for (int i = 0; i < targetEnemys.Length; i++)
         {
@@ -95,12 +99,6 @@ public class UnitController : MonoBehaviour
                 minDistance = currentDistance;
             }
         }
-        return targetEnemy;
-    }
-
-    public GameObject GetTarget()
-    {
-        return targetEnemy;
     }
 
     public void SetTargetTag()
@@ -112,6 +110,12 @@ public class UnitController : MonoBehaviour
         else targetTag = "Home";
     }
 
+    public void Attack()
+    {
+        photonView.RPC("AttackTarget", RpcTarget.All);
+    }
+
+    [PunRPC]
     public void AttackTarget()
     {
         targetEnemy.GetComponent<UnitManager>().OnHitDamage(UnitStatus.currentATK, UnitStatus.attackType);

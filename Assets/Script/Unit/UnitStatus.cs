@@ -23,11 +23,11 @@ public class UnitStatus : MonoBehaviour
 
     public float currentHP { get; set; }
     public float currentMP { get; set; }
-    public float currentAR { get; set;}
+    public float currentAR { get; set; }
     public float currentMR { get; set; }
     public float currentATK { get; set; }
-    public float currentATKSpeed { get; set;}
-    public float currentRange { get; set;}
+    public float currentATKSpeed { get; set; }
+    public float currentRange { get; set; }
 
     public AttackType attackType { get; set; }
 
@@ -38,7 +38,7 @@ public class UnitStatus : MonoBehaviour
         SetupStatus();
     }
 
-    void SetupStatus()
+    public void SetupStatus()
     {
         HP = unitStat.HP;
         MP = unitStat.MP;
@@ -64,22 +64,23 @@ public class UnitStatus : MonoBehaviour
         CalulateStatus();//비전투시
     }
 
-    void CalulateStatus() {
+    void CalulateStatus()
+    {
         HPCalc();
         MPCalc();
         ATKCalc();
     }
 
 
-    void HPCalc() 
-    {        
+    void HPCalc()
+    {
         float LevelHPValue = unitStat.HP * 0.8f;
         HP = this.HP + (Level * LevelHPValue);
         currentHP = HP;
     }
 
-    void MPCalc() 
-    {        
+    void MPCalc()
+    {
         currentHP = MP;
     }
 
@@ -94,37 +95,47 @@ public class UnitStatus : MonoBehaviour
         ATK = unitStat.ATK + (Level * LevelATKValue);
     }
 
-    public void Hit(float Damage, AttackType otherType) {
+    public void Hit(float Damage, AttackType otherType)
+    {
         float attackConstantValue = CalculateAttackConstant(attackType, otherType);
         currentHP -= Damage * attackConstantValue;
     }
 
-    private float CalculateAttackConstant(AttackType myType, AttackType otherType) {
+    private float CalculateAttackConstant(AttackType myType, AttackType otherType)
+    {
         float weakValue = 1.25f;
         float normalValue = 1.0f;
         float strongValue = 0.75f;
 
-        if(myType == otherType) {
+        if (myType == otherType)
+        {
             return normalValue;
         }
-        else {
+        else
+        {
             float returnValue = 0;
-            switch(myType) {
+            switch (myType)
+            {
                 case AttackType.Explosion:
-                    if(otherType == AttackType.Mystery) returnValue = weakValue;
-                    else if(otherType == AttackType.Penetrate) returnValue = strongValue;
+                    if (otherType == AttackType.Mystery) returnValue = weakValue;
+                    else if (otherType == AttackType.Penetrate) returnValue = strongValue;
                     break;
                 case AttackType.Penetrate:
-                    if(otherType == AttackType.Explosion) returnValue = weakValue;
-                    else if(otherType == AttackType.Mystery) returnValue = strongValue;
+                    if (otherType == AttackType.Explosion) returnValue = weakValue;
+                    else if (otherType == AttackType.Mystery) returnValue = strongValue;
                     break;
                 case AttackType.Mystery:
-                    if(otherType == AttackType.Penetrate) returnValue = weakValue;
-                    else if(otherType == AttackType.Explosion) returnValue = strongValue;
+                    if (otherType == AttackType.Penetrate) returnValue = weakValue;
+                    else if (otherType == AttackType.Explosion) returnValue = strongValue;
                     break;
             }
             return returnValue;
         }
     }
 
+    public bool IsUnitDead()
+    {
+        if (currentHP <= 0) return true;
+        else return false;
+    }
 }

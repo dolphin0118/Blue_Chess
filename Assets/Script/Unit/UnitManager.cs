@@ -35,7 +35,23 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     private void Update()
     {
+        if (unitStatus.IsUnitDead())
+        {
+            photonView.RPC("UnitDisable", RpcTarget.All);
+        }
+    }
 
+    private void OnEnable()
+    {
+        unitStatus.SetupStatus();
+    }
+
+    [PunRPC]
+    public void UnitDisable()
+    {
+
+        this.transform.localPosition = Vector3.zero;
+        this.transform.gameObject.SetActive(false);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -45,13 +61,13 @@ public class UnitManager : MonoBehaviour, IPunObservable
         {
             stream.SendNext(this.transform.position);
             stream.SendNext(this.transform.rotation);
-           // stream.SendNext(this.transform.parent);
+            // stream.SendNext(this.transform.parent);
         }
         else
         {
             this.transform.position = (Vector3)stream.ReceiveNext();
             this.transform.rotation = (Quaternion)stream.ReceiveNext();
-          //  this.transform.SetParent((Transform)stream.ReceiveNext());
+            //  this.transform.SetParent((Transform)stream.ReceiveNext());
         }
 
     }
@@ -148,7 +164,8 @@ public class UnitManager : MonoBehaviour, IPunObservable
     }
     //------------------------------------------//
 
-    public void OnHitDamage(float Damage, AttackType otherType) {
+    public void OnHitDamage(float Damage, AttackType otherType)
+    {
         unitStatus.Hit(Damage, otherType);
     }
 
