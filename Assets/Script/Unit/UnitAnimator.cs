@@ -21,7 +21,8 @@ public class UnitAnimator : MonoBehaviour
         unitStatus = GetComponent<UnitStatus>();
         unitController = GetComponent<UnitController>();
     }
-    void Update() {
+    void Update()
+    {
         animator.SetFloat("AttackSpeed", unitStatus.currentATKSpeed);
     }
 
@@ -58,12 +59,12 @@ public class UnitAnimator : MonoBehaviour
         animator.SetBool("Idle", false);
     }
 
-    public void HitDetection()
+    public void AttackMotion()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing") &&
-            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >=1.0f)
-        {    
-            unitController.Attack();
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+        {
+            unitController.AttackTarget();
             animator.Play("Attack_ing", 0, 0f);
         }
     }

@@ -101,7 +101,8 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public GameObject GetTarget() {
+    public GameObject GetTarget()
+    {
         return targetEnemy;
     }
     public void SetTargetTag()
@@ -113,13 +114,17 @@ public class UnitController : MonoBehaviour
         else targetTag = "Home";
     }
 
-    public void Attack()
+    public void AttackTarget()
     {
-        photonView.RPC("AttackTarget", RpcTarget.All);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("AttackTargetRPC", RpcTarget.All);
+        }
+
     }
 
     [PunRPC]
-    public void AttackTarget()
+    public void AttackTargetRPC()
     {
         targetEnemy.GetComponent<UnitManager>().OnHitDamage(UnitStatus.currentATK, UnitStatus.attackType);
     }

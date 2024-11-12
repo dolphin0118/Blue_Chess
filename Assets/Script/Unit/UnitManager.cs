@@ -135,9 +135,8 @@ public class UnitManager : MonoBehaviour, IPunObservable
     void OnMouseOver()
     {
         //Left
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && isUnitControll && photonView.IsMine)
         {
-            isUnitControll = true;
             unitLocate.OnUnitControll();
         }
         //Right
@@ -149,12 +148,14 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     void OnMouseDrag()
     {
-        unitLocate.OnUnitMove();
+        if (isUnitControll && photonView.IsMine)
+            unitLocate.OnUnitMove();
     }
 
     void OnMouseUp()
     {
-        unitLocate.OnUnitUpdate();
+        if (isUnitControll && photonView.IsMine)
+            unitLocate.OnUnitUpdate();
     }
 
 
