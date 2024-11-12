@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 5957830002021634881}
   - component: {fileID: -6730663227696644891}
   - component: {fileID: -266331222821414313}
+  - component: {fileID: -4773996296439154349}
   m_Layer: 3
   m_Name: InitChara
   m_TagString: Unit
@@ -157,7 +158,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitData:
     Name: 
-    attackType: 0
     schoolSynergy: 0
     traitSynergy: 0
     UnitPrice: 0
@@ -250,12 +250,12 @@ MonoBehaviour:
       startIndex: 
       variableStartIndex: 
       JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(482.5,46.1290245)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(4.744627,143.5135)"},"ID":1,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":0},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(140,120)"},"ID":2,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"CanBattle","NodeData":{"Offset":"(-505.25116,286.277252)"},"ID":3,"Name":"Can
-        Battle","Instant":true},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-296.523773,294.57135)"},"ID":4,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"CanAttack","NodeData":{"Offset":"(-55.64459,165.801453)"},"ID":5,"Name":"Can
-        Attack","Instant":true},{"Type":"UnitAttack","NodeData":{"Offset":"(61.0238,165.809509)"},"ID":6,"Name":"Unit
+        Battle","Instant":true,"SharedBoolisBattle":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"isBattle","IsShared":true,"BooleanmValue":false}},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-296.523773,294.57135)"},"ID":4,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"CanAttack","NodeData":{"Offset":"(-55.64459,165.801453)"},"ID":5,"Name":"Can
+        Attack","Instant":true,"SharedBoolisBattle":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false}},{"Type":"UnitAttack","NodeData":{"Offset":"(61.0238,165.809509)"},"ID":6,"Name":"Unit
         Attack","Instant":true,"SharedBoolisAttack":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"isAttack","IsShared":true,"BooleanmValue":false}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(3.47827721,289.130432)"},"ID":7,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"CanMove","NodeData":{"Offset":"(-76.01965,151.222473)"},"ID":8,"Name":"Can
-        Move","Instant":true},{"Type":"UnitMove","NodeData":{"Offset":"(97.0377655,150.589111)"},"ID":9,"Name":"Unit
+        Move","Instant":true,"SharedBoolisBattle":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false}},{"Type":"UnitMove","NodeData":{"Offset":"(97.0377655,150.589111)"},"ID":9,"Name":"Unit
         Move","Instant":true,"SharedBoolisMove":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false}}]},{"Type":"UnitIdle","NodeData":{"Offset":"(339.3261,302.6756)"},"ID":10,"Name":"Unit
-        Idle","Instant":true,"SharedBoolisIdle":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false}}]}]},"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"isIdle","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"isAttack","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"isMove","IsShared":true,"BooleanmValue":false}]}'
+        Idle","Instant":true,"SharedBoolisIdle":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false}}]}]},"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"isIdle","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"isAttack","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"isMove","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"isBattle","IsShared":true,"BooleanmValue":false}]}'
       fieldSerializationData:
         typeName: []
         fieldNameHash: 
@@ -322,7 +322,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6436713800526929204}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
@@ -355,9 +355,28 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 0
     Name: Attack
+  - Type: 1
+    SynchronizeType: 0
+    Name: AttackSpeed
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
+--- !u!114 &-4773996296439154349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6436713800526929204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
+  m_TeleportEnabled: 1
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!1001 &2308400031985706415
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -433,6 +452,58 @@ PrefabInstance:
     - target: {fileID: 4119422196752070740, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954507, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_RenderMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954548, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954548, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954548, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954548, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954548, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954548, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954548, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954548, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954548, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954548, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954548, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651127595270954548, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6682297743280569082, guid: d9111ed2ac804d545ba9f56e81ffadff, type: 3}
       propertyPath: m_AnchorMax.y

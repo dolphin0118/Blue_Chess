@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using BlueChessDataBase;
 using BehaviorDesigner.Runtime;
 using Unity.VisualScripting;
+using Photon.Pun;
 
 
 public class UnitAnimator : MonoBehaviour
@@ -24,6 +25,7 @@ public class UnitAnimator : MonoBehaviour
     void Update()
     {
         animator.SetFloat("AttackSpeed", unitStatus.currentATKSpeed);
+        AttackMotion();
     }
 
     public void NoneState()

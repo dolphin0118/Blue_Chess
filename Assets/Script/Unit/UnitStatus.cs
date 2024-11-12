@@ -46,7 +46,7 @@ public class UnitStatus : MonoBehaviour
         ATKSpeed = unitStat.ATKSpeed;
         AR = unitStat.AR;
         MR = unitStat.MR;
-        Range = unitStat.Range;
+        Range = unitStat.Range* 2;
 
         currentHP = HP;
         currentMP = MP;
@@ -81,7 +81,7 @@ public class UnitStatus : MonoBehaviour
 
     void MPCalc()
     {
-        currentHP = MP;
+
     }
 
     void ATKCalc()

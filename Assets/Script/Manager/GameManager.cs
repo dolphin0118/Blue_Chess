@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
 
     void DataBind()
     {
-        ItemDataBind();
+        //ItemDataBind();
         UnitDataBind();
     }
 

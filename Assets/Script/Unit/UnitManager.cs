@@ -6,6 +6,7 @@ using UnityEngine;
 
 using Photon.Pun;
 using Photon.Realtime;
+using BehaviorDesigner.Runtime;
 
 public class UnitManager : MonoBehaviour, IPunObservable
 {
@@ -23,9 +24,11 @@ public class UnitManager : MonoBehaviour, IPunObservable
     private UnitAnimator unitAnimator;
     private UnitCombine unitCombine;
     private PhotonView photonView;
+    private BehaviorTree behaviorTree;
 
     public string unitOwner;
     private bool isUnitControll;
+    private bool isCanAttack;
 
     private void Awake()
     {
@@ -33,59 +36,16 @@ public class UnitManager : MonoBehaviour, IPunObservable
         BindComponent();
     }
 
-    private void Update()
+    void BindComponent()
     {
-        if (unitStatus.IsUnitDead())
-        {
-            photonView.RPC("UnitDisable", RpcTarget.All);
-        }
-    }
-
-    private void OnEnable()
-    {
-        unitStatus.SetupStatus();
-    }
-
-    [PunRPC]
-    public void UnitDisable()
-    {
-
-        this.transform.localPosition = Vector3.zero;
-        this.transform.gameObject.SetActive(false);
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (isUnitControll) return;
-        if (stream.IsWriting)
-        {
-            stream.SendNext(this.transform.position);
-            stream.SendNext(this.transform.rotation);
-            // stream.SendNext(this.transform.parent);
-        }
-        else
-        {
-            this.transform.position = (Vector3)stream.ReceiveNext();
-            this.transform.rotation = (Quaternion)stream.ReceiveNext();
-            //  this.transform.SetParent((Transform)stream.ReceiveNext());
-        }
-
-    }
-
-    public void BattlePhase()
-    {
-        isUnitControll = false;
-        unitLocate.ForceLocate();
-        unitLocate.enabled = false;
-        unitController.OnBattle();
-    }
-
-    public void DisarmPhase()
-    {
-        isUnitControll = true;
-        UnitState(State.Idle);
-        unitController.OnDisarm();
-        unitLocate.enabled = true;
+        unitInfo = GetComponent<UnitInfo>();
+        unitLocate = GetComponent<UnitLocate>();
+        unitController = GetComponent<UnitController>();
+        unitStatus = GetComponent<UnitStatus>();
+        unitItem = GetComponentInChildren<UnitItem>();
+        unitAnimator = GetComponent<UnitAnimator>();
+        photonView = GetComponent<PhotonView>();
+        behaviorTree = GetComponent<BehaviorTree>();
     }
 
     public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCombine unitCombine, UnitCard unitCard)
@@ -101,19 +61,96 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     }
 
-    void BindComponent()
+    private void Update()
     {
-        unitInfo = GetComponent<UnitInfo>();
-        unitLocate = GetComponent<UnitLocate>();
-        unitController = GetComponent<UnitController>();
-        unitStatus = GetComponent<UnitStatus>();
-        unitItem = GetComponentInChildren<UnitItem>();
-        unitAnimator = GetComponent<UnitAnimator>();
-        photonView = GetComponent<PhotonView>();
+        if (unitStatus.IsUnitDead())
+        {
+            photonView.RPC("UnitDisable", RpcTarget.All);
+        }
     }
+
+    private void OnEnable()
+    {
+        //unitStatus.SetupStatus();
+    }
+
+    [PunRPC]
+    public void UnitDisable()
+    {
+
+        this.transform.localPosition = Vector3.zero;
+        this.transform.gameObject.SetActive(false);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        return;
+        if (stream.IsWriting)
+        {
+            stream.SendNext(this.transform.position);
+            stream.SendNext(this.transform.rotation);
+            // stream.SendNext(this.transform.parent);
+        }
+        else
+        {
+            this.transform.position = (Vector3)stream.ReceiveNext();
+            this.transform.rotation = (Quaternion)stream.ReceiveNext();
+            //  this.transform.SetParent((Transform)stream.ReceiveNext());
+        }
+
+    }
+///-------------------------------------------------------------------------------------//
+    public void BattlePhase() {
+        photonView.RPC("BattlePhaseRPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void BattlePhaseRPC()
+    {
+        isUnitControll = false;
+        unitLocate.ForceLocate();
+        unitLocate.enabled = false;
+        unitController.OnBattle();
+        GameManager.isBattle = true;
+    }
+
+    public void DisarmPhase() {
+
+        photonView.RPC("DisarmPhaseRPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void DisarmPhaseRPC()
+    {
+        isUnitControll = true;
+        UnitState(State.Idle);
+        unitController.OnDisarm();
+        unitLocate.enabled = true;
+        GameManager.isBattle = false;
+    }
+
+    public void IsCanAttack() {
+        bool isCheckRange = unitController.CheckAttackRange();
+        if(isCheckRange) photonView.RPC("IsCanAttackRPC", RpcTarget.All, isCheckRange);
+    }
+
+    public bool GetCanAttack() {
+        return isCanAttack;
+    }
+
+    [PunRPC]
+    public void IsCanAttackRPC(bool ischeckAttack) {
+        isCanAttack = ischeckAttack;
+    }
+
 
     public void UnitState(State state)
     {
+        photonView.RPC("UnitStateRPC", RpcTarget.All, state);
+    }
+
+    [PunRPC]
+    public void UnitStateRPC(State state) {
         switch (state)
         {
             case State.Attack:
@@ -131,7 +168,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
         }
     }
 
-    //----------------------------------------//
+    //-------------------------------마우스 컨트롤-----------------------------------//
     void OnMouseOver()
     {
         //Left

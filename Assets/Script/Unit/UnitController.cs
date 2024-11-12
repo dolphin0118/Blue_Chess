@@ -30,7 +30,6 @@ public class UnitController : MonoBehaviour
         //if(GameManager.isBattle) IsTargetNull();
     }
 
-    [PunRPC]
     public void OnBattle()
     {
         navMeshAgent.enabled = true;

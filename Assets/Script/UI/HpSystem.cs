@@ -25,8 +25,8 @@ public class HpSystem : MonoBehaviour {
     }
     void Update() {
         transform.LookAt(transform.position + cam.rotation * Vector3.forward, cam.rotation * Vector3.up);
-        float gagueValue =  unitStatus.currentHP / unitStatus.HP;
-        hpGague.fillAmount = gagueValue;
+        //float gagueValue =  unitStatus.currentHP / unitStatus.HP;
+        //hpGague.fillAmount = gagueValue;
         
     }
 }
