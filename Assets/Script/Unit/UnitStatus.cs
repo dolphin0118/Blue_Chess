@@ -46,7 +46,7 @@ public class UnitStatus : MonoBehaviour
         ATKSpeed = unitStat.ATKSpeed;
         AR = unitStat.AR;
         MR = unitStat.MR;
-        Range = unitStat.Range* 2;
+        Range = unitStat.Range * 2;
 
         currentHP = HP;
         currentMP = MP;
@@ -57,14 +57,15 @@ public class UnitStatus : MonoBehaviour
         currentRange = Range;
 
         attackType = unitStat.attackType;
+        CalulateStatus();
     }
 
     void Update()
     {
-        CalulateStatus();//비전투시
+        //CalulateStatus();//비전투시
     }
 
-    void CalulateStatus()
+    public void CalulateStatus()
     {
         HPCalc();
         MPCalc();
@@ -99,6 +100,7 @@ public class UnitStatus : MonoBehaviour
     {
         float attackConstantValue = CalculateAttackConstant(attackType, otherType);
         currentHP -= Damage * attackConstantValue;
+        Debug.Log(currentHP + "/" + HP);
     }
 
     private float CalculateAttackConstant(AttackType myType, AttackType otherType)

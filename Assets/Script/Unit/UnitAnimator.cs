@@ -64,8 +64,9 @@ public class UnitAnimator : MonoBehaviour
     public void AttackMotion()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing") &&
-            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f)
         {
+            Debug.Log("ATTACK" + transform.name);
             unitController.AttackTarget();
             animator.Play("Attack_ing", 0, 0f);
         }

@@ -27,7 +27,7 @@ public class UnitController : MonoBehaviour
 
     void Update()
     {
-        //if(GameManager.isBattle) IsTargetNull();
+        if (GameManager.isBattle) IsTargetNull();
     }
 
     public void OnBattle()
@@ -62,12 +62,20 @@ public class UnitController : MonoBehaviour
         }
         return true;
     }
+
+    public bool IsFindTarget()
+    {
+        if (GetTarget() == null) return false;
+        return true;
+    }
+
     private void IsTargetNull()
     {
-        if (targetEnemy == null)
+        if (!targetEnemy.activeSelf)
         {
             SetTarget();
         }
+
         return;
     }
 
@@ -81,6 +89,7 @@ public class UnitController : MonoBehaviour
     private void SetTarget()
     {
         float minDistance = float.MaxValue;
+        targetEnemy = null;
         if (targetEnemys == null)
         {
             Debug.Log(this.transform.name);
@@ -88,7 +97,7 @@ public class UnitController : MonoBehaviour
         }
         for (int i = 0; i < targetEnemys.Length; i++)
         {
-            if (targetEnemys[i] == null) continue;
+            if (targetEnemys[i] == null || !targetEnemys[i].activeSelf) continue;
             Vector3 playerDistance = this.transform.position;
             Vector3 targetDistance = targetEnemys[i].transform.position;
             float currentDistance = Vector3.Distance(playerDistance, targetDistance);

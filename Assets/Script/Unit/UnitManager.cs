@@ -28,7 +28,8 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     public string unitOwner;
     private bool isUnitControll;
-    private bool isCanAttack;
+    public bool isCanAttack { get; private set; }
+    public bool isFindTarget { get; private set; }
 
     private void Awake()
     {
@@ -99,8 +100,9 @@ public class UnitManager : MonoBehaviour, IPunObservable
         }
 
     }
-///-------------------------------------------------------------------------------------//
-    public void BattlePhase() {
+    ///-------------------------------------------------------------------------------------//
+    public void BattlePhase()
+    {
         photonView.RPC("BattlePhaseRPC", RpcTarget.All);
     }
 
@@ -114,7 +116,8 @@ public class UnitManager : MonoBehaviour, IPunObservable
         GameManager.isBattle = true;
     }
 
-    public void DisarmPhase() {
+    public void DisarmPhase()
+    {
 
         photonView.RPC("DisarmPhaseRPC", RpcTarget.All);
     }
@@ -129,20 +132,29 @@ public class UnitManager : MonoBehaviour, IPunObservable
         GameManager.isBattle = false;
     }
 
-    public void IsCanAttack() {
-        bool isCheckRange = unitController.CheckAttackRange();
-        if(isCheckRange) photonView.RPC("IsCanAttackRPC", RpcTarget.All, isCheckRange);
-    }
-
-    public bool GetCanAttack() {
-        return isCanAttack;
+    public void IsCanAttack()
+    {
+        photonView.RPC("IsCanAttackRPC", RpcTarget.All);
     }
 
     [PunRPC]
-    public void IsCanAttackRPC(bool ischeckAttack) {
-        isCanAttack = ischeckAttack;
+    public void IsCanAttackRPC()
+    {
+        bool isCheckRange = unitController.CheckAttackRange();
+        isCanAttack = isCheckRange;
     }
 
+    public void IsFindTarget()
+    {
+        photonView.RPC("IsFindTargetRPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void IsFindTargetRPC()
+    {
+        bool IsFindTarget = unitController.IsFindTarget();
+        isFindTarget = IsFindTarget;
+    }
 
     public void UnitState(State state)
     {
@@ -150,7 +162,8 @@ public class UnitManager : MonoBehaviour, IPunObservable
     }
 
     [PunRPC]
-    public void UnitStateRPC(State state) {
+    public void UnitStateRPC(State state)
+    {
         switch (state)
         {
             case State.Attack:

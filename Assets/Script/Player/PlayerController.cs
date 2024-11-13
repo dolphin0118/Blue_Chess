@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public PhotonView photonView;
     public GameObject viewTarget;
     [SerializeField] public int playerCode = 0;
-        bool IsConnected = false;
+    bool IsConnected = false;
     private void Awake()
     {
         TeamManager = GetComponentInChildren<TeamManager>();
@@ -29,35 +29,44 @@ public class PlayerController : MonoBehaviour
         spawnSystem.Initialize(TeamManager, synergyManager, unitCombine, photonView);
     }
 
-    private void Update() {
+    private void Update()
+    {
         UpdateView();
     }
 
-    public void UpdateView() {
-        
-        if(photonView.IsMine && !IsConnected && !PhotonNetwork.IsMasterClient) {
+    public void UpdateView()
+    {
+
+        if (photonView.IsMine && !IsConnected && !PhotonNetwork.IsMasterClient)
+        {
             PlayerManager.instance.playerViewCode = playerCode;
             IsConnected = true;
         }
 
-        if(PlayerManager.instance.playerViewCode == playerCode) {
+        if (PlayerManager.instance.playerViewCode == playerCode)
+        {
             UIManager.SetUIActive(true);
             UpdateViewTarget();
-            if(photonView.IsMine) {
+            if (photonView.IsMine)
+            {
                 PlayerManager.instance.playerViewCode = playerCode;
-                UIManager.SetShopUIActive(true);  
+                UIManager.SetShopUIActive(true);
             }
-            else  {
-                UIManager.SetShopUIActive(false);
+            else
+            {
+                //UIManager.SetShopUIActive(false);
+                UIManager.SetShopUIActive(true);
             }
-        }       
-        else  {
+        }
+        else
+        {
             UIManager.SetUIActive(false);
             UIManager.SetShopUIActive(false);
         }
     }
 
-    public void UpdateViewTarget() {
+    public void UpdateViewTarget()
+    {
         Camera.main.GetComponent<FollowCam>().viewTarget = this.viewTarget.transform;
     }
 

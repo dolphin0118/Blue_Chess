@@ -8,10 +8,11 @@ using Photon.Pun;
 public class UnitConditional : Conditional
 {
     protected UnitManager unitManager;
-   // public PhotonView photonView;
+    // public PhotonView photonView;
 
     protected bool isBattle;
     protected bool isAttack;
+    protected bool isFindTarget;
 
     public override void OnStart()
     {
@@ -36,8 +37,19 @@ public class UnitConditional : Conditional
         unitManager.IsCanAttack();
     }
 
-    public void GetCanAttack() {
-        isAttack = unitManager.GetCanAttack();
+    public void GetCanAttack()
+    {
+        isAttack = unitManager.isCanAttack;
+    }
+
+    public void IsFindTarget()
+    {
+        isFindTarget = unitManager.isFindTarget;
+    }
+
+    public void GetIsFindTarget()
+    {
+
     }
 }
 
@@ -51,7 +63,8 @@ public class CanBattle : UnitConditional
             BattlePhase();
             return TaskStatus.Failure;
         }
-        else if (GameManager.isBattle) {
+        else if (GameManager.isBattle)
+        {
             return TaskStatus.Failure;
         }
         // else if (!GameManager.isBattle && PhotonNetwork.IsMasterClient)
@@ -72,7 +85,7 @@ public class CanAttack : UnitConditional
     {
         if (PhotonNetwork.IsMasterClient) IsCanAttack();
         GetCanAttack();
-        
+
         return isAttack ? TaskStatus.Success : TaskStatus.Failure;
     }
 }
@@ -82,9 +95,12 @@ public class CanMove : UnitConditional
 {
     public override TaskStatus OnUpdate()
     {
-        if (PhotonNetwork.IsMasterClient) IsCanAttack();
-        GetCanAttack();
-
-        return !isAttack? TaskStatus.Success : TaskStatus.Failure;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            IsCanAttack();
+            GetCanAttack();
+            IsFindTarget();
+        }
+        return !isAttack ? TaskStatus.Success : TaskStatus.Failure;
     }
 }
