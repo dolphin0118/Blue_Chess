@@ -23,36 +23,51 @@ public class PlayManager : MonoBehaviour
         }
     }
 
-    private void Start() {
+    private void Start()
+    {
         StartCoroutine(StartGame());
     }
 
-    IEnumerator StartGame() {
+    IEnumerator StartGame()
+    {
+        bool isStart = false;
+        if (isStart)
+        {
+
+            StartCoroutine(DisarmState());
+        }
         yield return new WaitForSeconds(0.5f);
-        StartCoroutine(DisarmState());
+
     }
 
-    IEnumerator DisarmState() {
-        while(Time.deltaTime < WaitTime) {
+    IEnumerator DisarmState()
+    {
+        float elapsedTime = 0f;
 
-            
+        while (elapsedTime < WaitTime)
+        {
+            elapsedTime += Time.deltaTime; // 매 프레임의 시간 합산
+            yield return null;
         }
-        yield return null;
+
         StartCoroutine(BattleState());
     }
 
-    IEnumerator BattleState() {
-        while(Time.deltaTime < BattleTime) {
+    IEnumerator BattleState()
+    {
+        float elapsedTime = 0f;
 
-            
+        while (elapsedTime < BattleTime)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
-        yield return null;
+
         StartCoroutine(DisarmState());
     }
-
     void Update()
     {
         bool isEnd = false;
-        if(isEnd) StopAllCoroutines();
+        if (isEnd) StopAllCoroutines();
     }
 }
