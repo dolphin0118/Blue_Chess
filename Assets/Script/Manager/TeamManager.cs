@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 using System.Linq;
 using System;
 using JetBrains.Annotations;
+using TMPro;
 
 public class TeamManager : MonoBehaviour
 {
@@ -15,15 +16,22 @@ public class TeamManager : MonoBehaviour
     public GameObject BattleArea, BenchArea;
     public GameObject HomeTeam, AwayTeam;
     public GameObject UnitLocateController;
+    public GameObject GridView;
+    public TextMeshPro UnitCapacityText;
 
     private Transform previousParent;
     private bool isAwayTeam;
+
+    public int maxUnitCapacity;
+    public int currentUnitCapacity;
 
     private void Awake()
     {
         AreaSetup();
         previousParent = this.transform.parent;
         isAwayTeam = false;
+        maxUnitCapacity = 0;
+        currentUnitCapacity = 0;
     }
 
     private void Start()
@@ -35,6 +43,7 @@ public class TeamManager : MonoBehaviour
     public void Update()
     {
         InputSystem();
+        UnitCapacityText.text = currentUnitCapacity.ToString()+" / "+maxUnitCapacity.ToString();
     }
 
     private void InputSystem()
@@ -135,9 +144,17 @@ public class TeamManager : MonoBehaviour
                 respawnObject.transform.localPosition = Vector3.zero;
             }
         }
-
-
     }
-
+//------------------------------------------------------------------//
+    public void AddUnitCapacity() {
+        currentUnitCapacity++;
+    }
+    public void RemoveUnitCapacity() {
+        currentUnitCapacity--;
+    }
+    public bool IsCanLocateBattleArea() {
+        if(currentUnitCapacity >=maxUnitCapacity) return false;
+        return true;
+    }
 
 }

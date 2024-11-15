@@ -28,7 +28,6 @@ public class UnitMove : UnitAction
     public override TaskStatus OnUpdate()
     {
         if (PhotonNetwork.IsMasterClient) UnitState(State.Move);
-        // Debug.Log("Move");
         return TaskStatus.Success;  // 행동이 성공적으로 수행되었음을 반환합니다.
     }
 }

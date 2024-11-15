@@ -100,7 +100,6 @@ public class UnitStatus : MonoBehaviour
     {
         float attackConstantValue = CalculateAttackConstant(attackType, otherType);
         currentHP -= Damage * attackConstantValue;
-        Debug.Log(currentHP + "/" + HP);
     }
 
     private float CalculateAttackConstant(AttackType myType, AttackType otherType)

@@ -47,7 +47,7 @@ public class UnitController : MonoBehaviour
     //player to target 거리 체크
     public float CalcDistance()
     {
-        if (targetEnemy == null) return 0;
+        if (targetEnemy == null || !targetEnemy.activeSelf) return float.MaxValue;
         Vector3 playerDistance = gameObject.transform.position;
         Vector3 targetDistance = targetEnemy.transform.position;
         float Distance = Vector3.Distance(playerDistance, targetDistance);
@@ -61,22 +61,6 @@ public class UnitController : MonoBehaviour
             return false;
         }
         return true;
-    }
-
-    public bool IsFindTarget()
-    {
-        if (GetTarget() == null) return false;
-        return true;
-    }
-
-    private void IsTargetNull()
-    {
-        if (!targetEnemy.activeSelf)
-        {
-            SetTarget();
-        }
-
-        return;
     }
 
     public void SetTargetList()
@@ -109,10 +93,24 @@ public class UnitController : MonoBehaviour
         }
     }
 
+
+    private void IsTargetNull()
+    {
+        if (targetEnemy == null || !targetEnemy.activeSelf) SetTarget();
+        return;
+    }
+    
+    public bool IsFindTarget()
+    {
+        if (GetTarget() == null) return false;
+        return true;
+    }
+
     public GameObject GetTarget()
     {
         return targetEnemy;
     }
+
     public void SetTargetTag()
     {
         if (this.transform.tag == "Home")
@@ -134,6 +132,7 @@ public class UnitController : MonoBehaviour
     [PunRPC]
     public void AttackTargetRPC()
     {
-        targetEnemy.GetComponent<UnitManager>().OnHitDamage(UnitStatus.currentATK, UnitStatus.attackType);
+        if(targetEnemy != null || targetEnemy.activeSelf)
+            targetEnemy.GetComponent<UnitManager>().OnHitDamage(UnitStatus.currentATK, UnitStatus.attackType);
     }
 }

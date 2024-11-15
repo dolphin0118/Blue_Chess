@@ -135,6 +135,7 @@ public class UnitLocate : MonoBehaviour
             int col = hitObject.transform.GetSiblingIndex();
             if (hitObject.transform.childCount == 0)
             {
+                if(previousParent.layer == LayerMask.NameToLayer("Battle")) TeamManager.RemoveUnitCapacity();
                 previousParent = hitObject;
                 this.transform.SetParent(previousParent.transform);
                 this.transform.localPosition = new Vector3(0, 0.1f, 0);
@@ -178,6 +179,13 @@ public class UnitLocate : MonoBehaviour
 
             if (hitObject.transform.childCount == 0)
             {
+                if(!TeamManager.IsCanLocateBattleArea()) {
+                    this.transform.SetParent(previousParent.transform);
+                    this.transform.localPosition = new Vector3(0, 0, 0);
+                    return;
+                }
+                TeamManager.AddUnitCapacity();
+
                 previousParent = hitObject;
                 this.transform.SetParent(previousParent.transform);
                 this.transform.localPosition = Vector3.zero;

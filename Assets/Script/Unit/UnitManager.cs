@@ -26,14 +26,17 @@ public class UnitManager : MonoBehaviour, IPunObservable
     private PhotonView photonView;
     private BehaviorTree behaviorTree;
 
-    public string unitOwner;
+    private State currentState;
     private bool isUnitControll;
     public bool isCanAttack { get; private set; }
     public bool isFindTarget { get; private set; }
 
     private void Awake()
     {
+        isCanAttack = false;
+        isFindTarget = false;
         isUnitControll = true;
+        currentState = State.None;
         BindComponent();
     }
 
@@ -134,40 +137,46 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     public void IsCanAttack()
     {
-        photonView.RPC("IsCanAttackRPC", RpcTarget.All);
+        bool isCheckRange = unitController.CheckAttackRange();
+        if(isCanAttack != isCheckRange)
+            photonView.RPC("IsCanAttackRPC", RpcTarget.All, isCheckRange);
     }
 
     [PunRPC]
-    public void IsCanAttackRPC()
+    public void IsCanAttackRPC(bool isCheckRange)
     {
-        bool isCheckRange = unitController.CheckAttackRange();
         isCanAttack = isCheckRange;
     }
 
     public void IsFindTarget()
     {
-        photonView.RPC("IsFindTargetRPC", RpcTarget.All);
+        bool isCheckTarget = unitController.IsFindTarget();
+        if(isFindTarget != isCheckTarget)
+            photonView.RPC("IsFindTargetRPC", RpcTarget.All, isCheckTarget);
     }
 
     [PunRPC]
-    public void IsFindTargetRPC()
+    public void IsFindTargetRPC(bool isCheckTarget)
     {
-        bool IsFindTarget = unitController.IsFindTarget();
-        isFindTarget = IsFindTarget;
+        isFindTarget = isCheckTarget;
     }
+
 
     public void UnitState(State state)
     {
-        photonView.RPC("UnitStateRPC", RpcTarget.All, state);
+        if(currentState != state)
+          photonView.RPC("UnitStateRPC", RpcTarget.All, state);
     }
 
     [PunRPC]
     public void UnitStateRPC(State state)
     {
+        currentState = state;
         switch (state)
         {
             case State.Attack:
                 unitAnimator.AttackState();
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
                 break;
             case State.Move:
                 unitAnimator.MoveState();
@@ -188,6 +197,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
         if (Input.GetMouseButtonDown(0) && isUnitControll && photonView.IsMine)
         {
             unitLocate.OnUnitControll();
+            teamManager.GridView.SetActive(true);
         }
         //Right
         else if (Input.GetMouseButtonDown(1))
@@ -204,8 +214,11 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     void OnMouseUp()
     {
-        if (isUnitControll && photonView.IsMine)
+        if (isUnitControll && photonView.IsMine) {
             unitLocate.OnUnitUpdate();
+            teamManager.GridView.SetActive(false);
+        }
+            
     }
 
 

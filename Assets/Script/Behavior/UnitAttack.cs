@@ -12,7 +12,6 @@ public class UnitAttack : UnitAction
     public override TaskStatus OnUpdate()
     {
         if (PhotonNetwork.IsMasterClient) UnitState(State.Attack);
-        //Debug.Log("isAttack");
         return TaskStatus.Success;  // 행동이 성공적으로 수행되었음을 반환합니다
     }
 }

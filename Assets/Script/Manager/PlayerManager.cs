@@ -95,5 +95,9 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    public void SetPlayerView(int viewCode) {
+        playerViewCode = viewCode;
+    }
+
 }
 

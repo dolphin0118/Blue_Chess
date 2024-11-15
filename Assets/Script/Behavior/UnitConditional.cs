@@ -12,7 +12,6 @@ public class UnitConditional : Conditional
 
     protected bool isBattle;
     protected bool isAttack;
-    protected bool isFindTarget;
 
     public override void OnStart()
     {
@@ -37,35 +36,27 @@ public class UnitConditional : Conditional
         unitManager.IsCanAttack();
     }
 
-    public void GetCanAttack()
-    {
-        isAttack = unitManager.isCanAttack;
-    }
 
-    public void IsFindTarget()
-    {
-        isFindTarget = unitManager.isFindTarget;
-    }
-
-    public void GetIsFindTarget()
-    {
-
-    }
 }
 
 [TaskCategory("Unity/UnitConditional")]
 public class CanBattle : UnitConditional
 {
+    bool isAlreadyBattle = false;
     public override TaskStatus OnUpdate()
     {
         if (GameManager.isBattle && PhotonNetwork.IsMasterClient)
         {
+            isAlreadyBattle = true;
             BattlePhase();
             return TaskStatus.Failure;
         }
         else if (GameManager.isBattle)
         {
             return TaskStatus.Failure;
+        }
+        else if(!GameManager.isBattle) {
+            isAlreadyBattle = false;
         }
         // else if (!GameManager.isBattle && PhotonNetwork.IsMasterClient)
         // {
@@ -83,9 +74,11 @@ public class CanAttack : UnitConditional
 {
     public override TaskStatus OnUpdate()
     {
-        if (PhotonNetwork.IsMasterClient) IsCanAttack();
-        GetCanAttack();
-
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            IsCanAttack();
+        }
+        isAttack = unitManager.isCanAttack;
         return isAttack ? TaskStatus.Success : TaskStatus.Failure;
     }
 }
@@ -93,14 +86,21 @@ public class CanAttack : UnitConditional
 [TaskCategory("Unity/UnitConditional")]
 public class CanMove : UnitConditional
 {
+    protected bool isFindTarget;
     public override TaskStatus OnUpdate()
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            IsCanAttack();
-            GetCanAttack();
-            IsFindTarget();
+            unitManager.IsCanAttack();
+            unitManager.IsFindTarget();
         }
-        return !isAttack ? TaskStatus.Success : TaskStatus.Failure;
+        isAttack = unitManager.isCanAttack;
+        isFindTarget = unitManager.isFindTarget;
+
+        if(!isFindTarget ) {
+              return TaskStatus.Failure;
+        }
+        return !isAttack ? TaskStatus.Success: TaskStatus.Failure;
+    
     }
 }

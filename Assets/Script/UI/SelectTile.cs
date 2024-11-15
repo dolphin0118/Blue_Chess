@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 public class SelectTile: MonoBehaviour {
-    public static SelectTile instance = null;
     public Tilemap tilemap;
-    public Vector3Int tilePos{get;set;}
+    private SpriteRenderer spriteRenderer;
 
     private void Awake() {
-        if (instance == null) {
-            instance = this;
-        }
-        else {
-            if (instance != this) Destroy(this.gameObject);
-        }    
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.enabled = false;
     }
 
     void Update(){
@@ -23,12 +18,14 @@ public class SelectTile: MonoBehaviour {
     void TilePosition() {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if(Physics.Raycast(ray, out hit)) {
-            tilePos = tilemap.LocalToCell(hit.point);
+        int battleLayer = 1 << LayerMask.NameToLayer("Battle");
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity, battleLayer)) {
+            spriteRenderer.enabled = true;
+            Vector3Int tilePos = tilemap.LocalToCell(hit.point);
             Vector3 pos = tilemap.GetCellCenterLocal(tilePos);
             transform.position = new Vector3(pos.x, this.transform.position.y, pos.z);
-            //Debug.Log(tilePos);
         }
+        else spriteRenderer.enabled = false;
     }
     //이 타일의 좌표를 vector3.up의 레이로 쏴서 맞은 캐릭터 객체 불러오기
 }

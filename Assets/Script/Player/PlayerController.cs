@@ -16,8 +16,17 @@ public class PlayerController : MonoBehaviour
     private SpawnSystem spawnSystem;
     public PhotonView photonView;
     public GameObject viewTarget;
+
     [SerializeField] public int playerCode = 0;
-    bool IsConnected = false;
+    public string playerName {get; set;}
+    public int playerLevel {get; set;}
+    public int playerHp {get; set;}
+    public int playerGold {get; set;}
+    public int maxUnitCapacity {get; set;}
+
+    private int[] levelEXP = new int[] { 2, 2, 6, 10, 20, 36};
+    private int EXP = 0;
+
     private void Awake()
     {
         TeamManager = GetComponentInChildren<TeamManager>();
@@ -27,22 +36,30 @@ public class PlayerController : MonoBehaviour
         spawnSystem = GetComponentInChildren<SpawnSystem>();
         photonView = GetComponent<PhotonView>();
         spawnSystem.Initialize(TeamManager, synergyManager, unitCombine, photonView);
+
+        playerName = "Player" + playerCode;
+        playerLevel = 3;
+        playerHp = 20;
+        playerGold = 20;
+        maxUnitCapacity = playerLevel;
+        
     }
 
     private void Update()
     {
+        maxUnitCapacity = playerLevel;
+        TeamManager.maxUnitCapacity = maxUnitCapacity;
         UpdateView();
+        UpdateLevel();
     }
 
     public void UpdateView()
     {
-
-        if (photonView.IsMine && !IsConnected && !PhotonNetwork.IsMasterClient)
+        if (photonView.IsMine && !PhotonNetwork.IsMasterClient)
         {
             PlayerManager.instance.playerViewCode = playerCode;
-            IsConnected = true;
         }
-
+        
         if (PlayerManager.instance.playerViewCode == playerCode)
         {
             UIManager.SetUIActive(true);
@@ -54,8 +71,8 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                //UIManager.SetShopUIActive(false);
-                UIManager.SetShopUIActive(true);
+                UIManager.SetShopUIActive(false);
+                //UIManager.SetShopUIActive(true);
             }
         }
         else
@@ -68,6 +85,40 @@ public class PlayerController : MonoBehaviour
     public void UpdateViewTarget()
     {
         Camera.main.GetComponent<FollowCam>().viewTarget = this.viewTarget.transform;
+    }
+
+    private void UpdateLevel() {
+        if(EXP >= levelEXP[playerLevel]) {
+            EXP -= levelEXP[playerLevel];
+            playerLevel++;
+        }
+    }
+
+    public void getGold() {
+        int basicGold = 5;
+        int winGold = 1;
+
+        int totalGold = basicGold;
+        playerGold += totalGold;
+    }
+    //전투 종료시 호출
+    public void BattleEXP() {
+        int BattleEXPValue = 2;
+        EXP += BattleEXPValue;
+    }
+
+    //Button으로 호출
+    public void BuyEXP() {
+        int buyEXPValue = 4;
+        if(playerGold >= 4) {
+            EXP += buyEXPValue;
+            playerGold -= 4;
+        }
+
+    }
+
+    public Tuple<int,int> getEXP() {
+        return new Tuple<int,int>(EXP, levelEXP[playerLevel]);
     }
 
 }

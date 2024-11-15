@@ -59,6 +59,8 @@ public class UnitAnimator : MonoBehaviour
 
         animator.SetBool("Move", false);
         animator.SetBool("Idle", false);
+
+        
     }
 
     public void AttackMotion()
@@ -66,7 +68,6 @@ public class UnitAnimator : MonoBehaviour
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing") &&
             animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f)
         {
-            Debug.Log("ATTACK" + transform.name);
             unitController.AttackTarget();
             animator.Play("Attack_ing", 0, 0f);
         }
