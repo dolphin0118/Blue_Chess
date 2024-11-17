@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class PlayManager : MonoBehaviour
 {
     public static PlayManager instance;
+    [SerializeField] StageUI stageUI;
 
     public const float WaitTime = 20f;
     public const float BattleTime = 30f;
-    public const float InjuryTime = 30f;
+    public const float OverTime = 30f;
 
     private void Awake()
     {
@@ -30,23 +32,27 @@ public class PlayManager : MonoBehaviour
 
     IEnumerator StartGame()
     {
-        bool isStart = false;
-        if (isStart)
+        while(!PhotonNetwork.IsConnected)
         {
-
-            StartCoroutine(DisarmState());
+            yield return new WaitForSeconds(0.1f);
         }
-        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(DisarmState());
 
     }
 
     IEnumerator DisarmState()
     {
         float elapsedTime = 0f;
+        stageUI.SetTimer(WaitTime);
+        BattleManager.instance.DisarmPhase();
 
         while (elapsedTime < WaitTime)
         {
-            elapsedTime += Time.deltaTime; // 매 프레임의 시간 합산
+            elapsedTime += Time.deltaTime;
+            float Timer = WaitTime - elapsedTime;
+            if(Timer <= 0) Timer = 0f;
+            stageUI.UpdateTimer(Timer);
+
             yield return null;
         }
 
@@ -56,15 +62,25 @@ public class PlayManager : MonoBehaviour
     IEnumerator BattleState()
     {
         float elapsedTime = 0f;
+        bool isBattleEnd = false;
+        stageUI.SetTimer(BattleTime);
+        BattleManager.instance.BattlePhase();
 
-        while (elapsedTime < BattleTime)
+        while (elapsedTime < BattleTime && !isBattleEnd)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime; // 매 프레임의 시간 합산
+            float Timer = BattleTime - elapsedTime;
+            if(Timer <= 0) Timer = 0f;
+            stageUI.UpdateTimer(Timer);
+
+            isBattleEnd = BattleManager.instance.IsBattleEnd();
+
             yield return null;
         }
 
         StartCoroutine(DisarmState());
     }
+
     void Update()
     {
         bool isEnd = false;

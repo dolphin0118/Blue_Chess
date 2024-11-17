@@ -112,6 +112,7 @@ public class TeamManager : MonoBehaviour
             HomeTeam.transform.localPosition = Vector3.zero;
             HomeTeam.transform.localRotation = Quaternion.identity;
         }
+        UnitRespawnAll();
     }
 
     //---------------------------------------------------------------------------------------------//
@@ -154,6 +155,22 @@ public class TeamManager : MonoBehaviour
     }
     public bool IsCanLocateBattleArea() {
         if(currentUnitCapacity >=maxUnitCapacity) return false;
+        return true;
+    }
+//-----------------------------------------------------------------//
+
+    public bool IsBattleEndCheck() {
+        foreach (List<GameObject> respawnObjects in UnitObject.Values)
+        {
+            foreach (GameObject respawnObject in respawnObjects)
+            {
+                if (respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle")) {
+                    if (respawnObject.activeSelf) {
+                        return false;
+                    }
+                }
+            }
+        }
         return true;
     }
 
