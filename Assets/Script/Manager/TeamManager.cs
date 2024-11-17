@@ -43,7 +43,7 @@ public class TeamManager : MonoBehaviour
     public void Update()
     {
         InputSystem();
-        UnitCapacityText.text = currentUnitCapacity.ToString()+" / "+maxUnitCapacity.ToString();
+        UnitCapacityText.text = currentUnitCapacity.ToString() + " / " + maxUnitCapacity.ToString();
     }
 
     private void InputSystem()
@@ -146,32 +146,62 @@ public class TeamManager : MonoBehaviour
             }
         }
     }
-//------------------------------------------------------------------//
-    public void AddUnitCapacity() {
+    //------------------------------------------------------------------//
+    public void AddUnitCapacity()
+    {
         currentUnitCapacity++;
     }
-    public void RemoveUnitCapacity() {
+    public void RemoveUnitCapacity()
+    {
         currentUnitCapacity--;
     }
-    public bool IsCanLocateBattleArea() {
-        if(currentUnitCapacity >=maxUnitCapacity) return false;
+    public bool IsCanLocateBattleArea()
+    {
+        if (currentUnitCapacity >= maxUnitCapacity) return false;
         return true;
     }
-//-----------------------------------------------------------------//
+    //-----------------------------------------------------------------//
 
-    public bool IsBattleEndCheck() {
+    public bool IsBattleEndCheck()
+    {
         foreach (List<GameObject> respawnObjects in UnitObject.Values)
         {
             foreach (GameObject respawnObject in respawnObjects)
             {
-                if (respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle")) {
-                    if (respawnObject.activeSelf) {
+                if (respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle"))
+                {
+                    if (respawnObject.activeSelf)
+                    {
                         return false;
                     }
                 }
             }
         }
         return true;
+    }
+
+    public int GetRemainUnit()
+    {
+        int remainCount = 0;
+        foreach (List<GameObject> respawnObjects in UnitObject.Values)
+        {
+            foreach (GameObject respawnObject in respawnObjects)
+            {
+                if (respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle"))
+                {
+                    if (respawnObject.activeSelf)
+                    {
+                        remainCount++;
+                    }
+                }
+            }
+        }
+        return remainCount;
+    }
+
+    public void SetBattleResult(bool result, int remainCount)
+    {
+
     }
 
 }

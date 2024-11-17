@@ -18,13 +18,13 @@ public class PlayerController : MonoBehaviour
     public GameObject viewTarget;
 
     [SerializeField] public int playerCode = 0;
-    public string playerName {get; set;}
-    public int playerLevel {get; set;}
-    public int playerHp {get; set;}
-    public int playerGold {get; set;}
-    public int maxUnitCapacity {get; set;}
+    public string playerName { get; set; }
+    public int playerLevel { get; set; }
+    public int playerHp { get; set; }
+    public int playerGold { get; set; }
+    public int maxUnitCapacity { get; set; }
 
-    private int[] levelEXP = new int[] { 2, 2, 6, 10, 20, 36};
+    private int[] levelEXP = new int[] { 2, 2, 6, 10, 20, 36 };
     private int EXP = 0;
 
     private void Awake()
@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         playerHp = 20;
         playerGold = 20;
         maxUnitCapacity = playerLevel;
-        
+
     }
 
     private void Update()
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
         {
             PlayerManager.instance.playerViewCode = playerCode;
         }
-        
+
         if (PlayerManager.instance.playerViewCode == playerCode)
         {
             UIManager.SetUIActive(true);
@@ -87,14 +87,17 @@ public class PlayerController : MonoBehaviour
         Camera.main.GetComponent<FollowCam>().viewTarget = this.viewTarget.transform;
     }
 
-    private void UpdateLevel() {
-        if(EXP >= levelEXP[playerLevel]) {
+    private void UpdateLevel()
+    {
+        if (EXP >= levelEXP[playerLevel])
+        {
             EXP -= levelEXP[playerLevel];
             playerLevel++;
         }
     }
 
-    public void getGold() {
+    public void getGold()
+    {
         int basicGold = 5;
         int winGold = 1;
 
@@ -102,23 +105,32 @@ public class PlayerController : MonoBehaviour
         playerGold += totalGold;
     }
     //전투 종료시 호출
-    public void BattleEXP() {
+    public void BattleEXP()
+    {
         int BattleEXPValue = 2;
         EXP += BattleEXPValue;
     }
 
     //Button으로 호출
-    public void BuyEXP() {
+    public void BuyEXP()
+    {
         int buyEXPValue = 4;
-        if(playerGold >= 4) {
+        if (playerGold >= 4)
+        {
             EXP += buyEXPValue;
             playerGold -= 4;
         }
 
     }
 
-    public Tuple<int,int> getEXP() {
-        return new Tuple<int,int>(EXP, levelEXP[playerLevel]);
+    public Tuple<int, int> getEXP()
+    {
+        return new Tuple<int, int>(EXP, levelEXP[playerLevel]);
+    }
+
+    public void GetDamage(int damage)
+    {
+        playerHp -= damage;
     }
 
 }

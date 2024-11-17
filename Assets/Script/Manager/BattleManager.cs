@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -11,11 +12,13 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager instance = null;
-    private TeamManager[] teamManagers;
+    private List<TeamManager> teamManagers;
+    private PlayerController[] playerControllers;
     private PhotonView photonView;
     private bool isMatched = false;
-    private Tuple<int, int> Match_1;
-    private Tuple<int, int> Match_2;
+    private Tuple<int, int> match1;
+    private Tuple<int, int> match2;
+
     private void Awake()
     {
         if (instance == null)
@@ -27,78 +30,127 @@ public class BattleManager : MonoBehaviour
         {
             if (instance != this) Destroy(this.gameObject);
         }
-        teamManagers = FindObjectsOfType<TeamManager>();
         photonView = GetComponent<PhotonView>();
     }
 
-    public void Update()
+    private void Start()
     {
-        if(GameManager.isBattle) {
+        playerControllers = PlayerManager.instance.playerControllers;
 
-        }
+        teamManagers = playerControllers
+        .Select(playerController => playerController.TeamManager)
+        .ToList();
     }
 
-    public void BattlePhase() {
+    public void BattlePhase()
+    {
         if (PhotonNetwork.IsMasterClient)
         {
             photonView.RPC("MatchTeam", RpcTarget.All);
         }
     }
 
-    public void DisarmPhase() {
+    public void DisarmPhase()
+    {
         if (PhotonNetwork.IsMasterClient && isMatched)
         {
             photonView.RPC("RevertTeam", RpcTarget.All);
         }
     }
 
-
     [PunRPC]
     public void MatchTeam()
     {
-        isMatched = true;
-        int team1 = UnityEngine.Random.Range(0, 4);
-        int team2 = 0;
-        while (team1 != team2) team2 = UnityEngine.Random.Range(0, 4);
-        MatchTeamSet(team1, team2);
         GameManager.isBattle = true;
+        isMatched = true;
+        var list = new List<int>() { 0, 1, 2, 3 };
+        var random = new System.Random();
+        var randomized = list.OrderBy(x => random.Next());
+        int[] teamlist = new int[4];
+        int count = 0;
+        foreach (var i in randomized)
+        {
+            teamlist[count] = i;
+            count++;
+        }
+
+        MatchTeamSet(teamlist[0], teamlist[1]);
+        MatchTeamSet(teamlist[2], teamlist[3]);
+
     }
-    
+
     private void MatchTeamSet(int team1, int team2)
     {
-        TeamManager Team1 = PlayerManager.instance.playerControllers[0].TeamManager;
-        TeamManager Team2 = PlayerManager.instance.playerControllers[1].TeamManager;
-        Match_1 = new Tuple<int, int>(0, 1);
-        // TeamManager Team1 = PlayerManager.instance.playerControllers[team1].TeamManager;
-        // TeamManager Team2 = PlayerManager.instance.playerControllers[team2].TeamManager;
+        TeamManager Team1 = teamManagers[team1];
+        TeamManager Team2 = teamManagers[team2];
+        match1 = new Tuple<int, int>(0, 1);
 
         Team1.SetHomeTeam();
         Team2.SetAwayTeam(Team1.AwayTeam.transform);
     }
 
     [PunRPC]
-    public void RevertTeam() {     
+    public void RevertTeam()
+    {
         isMatched = false;
         GameManager.isBattle = false;
-        foreach (PlayerController currentController in PlayerManager.instance.playerControllers) {
-             currentController.TeamManager.RevertTeam();
-        }   
+        foreach (TeamManager teamManager in teamManagers)
+        {
+            teamManager.RevertTeam();
+        }
     }
 
-    public bool IsBattleEnd() {
-        foreach (PlayerController currentController in PlayerManager.instance.playerControllers) {
-            bool currentCheck = currentController.TeamManager.IsBattleEndCheck();
-            if(!currentCheck) return false;
-        }   
+    public bool IsBattleEnd()
+    {
+        bool firstMatch = IsBothBattleEnd(match1.Item1, match1.Item2);
+        bool secondMatch = IsBothBattleEnd(match2.Item1, match2.Item2);
+
+        if (!firstMatch || !secondMatch) return false;
         return true;
     }
 
-    public bool IsBothBattleEnd(int team1, int team2) {
-        TeamManager Team1 = PlayerManager.instance.playerControllers[0].TeamManager;
-        TeamManager Team2 = PlayerManager.instance.playerControllers[1].TeamManager;
+    public bool IsBothBattleEnd(int team1, int team2)
+    {
+        TeamManager Team1 = teamManagers[0];
+        TeamManager Team2 = teamManagers[1];
 
-        if(Team1.IsBattleEndCheck() || Team1.IsBattleEndCheck());
+        if (Team1.IsBattleEndCheck() || Team2.IsBattleEndCheck())
+        {
+            return true;
+        }
 
-        return true;
+        return false;
+    }
+
+    public void ForceBattleEnd()
+    {
+        ForceBattleEnd(match1.Item1, match1.Item2);
+        ForceBattleEnd(match2.Item1, match2.Item2);
+    }
+
+    public void ForceBattleEnd(int team1, int team2)
+    {
+        TeamManager Team1 = teamManagers[team1];
+        TeamManager Team2 = teamManagers[team2];
+
+        int team1RemainUnit = Team1.GetRemainUnit();
+        int team2RemainUnit = Team2.GetRemainUnit();
+
+        int damage = Mathf.Abs(team1RemainUnit - team2RemainUnit);
+
+        if (team1RemainUnit > team2RemainUnit)
+        {
+            playerControllers[team1].GetDamage(damage);
+        }
+        else if (team1RemainUnit < team2RemainUnit)
+        {
+            playerControllers[team2].GetDamage(damage);
+        }
+        else
+        {
+            int drawDamage = 3;
+            playerControllers[team1].GetDamage(drawDamage);
+            playerControllers[team2].GetDamage(drawDamage);
+        }
     }
 }

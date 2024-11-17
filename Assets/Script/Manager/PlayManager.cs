@@ -27,12 +27,16 @@ public class PlayManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(StartGame());
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(StartGame());
+        }
+
     }
 
     IEnumerator StartGame()
     {
-        while(!PhotonNetwork.IsConnected)
+        while (!PhotonNetwork.IsConnected)
         {
             yield return new WaitForSeconds(0.1f);
         }
@@ -50,7 +54,7 @@ public class PlayManager : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             float Timer = WaitTime - elapsedTime;
-            if(Timer <= 0) Timer = 0f;
+            if (Timer <= 0) Timer = 0f;
             stageUI.UpdateTimer(Timer);
 
             yield return null;
@@ -63,17 +67,30 @@ public class PlayManager : MonoBehaviour
     {
         float elapsedTime = 0f;
         bool isBattleEnd = false;
+        bool isOverTime = false;
         stageUI.SetTimer(BattleTime);
         BattleManager.instance.BattlePhase();
 
         while (elapsedTime < BattleTime && !isBattleEnd)
         {
             elapsedTime += Time.deltaTime; // 매 프레임의 시간 합산
+            if (elapsedTime > BattleTime && !isOverTime) //전투 시간 오버시
+            {
+                isOverTime = true;
+                elapsedTime = 0f;
+            }
+            else if (elapsedTime > OverTime && isOverTime) //오버시간 끝
+            {
+                GameManager.isBattle = false;
+                BattleManager.instance.ForceBattleEnd();
+                break;
+            }
+
             float Timer = BattleTime - elapsedTime;
-            if(Timer <= 0) Timer = 0f;
+            if (Timer <= 0) Timer = 0f;
             stageUI.UpdateTimer(Timer);
 
-            isBattleEnd = BattleManager.instance.IsBattleEnd();
+            isBattleEnd = BattleManager.instance.IsBattleEnd(); // End체크
 
             yield return null;
         }
