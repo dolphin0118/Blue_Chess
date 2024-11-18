@@ -1691,9 +1691,11 @@ MonoBehaviour:
   AwayTeam: {fileID: 4103374406870654259}
   UnitLocateController: {fileID: 2167094302656015553}
   GridView: {fileID: 7768667280055253733}
+  UnitCapacityObject: {fileID: 1337110549748025633}
   UnitCapacityText: {fileID: 887302148394606025}
   maxUnitCapacity: 0
   currentUnitCapacity: 0
+  targetTag: 
 --- !u!114 &5059771877300393834
 MonoBehaviour:
   m_ObjectHideFlags: 0

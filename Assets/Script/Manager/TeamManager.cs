@@ -17,6 +17,7 @@ public class TeamManager : MonoBehaviour
     public GameObject HomeTeam, AwayTeam;
     public GameObject UnitLocateController;
     public GameObject GridView;
+    public GameObject UnitCapacityObject;
     public TextMeshPro UnitCapacityText;
 
     private Transform previousParent;
@@ -24,6 +25,7 @@ public class TeamManager : MonoBehaviour
 
     public int maxUnitCapacity;
     public int currentUnitCapacity;
+    public string targetTag;
 
     private void Awake()
     {
@@ -44,6 +46,8 @@ public class TeamManager : MonoBehaviour
     {
         InputSystem();
         UnitCapacityText.text = currentUnitCapacity.ToString() + " / " + maxUnitCapacity.ToString();
+        if(GameManager.isBattle) UnitCapacityObject.SetActive(false);
+        else UnitCapacityObject.SetActive(true);
     }
 
     private void InputSystem()
@@ -74,20 +78,22 @@ public class TeamManager : MonoBehaviour
         }
     }
 
-    public void SetHomeTeam()
+    public void SetHomeTeam(string tag, string targetTag)
     {
+        this.targetTag = targetTag;
         foreach (List<GameObject> respawnObjects in UnitObject.Values)
         {
             foreach (GameObject respawnObject in respawnObjects)
             {
                 if (respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle"))
-                    respawnObject.tag = "Home";
+                    respawnObject.tag = tag;
             }
         }
     }
 
-    public void SetAwayTeam(Transform AwayTeam)
+    public void SetAwayTeam(Transform AwayTeam, string tag, string targetTag)
     {
+        this.targetTag = targetTag;
         HomeTeam.transform.SetParent(AwayTeam);
         HomeTeam.transform.localPosition = Vector3.zero;
         HomeTeam.transform.localRotation = Quaternion.identity;
@@ -98,7 +104,7 @@ public class TeamManager : MonoBehaviour
             foreach (GameObject respawnObject in respawnObjects)
             {
                 if (respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle"))
-                    respawnObject.tag = "Away";
+                    respawnObject.tag = tag;
             }
         }
     }

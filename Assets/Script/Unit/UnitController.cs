@@ -10,6 +10,7 @@ public class UnitController : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private UnitStatus UnitStatus;
     private PhotonView photonView;
+    private TeamManager teamManager;
 
     private GameObject[] targetEnemys;
     private GameObject targetEnemy { get; set; }
@@ -23,6 +24,9 @@ public class UnitController : MonoBehaviour
 
         navMeshAgent.enabled = false;
         targetEnemy = null;
+    }
+    public void Initialize(TeamManager teamManager) {
+        this.teamManager = teamManager;
     }
 
     void Update()
@@ -113,11 +117,7 @@ public class UnitController : MonoBehaviour
 
     public void SetTargetTag()
     {
-        if (this.transform.tag == "Home")
-        {
-            targetTag = "Away";
-        }
-        else targetTag = "Home";
+        targetTag = teamManager.targetTag;
     }
 
     public void AttackTarget()
@@ -132,7 +132,7 @@ public class UnitController : MonoBehaviour
     [PunRPC]
     public void AttackTargetRPC()
     {
-        if(targetEnemy != null || targetEnemy.activeSelf)
-            targetEnemy.GetComponent<UnitManager>().OnHitDamage(UnitStatus.currentATK, UnitStatus.attackType);
+        if(targetEnemy == null || !targetEnemy.activeSelf) return;
+        targetEnemy.GetComponent<UnitManager>().OnHitDamage(UnitStatus.currentATK, UnitStatus.attackType);
     }
 }

@@ -17,7 +17,12 @@ TagManager:
   - Level
   - Pointer
   - BenchArea
+  - Team1
+  - Team2
+  - Team3
+  - Team4
   - Unit
+  - Team0
   layers:
   - Default
   - TransparentFX

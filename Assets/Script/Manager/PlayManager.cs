@@ -27,16 +27,12 @@ public class PlayManager : MonoBehaviour
 
     private void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            StartCoroutine(StartGame());
-        }
-
+        StartCoroutine(StartGame());
     }
 
     IEnumerator StartGame()
     {
-        while (!PhotonNetwork.IsConnected)
+        while (!PhotonNetwork.IsConnected ||!PhotonNetwork.IsMasterClient)
         {
             yield return new WaitForSeconds(0.1f);
         }
@@ -46,6 +42,7 @@ public class PlayManager : MonoBehaviour
 
     IEnumerator DisarmState()
     {
+        GameManager.isBattle = false;
         float elapsedTime = 0f;
         stageUI.SetTimer(WaitTime);
         BattleManager.instance.DisarmPhase();

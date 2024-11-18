@@ -15,7 +15,6 @@ public class UnitManager : MonoBehaviour, IPunObservable
     private TeamManager teamManager;
     private SynergyManager synergyManager;
 
-
     private UnitInfo unitInfo;
     private UnitLocate unitLocate;
     private UnitController unitController;
@@ -62,6 +61,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
         this.unitStatus.Initialize(unitCard.UnitStat);
         this.unitInfo.Initialize(teamManager, synergyManager, unitCombine, unitCard.UnitData, unitStatus);
         this.unitLocate.Initialize(teamManager, synergyManager);
+        this.unitController.Initialize(teamManager);
 
     }
 

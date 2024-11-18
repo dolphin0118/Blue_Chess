@@ -61,7 +61,6 @@ public class BattleManager : MonoBehaviour
     [PunRPC]
     public void MatchTeam()
     {
-        GameManager.isBattle = true;
         isMatched = true;
         var list = new List<int>() { 0, 1, 2, 3 };
         var random = new System.Random();
@@ -75,8 +74,10 @@ public class BattleManager : MonoBehaviour
         }
 
         MatchTeamSet(teamlist[0], teamlist[1]);
+        match1 = new Tuple<int, int>(teamlist[0], teamlist[1]);
         MatchTeamSet(teamlist[2], teamlist[3]);
-
+        match2 = new Tuple<int, int>(teamlist[2], teamlist[3]);
+        GameManager.isBattle = true;
     }
 
     private void MatchTeamSet(int team1, int team2)
@@ -85,15 +86,14 @@ public class BattleManager : MonoBehaviour
         TeamManager Team2 = teamManagers[team2];
         match1 = new Tuple<int, int>(0, 1);
 
-        Team1.SetHomeTeam();
-        Team2.SetAwayTeam(Team1.AwayTeam.transform);
+        Team1.SetHomeTeam("Team" + team1, "Team" + team2 );
+        Team2.SetAwayTeam(Team1.AwayTeam.transform, "Team" + team2 , "Team" + team1);
     }
 
     [PunRPC]
     public void RevertTeam()
     {
         isMatched = false;
-        GameManager.isBattle = false;
         foreach (TeamManager teamManager in teamManagers)
         {
             teamManager.RevertTeam();
