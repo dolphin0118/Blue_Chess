@@ -18,6 +18,8 @@ public class UnitManager : MonoBehaviour, IPunObservable
     private UnitInfo unitInfo;
     private UnitLocate unitLocate;
     private UnitController unitController;
+    private UnitAstar unitAstar;
+
     private UnitStatus unitStatus;
     private UnitItem unitItem;
     private UnitAnimator unitAnimator;
@@ -43,6 +45,8 @@ public class UnitManager : MonoBehaviour, IPunObservable
         unitInfo = GetComponent<UnitInfo>();
         unitLocate = GetComponent<UnitLocate>();
         unitController = GetComponent<UnitController>();
+        unitAstar = GetComponent<UnitAstar>();
+
         unitStatus = GetComponent<UnitStatus>();
         unitItem = GetComponentInChildren<UnitItem>();
         unitAnimator = GetComponent<UnitAnimator>();
@@ -128,13 +132,12 @@ public class UnitManager : MonoBehaviour, IPunObservable
     [PunRPC]
     public void DisarmPhaseRPC()
     {
+        
         isUnitControll = true;
         UnitState(State.Idle);
-        unitController.OnDisarm();
         unitLocate.enabled = true;
         unitStatus.SetupStatus();
 
-        GameManager.isBattle = false;
     }
 
     public void IsCanAttack()

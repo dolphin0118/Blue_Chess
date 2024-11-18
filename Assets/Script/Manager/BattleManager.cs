@@ -106,12 +106,13 @@ public class BattleManager : MonoBehaviour
     [PunRPC]
     public void RevertTeam()
     {
+        GameManager.isBattle = false;
         isMatched = false;
         foreach (TeamManager teamManager in teamManagers)
         {
             teamManager.RevertTeam();
         }
-        GameManager.isBattle = false;
+        
     }
 
     public bool IsBattleEnd()

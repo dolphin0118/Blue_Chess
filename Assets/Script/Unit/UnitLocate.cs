@@ -219,7 +219,6 @@ public class UnitLocate : MonoBehaviour
                 photonView.RPC("UnitLocateUpdate", RpcTarget.Others, row, col);//CurrentUnit
             }
             previousParent = hitObject;
-            Debug.Log("battle");
         }
         else
         {

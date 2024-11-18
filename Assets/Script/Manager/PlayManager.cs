@@ -78,7 +78,6 @@ public class PlayManager : MonoBehaviour
             }
             else if (elapsedTime > OverTime && isOverTime) //오버시간 끝
             {
-                GameManager.isBattle = false;
                 BattleManager.instance.ForceBattleEnd();
                 break;
             }

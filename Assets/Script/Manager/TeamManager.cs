@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using JetBrains.Annotations;
 using TMPro;
+using UnityEngine.AI;
 
 public class TeamManager : MonoBehaviour
 {
@@ -148,8 +149,8 @@ public class TeamManager : MonoBehaviour
             foreach (GameObject respawnObject in respawnObjects)
             {
                 respawnObject.SetActive(true);
+                respawnObject.GetComponent<NavMeshAgent>().enabled = false;
                 respawnObject.transform.localPosition = Vector3.zero;
-                Debug.Log(respawnObject.name);
             }
         }
 
