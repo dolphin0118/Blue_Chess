@@ -93,7 +93,7 @@ public class UnitStatus : MonoBehaviour
         //공격력은 레벨 * 0.33 추가 부여
 
         float LevelATKValue = unitStat.ATK * 0.33f;
-        ATK = unitStat.ATK + (Level * LevelATKValue);
+        currentATK = unitStat.ATK * 10 + (Level * LevelATKValue);
     }
 
     public void Hit(float Damage, AttackType otherType)

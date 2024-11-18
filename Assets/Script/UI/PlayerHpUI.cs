@@ -15,7 +15,7 @@ public class PlayerHpUI : MonoBehaviour
 
     void Start()
     {
-        playerHp = playerController.playerHp; 
+        playerHp = playerController.playerHp;
         playerName = playerController.playerName;
     }
 

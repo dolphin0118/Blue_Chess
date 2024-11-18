@@ -10,22 +10,19 @@ public class UnitAstar : MonoBehaviour
 {
     private NavMeshAgent charaNav;
     private GameObject targetObject;
-    private string targetTag;
     private bool isRunning;
 
     void Start()
     {
         charaNav = this.GetComponent<NavMeshAgent>();
         charaNav.speed = 1f;
-        if (this.transform.tag == "Friendly") targetTag = "Enemy";
-        else if (this.transform.tag == "Enemy") targetTag = "Friendly";
     }
 
     private void Update()
     {
         if (!GameManager.isBattle)
         {
-            //NavStop();
+            NavStop();
         }
     }
 

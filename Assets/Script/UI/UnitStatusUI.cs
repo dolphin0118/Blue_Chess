@@ -5,57 +5,82 @@ using UnityEngine.UI;
 
 public class UnitStatusUI : MonoBehaviour
 {
-    public Sprite[] Level_sprites;
-    UnitStatus unitStatus;
-    Transform cam;
+    private UnitStatus unitStatus;
+    private TeamManager teamManager;
 
+    [SerializeField] Sprite[] Level_sprites;
     [SerializeField] Image hpImage;
     [SerializeField] Image mpImage;
     [SerializeField] Image levelImage;
 
+    private Transform cam;
+    Color homeTeamColor;
+    Color awayTeamColor;
+
     void Start()
     {
-        cam = Camera.main.transform;    
-        unitStatus = transform.GetComponentInParent<UnitStatus>();
+        cam = Camera.main.transform;
+    }
+
+    public void Initialize(TeamManager teamManager, UnitStatus unitStatus)
+    {
+        this.teamManager = teamManager;
+        this.unitStatus = unitStatus;
         Setup();
     }
-    void Setup() {
+
+    void Setup()
+    {
+        homeTeamColor = new Color(0, 255, 0); // Home Color
+        awayTeamColor = new Color(255, 255, 0); // Away Color
+
         hpImage.fillAmount = 1.0f;
-        if (hpImage == null) {
-           Debug.LogError("Hp_front object not found");
+        if (hpImage == null)
+        {
+            Debug.LogError("Hp_front object not found");
         }
         mpImage.fillAmount = 1.0f;
-        if (mpImage == null) {
-           Debug.LogError("Hp_front object not found");
+        if (mpImage == null)
+        {
+            Debug.LogError("Hp_front object not found");
         }
     }
 
-
-    void HPUpdate() {
-        float gagueValue =  unitStatus.currentHP / unitStatus.HP;
-        hpImage.fillAmount = gagueValue;
+    void Update()
+    {
+        HPUpdate();
+        MPUpdate();
+        LevelUpdate();
+        transform.LookAt(transform.position + cam.rotation * Vector3.forward, cam.rotation * Vector3.up);
     }
 
-    void MPUpdate() {
+    void HPUpdate()
+    {
+        float gagueValue = unitStatus.currentHP / unitStatus.HP;
+        hpImage.fillAmount = gagueValue;
+        hpImage.color = SetTeamColor();
+    }
+
+    void MPUpdate()
+    {
         float gagueValue = unitStatus.currentMP / unitStatus.MP;
         mpImage.fillAmount = gagueValue;
     }
 
-    void LevelSetup() {
-        int UnitLevel = GetComponentInParent<UnitInfo>().unitStatus.Level;
+    void LevelUpdate()
+    {
+        int UnitLevel = unitStatus.Level;
         levelImage.sprite = Level_sprites[UnitLevel - 1];
     }
-    void Update() {
-        swapSprite();
-        HPUpdate();
-        MPUpdate();
-        transform.LookAt(transform.position + cam.rotation * Vector3.forward, cam.rotation * Vector3.up);
 
-    }
+    Color SetTeamColor()
+    {
+        if (teamManager.isAwayTeam)
+        {
+            return awayTeamColor;
+        }
+        else return homeTeamColor;
 
-    void swapSprite() {
-        int UnitLevel = GetComponentInParent<UnitInfo>().unitStatus.Level;
-        levelImage.sprite = Level_sprites[UnitLevel - 1];
     }
 
 }

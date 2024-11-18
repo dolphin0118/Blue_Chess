@@ -11,7 +11,7 @@ using BehaviorDesigner.Runtime;
 public class UnitManager : MonoBehaviour, IPunObservable
 {
 
-    private PhotonView pv;
+    private PhotonView photonView;
     private TeamManager teamManager;
     private SynergyManager synergyManager;
 
@@ -22,8 +22,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
     private UnitItem unitItem;
     private UnitAnimator unitAnimator;
     private UnitCombine unitCombine;
-    private PhotonView photonView;
-    private BehaviorTree behaviorTree;
+    private UnitStatusUI unitStatusUI;
 
     private State currentState;
     private bool isUnitControll;
@@ -48,7 +47,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
         unitItem = GetComponentInChildren<UnitItem>();
         unitAnimator = GetComponent<UnitAnimator>();
         photonView = GetComponent<PhotonView>();
-        behaviorTree = GetComponent<BehaviorTree>();
+        unitStatusUI = GetComponentInChildren<UnitStatusUI>();
     }
 
     public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCombine unitCombine, UnitCard unitCard)
@@ -62,12 +61,12 @@ public class UnitManager : MonoBehaviour, IPunObservable
         this.unitInfo.Initialize(teamManager, synergyManager, unitCombine, unitCard.UnitData, unitStatus);
         this.unitLocate.Initialize(teamManager, synergyManager);
         this.unitController.Initialize(teamManager);
-
+        this.unitStatusUI.Initialize(teamManager, unitStatus);
     }
 
     private void Update()
     {
-        if (unitStatus.IsUnitDead())
+        if (GameManager.isBattle && unitStatus.IsUnitDead())
         {
             photonView.RPC("UnitDisable", RpcTarget.All);
         }
@@ -81,7 +80,6 @@ public class UnitManager : MonoBehaviour, IPunObservable
     [PunRPC]
     public void UnitDisable()
     {
-
         this.transform.localPosition = Vector3.zero;
         this.transform.gameObject.SetActive(false);
     }
@@ -114,14 +112,16 @@ public class UnitManager : MonoBehaviour, IPunObservable
     {
         isUnitControll = false;
         unitLocate.ForceLocate();
-        unitLocate.enabled = false;
-        unitController.OnBattle();
-        GameManager.isBattle = true;
+        if (this.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle"))
+        {
+            unitLocate.enabled = false;
+            unitController.OnBattle();
+
+        }
     }
 
     public void DisarmPhase()
     {
-
         photonView.RPC("DisarmPhaseRPC", RpcTarget.All);
     }
 
@@ -132,13 +132,15 @@ public class UnitManager : MonoBehaviour, IPunObservable
         UnitState(State.Idle);
         unitController.OnDisarm();
         unitLocate.enabled = true;
+        unitStatus.SetupStatus();
+
         GameManager.isBattle = false;
     }
 
     public void IsCanAttack()
     {
         bool isCheckRange = unitController.CheckAttackRange();
-        if(isCanAttack != isCheckRange)
+        if (isCanAttack != isCheckRange)
             photonView.RPC("IsCanAttackRPC", RpcTarget.All, isCheckRange);
     }
 
@@ -151,7 +153,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
     public void IsFindTarget()
     {
         bool isCheckTarget = unitController.IsFindTarget();
-        if(isFindTarget != isCheckTarget)
+        if (isFindTarget != isCheckTarget)
             photonView.RPC("IsFindTargetRPC", RpcTarget.All, isCheckTarget);
     }
 
@@ -164,8 +166,8 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     public void UnitState(State state)
     {
-        if(currentState != state)
-          photonView.RPC("UnitStateRPC", RpcTarget.All, state);
+        if (currentState != state)
+            photonView.RPC("UnitStateRPC", RpcTarget.All, state);
     }
 
     [PunRPC]
@@ -214,11 +216,12 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     void OnMouseUp()
     {
-        if (isUnitControll && photonView.IsMine) {
+        if (isUnitControll && photonView.IsMine)
+        {
             unitLocate.OnUnitUpdate();
             teamManager.GridView.SetActive(false);
         }
-            
+
     }
 
 

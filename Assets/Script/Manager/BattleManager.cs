@@ -46,7 +46,7 @@ public class BattleManager : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("MatchTeam", RpcTarget.All);
+            photonView.RPC("BattlePhaseRPC", RpcTarget.All);
         }
     }
 
@@ -54,11 +54,24 @@ public class BattleManager : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient && isMatched)
         {
+
             photonView.RPC("RevertTeam", RpcTarget.All);
         }
     }
 
     [PunRPC]
+    public void BattlePhaseRPC()
+    {
+        MatchTeam();
+    }
+
+    [PunRPC]
+    public void DisarmPhaseRPC()
+    {
+        RevertTeam();
+
+    }
+
     public void MatchTeam()
     {
         isMatched = true;
@@ -86,8 +99,8 @@ public class BattleManager : MonoBehaviour
         TeamManager Team2 = teamManagers[team2];
         match1 = new Tuple<int, int>(0, 1);
 
-        Team1.SetHomeTeam("Team" + team1, "Team" + team2 );
-        Team2.SetAwayTeam(Team1.AwayTeam.transform, "Team" + team2 , "Team" + team1);
+        Team1.SetHomeTeam("Team" + team1, "Team" + team2);
+        Team2.SetAwayTeam(Team1.AwayTeam.transform, "Team" + team2, "Team" + team1);
     }
 
     [PunRPC]
@@ -98,6 +111,7 @@ public class BattleManager : MonoBehaviour
         {
             teamManager.RevertTeam();
         }
+        GameManager.isBattle = false;
     }
 
     public bool IsBattleEnd()
@@ -111,8 +125,8 @@ public class BattleManager : MonoBehaviour
 
     public bool IsBothBattleEnd(int team1, int team2)
     {
-        TeamManager Team1 = teamManagers[0];
-        TeamManager Team2 = teamManagers[1];
+        TeamManager Team1 = teamManagers[team1];
+        TeamManager Team2 = teamManagers[team2];
 
         if (Team1.IsBattleEndCheck() || Team2.IsBattleEndCheck())
         {

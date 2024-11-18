@@ -21,7 +21,7 @@ public class TeamManager : MonoBehaviour
     public TextMeshPro UnitCapacityText;
 
     private Transform previousParent;
-    private bool isAwayTeam;
+    public bool isAwayTeam { get; private set; }
 
     public int maxUnitCapacity;
     public int currentUnitCapacity;
@@ -46,7 +46,7 @@ public class TeamManager : MonoBehaviour
     {
         InputSystem();
         UnitCapacityText.text = currentUnitCapacity.ToString() + " / " + maxUnitCapacity.ToString();
-        if(GameManager.isBattle) UnitCapacityObject.SetActive(false);
+        if (GameManager.isBattle) UnitCapacityObject.SetActive(false);
         else UnitCapacityObject.SetActive(true);
     }
 
@@ -149,8 +149,10 @@ public class TeamManager : MonoBehaviour
             {
                 respawnObject.SetActive(true);
                 respawnObject.transform.localPosition = Vector3.zero;
+                Debug.Log(respawnObject.name);
             }
         }
+
     }
     //------------------------------------------------------------------//
     public void AddUnitCapacity()
