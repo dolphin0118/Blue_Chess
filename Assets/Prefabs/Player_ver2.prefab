@@ -4674,7 +4674,7 @@ MonoBehaviour:
   unitCombine: {fileID: 0}
   photonView: {fileID: 0}
   HomeViewTarget: {fileID: 1312305380074059096}
-  AwayViewTarget: {fileID: 8494368324584609176}
+  AwayViewTarget: {fileID: 1312305380074059096}
   playerCode: 1
 --- !u!114 &8666682810801293973
 MonoBehaviour:

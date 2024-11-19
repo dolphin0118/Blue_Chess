@@ -93,13 +93,14 @@ public class PlayerController : MonoBehaviour
     {
         if (TeamManager.isAwayTeam)
         {
-            ViewTarget = this.AwayViewTarget;
             Camera.main.GetComponent<FollowCam>().viewTarget = ViewTarget.transform;
+            Camera.main.GetComponent<FollowCam>().isAwayViewTarget = true;
         }
         else
         {
             ViewTarget = this.HomeViewTarget;
             Camera.main.GetComponent<FollowCam>().viewTarget = ViewTarget.transform;
+            Camera.main.GetComponent<FollowCam>().isAwayViewTarget = false;
         }
 
     }

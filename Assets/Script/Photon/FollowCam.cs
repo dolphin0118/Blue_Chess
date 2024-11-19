@@ -4,16 +4,28 @@ using UnityEngine;
 
 public class FollowCam : MonoBehaviour
 {
+    
     private Camera mainCamera;
-    private Vector3 basePosition;
-    private Transform mainCameraTr;
+    [SerializeField] Camera subCamera;
+    private Vector3 homePosition;
+    private Vector3 awayPosition;
+    private Quaternion homeRotation;
+    private Quaternion awayRotation;
+
+    public bool isAwayViewTarget;
     public Transform viewTarget;
+
     // Start is called before the first frame update
     void Start()
     {
+        isAwayViewTarget = false;
         mainCamera = Camera.main;
-        basePosition = mainCamera.transform.position;
-        mainCameraTr = mainCamera.transform;
+
+        homePosition = mainCamera.transform.position;
+        awayPosition = subCamera.transform.position;
+        homeRotation = mainCamera.transform.rotation;
+        awayRotation = subCamera.transform.rotation;
+
     }
 
     // Update is called once per frame
@@ -35,11 +47,17 @@ public class FollowCam : MonoBehaviour
     }
 
     void LerpTarget() {
-        //mainCameraTr.position = new Vector3(viewTarget.position.x, mainCameraTr.position.y, mainCameraTr.position.z);
-        // 현재 카메라의 고도와 각도를 유지하기 위해 카메라의 상대적인 위치를 조정
-        Vector3 newPosition = new Vector3(viewTarget.position.x, basePosition.y, basePosition.z + viewTarget.position.z);
-        //Vector3 newPosition = new Vector3(viewTarget.position.x, mainCameraTr.position.y,  Mathf.Tan(Mathf.Deg2Rad * 55f) * viewTarget.position.z);
-        mainCameraTr.position = newPosition;
-        //tr.LookAt(targetTr.position);
+
+        if(!isAwayViewTarget) {
+            Vector3 newPosition = new Vector3(viewTarget.position.x, homePosition.y, homePosition.z + viewTarget.position.z);
+            mainCamera.transform.position = newPosition;
+            mainCamera.transform.rotation = homeRotation;
+        }
+        else {
+            Vector3 newPosition = new Vector3(viewTarget.position.x, awayPosition.y, awayPosition.z + viewTarget.position.z + 4);
+            mainCamera.transform.position = newPosition;
+            mainCamera.transform.rotation = awayRotation;
+        }
+
     }
 }
