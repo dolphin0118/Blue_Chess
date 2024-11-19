@@ -42,6 +42,14 @@ public class BattleManager : MonoBehaviour
         .ToList();
     }
 
+    public void BattleReadyPhase()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("BattleReadyRPC", RpcTarget.All);
+        }
+    }
+
     public void BattlePhase()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -55,12 +63,18 @@ public class BattleManager : MonoBehaviour
         if (PhotonNetwork.IsMasterClient && isMatched)
         {
 
-            photonView.RPC("RevertTeam", RpcTarget.All);
+            photonView.RPC("DisarmPhaseRPC", RpcTarget.All);
         }
     }
 
     [PunRPC]
     public void BattlePhaseRPC()
+    {
+        GameManager.isBattle = true;
+    }
+
+    [PunRPC]
+    public void BattleReadyRPC()
     {
         MatchTeam();
     }
@@ -69,7 +83,6 @@ public class BattleManager : MonoBehaviour
     public void DisarmPhaseRPC()
     {
         RevertTeam();
-
     }
 
     public void MatchTeam()
@@ -90,20 +103,16 @@ public class BattleManager : MonoBehaviour
         match1 = new Tuple<int, int>(teamlist[0], teamlist[1]);
         MatchTeamSet(teamlist[2], teamlist[3]);
         match2 = new Tuple<int, int>(teamlist[2], teamlist[3]);
-        GameManager.isBattle = true;
     }
 
     private void MatchTeamSet(int team1, int team2)
     {
-        TeamManager Team1 = teamManagers[team1];
-        TeamManager Team2 = teamManagers[team2];
-        match1 = new Tuple<int, int>(0, 1);
-
-        Team1.SetHomeTeam("Team" + team1, "Team" + team2);
-        Team2.SetAwayTeam(Team1.AwayTeam.transform, "Team" + team2, "Team" + team1);
+        teamManagers[team1].SetHomeTeam("Team" + team1, "Team" + team2);
+        teamManagers[team2].SetAwayTeam(teamManagers[team1].AwayTeam.transform, "Team" + team2, "Team" + team1);
+        playerControllers[team2].SetAwayViewTarget(playerControllers[team1].AwayViewTarget);
     }
 
-    [PunRPC]
+
     public void RevertTeam()
     {
         GameManager.isBattle = false;
@@ -112,7 +121,7 @@ public class BattleManager : MonoBehaviour
         {
             teamManager.RevertTeam();
         }
-        
+
     }
 
     public bool IsBattleEnd()
@@ -137,13 +146,13 @@ public class BattleManager : MonoBehaviour
         return false;
     }
 
-    public void ForceBattleEnd()
+    public void BattleEnd()
     {
-        ForceBattleEnd(match1.Item1, match1.Item2);
-        ForceBattleEnd(match2.Item1, match2.Item2);
+        CalculateDamage(match1.Item1, match1.Item2);
+        CalculateDamage(match2.Item1, match2.Item2);
     }
 
-    public void ForceBattleEnd(int team1, int team2)
+    public void CalculateDamage(int team1, int team2)
     {
         TeamManager Team1 = teamManagers[team1];
         TeamManager Team2 = teamManagers[team2];
@@ -155,11 +164,11 @@ public class BattleManager : MonoBehaviour
 
         if (team1RemainUnit > team2RemainUnit)
         {
-            playerControllers[team1].GetDamage(damage);
+            playerControllers[team2].GetDamage(damage);
         }
         else if (team1RemainUnit < team2RemainUnit)
         {
-            playerControllers[team2].GetDamage(damage);
+            playerControllers[team1].GetDamage(damage);
         }
         else
         {

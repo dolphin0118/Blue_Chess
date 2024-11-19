@@ -25,7 +25,8 @@ public class UnitController : MonoBehaviour
         navMeshAgent.enabled = false;
         targetEnemy = null;
     }
-    public void Initialize(TeamManager teamManager) {
+    public void Initialize(TeamManager teamManager)
+    {
         this.teamManager = teamManager;
     }
 
@@ -103,10 +104,10 @@ public class UnitController : MonoBehaviour
         if (targetEnemy == null || !targetEnemy.activeSelf) SetTarget();
         return;
     }
-    
+
     public bool IsFindTarget()
     {
-        if (GetTarget() == null) return false;
+        if (targetEnemy == null || !targetEnemy.activeSelf) return false;
         return true;
     }
 
@@ -132,7 +133,7 @@ public class UnitController : MonoBehaviour
     [PunRPC]
     public void AttackTargetRPC()
     {
-        if(targetEnemy == null || !targetEnemy.activeSelf) return;
+        if (targetEnemy == null || !targetEnemy.activeSelf) return;
         targetEnemy.GetComponent<UnitManager>().OnHitDamage(UnitStatus.currentATK, UnitStatus.attackType);
     }
 }

@@ -32,7 +32,7 @@ public class UnitStatusUI : MonoBehaviour
     void Setup()
     {
         homeTeamColor = new Color(0, 255, 0); // Home Color
-        awayTeamColor = new Color(255, 255, 0); // Away Color
+        awayTeamColor = new Color(255, 0, 0); // Away Color
 
         hpImage.fillAmount = 1.0f;
         if (hpImage == null)

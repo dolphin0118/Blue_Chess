@@ -11,6 +11,7 @@ public class PlayManager : MonoBehaviour
     public const float WaitTime = 20f;
     public const float BattleTime = 30f;
     public const float OverTime = 30f;
+    public const float ReadyTime = 5;
 
     private void Awake()
     {
@@ -40,12 +41,33 @@ public class PlayManager : MonoBehaviour
 
     }
 
+    IEnumerator DisarmReadyState()
+    {
+        float elapsedTime = 0f;
+
+        stageUI.SetTimer(ReadyTime);
+        stageUI.SetReadyColor(true);
+        //BattleManager.instance.DisarmReadyPhase();
+        while (elapsedTime < ReadyTime)
+        {
+            elapsedTime += Time.deltaTime; // 매 프레임의 시간 합산
+            float Timer = ReadyTime - elapsedTime;
+            if (Timer <= 0) Timer = 0f;
+            stageUI.UpdateTimer(Timer);
+
+            yield return null;
+        }
+        StartCoroutine(DisarmState());
+    }
+
     IEnumerator DisarmState()
     {
         float elapsedTime = 0f;
+
         stageUI.SetTimer(WaitTime);
+        stageUI.SetReadyColor(false);
         BattleManager.instance.DisarmPhase();
-        Debug.Log("Disarm");
+
         while (elapsedTime < WaitTime)
         {
             elapsedTime += Time.deltaTime;
@@ -56,6 +78,26 @@ public class PlayManager : MonoBehaviour
             yield return null;
         }
 
+        StartCoroutine(BattleReadyState());
+    }
+
+    IEnumerator BattleReadyState()
+    {
+        float elapsedTime = 0f;
+
+        stageUI.SetTimer(ReadyTime);
+        stageUI.SetReadyColor(true);
+        BattleManager.instance.BattleReadyPhase();
+
+        while (elapsedTime < ReadyTime)
+        {
+            elapsedTime += Time.deltaTime; // 매 프레임의 시간 합산
+            float Timer = ReadyTime - elapsedTime;
+            if (Timer <= 0) Timer = 0f;
+            stageUI.UpdateTimer(Timer);
+
+            yield return null;
+        }
         StartCoroutine(BattleState());
     }
 
@@ -64,9 +106,11 @@ public class PlayManager : MonoBehaviour
         float elapsedTime = 0f;
         bool isBattleEnd = false;
         bool isOverTime = false;
+
         stageUI.SetTimer(BattleTime);
+        stageUI.SetReadyColor(false);
         BattleManager.instance.BattlePhase();
-        Debug.Log("Battle");
+
         while (elapsedTime < BattleTime && !isBattleEnd)
         {
             elapsedTime += Time.deltaTime; // 매 프레임의 시간 합산
@@ -74,11 +118,9 @@ public class PlayManager : MonoBehaviour
             {
                 isOverTime = true;
                 elapsedTime = 0f;
-                Debug.Log("OverTime");
             }
             else if (elapsedTime > OverTime && isOverTime) //오버시간 끝
             {
-                BattleManager.instance.ForceBattleEnd();
                 break;
             }
 
@@ -90,8 +132,8 @@ public class PlayManager : MonoBehaviour
 
             yield return null;
         }
-
-        StartCoroutine(DisarmState());
+        BattleManager.instance.BattleEnd();
+        StartCoroutine(DisarmReadyState());
     }
 
     void Update()

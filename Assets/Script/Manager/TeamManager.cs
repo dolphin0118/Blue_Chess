@@ -151,6 +151,7 @@ public class TeamManager : MonoBehaviour
                 respawnObject.SetActive(true);
                 respawnObject.GetComponent<NavMeshAgent>().enabled = false;
                 respawnObject.transform.localPosition = Vector3.zero;
+                respawnObject.tag = "Untagged";
             }
         }
 

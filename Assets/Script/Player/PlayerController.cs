@@ -15,7 +15,9 @@ public class PlayerController : MonoBehaviour
     public UnitCombine unitCombine;
     private SpawnSystem spawnSystem;
     public PhotonView photonView;
-    public GameObject viewTarget;
+    public GameObject HomeViewTarget;
+    public GameObject AwayViewTarget;
+    private GameObject ViewTarget;
 
     [SerializeField] public int playerCode = 0;
     public string playerName { get; set; }
@@ -82,10 +84,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void SetAwayViewTarget(GameObject AwayViewTarget)
+    {
+        this.AwayViewTarget = AwayViewTarget;
+    }
+
     public void UpdateViewTarget()
     {
-        Camera.main.GetComponent<FollowCam>().viewTarget = this.viewTarget.transform;
+        if (TeamManager.isAwayTeam)
+        {
+            ViewTarget = this.AwayViewTarget;
+            Camera.main.GetComponent<FollowCam>().viewTarget = ViewTarget.transform;
+        }
+        else
+        {
+            ViewTarget = this.HomeViewTarget;
+            Camera.main.GetComponent<FollowCam>().viewTarget = ViewTarget.transform;
+        }
+
     }
+
 
     private void UpdateLevel()
     {

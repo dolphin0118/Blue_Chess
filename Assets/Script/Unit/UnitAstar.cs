@@ -22,7 +22,7 @@ public class UnitAstar : MonoBehaviour
     {
         if (!GameManager.isBattle)
         {
-            NavStop();
+            //NavStop();
         }
     }
 

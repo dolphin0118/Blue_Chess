@@ -132,7 +132,6 @@ public class UnitManager : MonoBehaviour, IPunObservable
     [PunRPC]
     public void DisarmPhaseRPC()
     {
-        
         isUnitControll = true;
         UnitState(State.Idle);
         unitLocate.enabled = true;

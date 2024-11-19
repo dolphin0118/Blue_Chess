@@ -12,24 +12,38 @@ public class StageUI : MonoBehaviour
     float maxCount;
     float currentCount;
 
-    void Awake() {
+    Color baseColor;
+    Color readyColor;
+
+    void Awake()
+    {
         maxCount = 0;
         currentCount = 0;
+        baseColor = new Color(0, 225, 255);
+        readyColor = Color.yellow;
     }
 
     void Update()
     {
-        float timerGauge = currentCount/maxCount;
+        float timerGauge = currentCount / maxCount;
         timerBar.fillAmount = timerGauge;
         timerCount.text = ((int)currentCount).ToString();
     }
-    
-    public void SetTimer(float maxCount) {
+
+    public void SetTimer(float maxCount)
+    {
         this.maxCount = maxCount;
         this.currentCount = 0;
     }
 
-    public void UpdateTimer(float currentTimer) {
+    public void UpdateTimer(float currentTimer)
+    {
         currentCount = currentTimer;
+    }
+
+    public void SetReadyColor(bool isChange)
+    {
+        if (isChange) timerBar.color = readyColor;
+        else timerBar.color = baseColor;
     }
 }
