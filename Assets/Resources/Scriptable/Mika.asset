@@ -18,7 +18,7 @@ MonoBehaviour:
     Name: Mika
     schoolSynergy: 2
     traitSynergy: 7
-    UnitPrice: 0
+    UnitPrice: 5
   UnitStat:
     Level: 1
     Name: Mika

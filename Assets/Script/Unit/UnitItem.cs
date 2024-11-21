@@ -23,7 +23,7 @@ public class UnitItem : MonoBehaviour
 
     void UseItems()
     {
-        GetComponent<ItemInfo>().UseItem(unitStatus);
+        GetComponent<ItemBase>().UseItem(unitStatus);
     }
 
     // Update is called once per frame

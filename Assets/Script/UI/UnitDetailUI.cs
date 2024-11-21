@@ -4,9 +4,10 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-public class UI_Card : UI_Base
+public class UnitDetailUI : UI_Base
 {
-    enum Texts {
+    enum Texts
+    {
         Name,
         Price,
         TraitName,
@@ -18,10 +19,11 @@ public class UI_Card : UI_Base
         AR,
         MR,
         ATKSpeed,
-        Range,   
+        Range,
     }
 
-    enum Images {
+    enum Images
+    {
         UnitImage,
         Skill,
         TraitSynergy,
@@ -33,24 +35,28 @@ public class UI_Card : UI_Base
 
     private UnitCard UnitCard;
 
-    private void Start() {
+    private void Start()
+    {
         Init();
         gameObject.SetActive(false);
     }
 
-    public override void Init() {
-		Bind<TextMeshProUGUI>(typeof(Texts));  // 텍스트 오브젝트들 가져와 dictionary인 _objects에 바인딩. 
-		Bind<Image>(typeof(Images)); 
+    public override void Init()
+    {
+        Bind<TextMeshProUGUI>(typeof(Texts));  // 텍스트 오브젝트들 가져와 dictionary인 _objects에 바인딩. 
+        Bind<Image>(typeof(Images));
     }
 
-     public void CardEnable(UnitCard UnitCard) {
+    public void CardEnable(UnitCard UnitCard)
+    {
         this.UnitCard = UnitCard;
         ImageSetup();
         TextSetup();
         StatSetup();
     }
 
-    void StatSetup() {
+    void StatSetup()
+    {
         GetText((int)Texts.HP).text = UnitCard.UnitStat.HP.ToString();
         GetText((int)Texts.MP).text = UnitCard.UnitStat.MP.ToString();
         GetText((int)Texts.ATK).text = UnitCard.UnitStat.ATK.ToString();
@@ -61,20 +67,22 @@ public class UI_Card : UI_Base
         GetText((int)Texts.Range).text = UnitCard.UnitStat.Range.ToString();
     }
 
-    void ImageSetup() {    
+    void ImageSetup()
+    {
         GetText((int)Texts.Name).text = UnitCard.Name;
         GetText((int)Texts.Price).text = UnitCard.UnitData.UnitPrice.ToString();
         GetText((int)Texts.TraitName).text = UnitCard.UnitData.traitSynergy.ToString();
         GetText((int)Texts.SchoolName).text = UnitCard.UnitData.schoolSynergy.ToString();
     }
 
-    void TextSetup() {
+    void TextSetup()
+    {
         string symbolPath = "Unit/Symbol/";
         GetImage((int)Images.UnitImage).sprite = UnitCard.UnitMemorial;
-        GetImage((int)Images.TraitSynergy).sprite = Resources.Load(symbolPath + UnitCard.UnitData.traitSynergy,typeof(Sprite)) as Sprite;
-        GetImage((int)Images.SchoolSynergy).sprite = Resources.Load(symbolPath + UnitCard.UnitData.schoolSynergy,typeof(Sprite)) as Sprite;
+        GetImage((int)Images.TraitSynergy).sprite = Resources.Load(symbolPath + UnitCard.UnitData.traitSynergy, typeof(Sprite)) as Sprite;
+        GetImage((int)Images.SchoolSynergy).sprite = Resources.Load(symbolPath + UnitCard.UnitData.schoolSynergy, typeof(Sprite)) as Sprite;
 
         //traitSymbol.transform.SetAsLastSibling();
-       //schoolSymbol.transform.SetAsLastSibling();
+        //schoolSymbol.transform.SetAsLastSibling();
     }
 }

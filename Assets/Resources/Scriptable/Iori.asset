@@ -18,7 +18,7 @@ MonoBehaviour:
     Name: Iori
     schoolSynergy: 1
     traitSynergy: 6
-    UnitPrice: 0
+    UnitPrice: 1
   UnitStat:
     Level: 1
     Name: Iori

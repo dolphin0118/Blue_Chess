@@ -12,13 +12,13 @@ using BehaviorDesigner.Runtime;
 
 public class SpawnSystem : MonoBehaviour
 {
-    public TeamManager teamManager;
-    public SynergyManager synergyManager;
-    public UnitCombine unitCombine;
-    public UnitCard[] UnitCards;
-    private Dictionary<string, UnitCard> unitDictionary = new Dictionary<string, UnitCard>();
+    private TeamManager teamManager;
+    private SynergyManager synergyManager;
 
+    private Dictionary<string, UnitCard> unitDictionary = new Dictionary<string, UnitCard>();
     private bool[] checkSlot = new bool[9];
+    public UnitCard[] UnitCards;
+
     private GameObject BenchArea;
     private PhotonView photonView;
 
@@ -37,13 +37,12 @@ public class SpawnSystem : MonoBehaviour
         }
     }
 
-    public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCombine unitCombine, PhotonView photonView)
+    public void Initialize(TeamManager teamManager, SynergyManager synergyManager)
     {
         this.teamManager = teamManager;
         this.synergyManager = synergyManager;
-        this.unitCombine = unitCombine;
+
         this.BenchArea = this.teamManager.BenchArea;
-        //this.photonView = photonView;
         this.photonView = this.GetComponent<PhotonView>();
     }
 
@@ -137,8 +136,7 @@ public class SpawnSystem : MonoBehaviour
         UnitClone.transform.SetParent(BenchArea.transform.GetChild(parent));
         UnitClone.transform.localPosition = Vector3.zero;
         UnitClone.gameObject.tag = "Friendly";
-        UnitClone.GetComponent<UnitManager>().Initialize(teamManager, synergyManager, unitCombine, UnitCard);
+        UnitClone.GetComponent<UnitManager>().Initialize(teamManager, synergyManager, UnitCard);
     }
-
 
 }

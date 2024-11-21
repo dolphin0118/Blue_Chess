@@ -18,7 +18,7 @@ MonoBehaviour:
     Name: Neru
     schoolSynergy: 3
     traitSynergy: 7
-    UnitPrice: 0
+    UnitPrice: 3
   UnitStat:
     Level: 1
     Name: Neru

@@ -7,55 +7,17 @@ using BlueChessDataBase;
 using Unity.Profiling;
 using Unity.VisualScripting;
 
-namespace BlueChessDataBase
-{
-    [Serializable]
-    public class UnitData
-    {
-        public string Name = "";
-        public Synergy schoolSynergy;
-        public Synergy traitSynergy;
-        public int UnitPrice;
-
-    }
-
-    [Serializable]
-    public class UnitStat
-    {
-        public int Level = 1;
-        public string Name;
-        public float HP;
-        public float MP;
-        public float ATK;
-        public float AP;
-        public float AR;
-        public float MR;
-        public float ATKSpeed;
-        public float Range;
-        public AttackType attackType;
-        
-        public void LevelAdd()
-        {
-            Level++;
-        }
-    }
-}
-
-
 public class UnitInfo : MonoBehaviour
 {
     private TeamManager teamManager;
     private SynergyManager synergyManager;
     public UnitData unitData;
     public UnitStatus unitStatus;
-    private UnitCombine unitCombine;
-    
-   
-    public void Initialize(TeamManager teamManager,SynergyManager synergyManager, UnitCombine unitCombine, UnitData unitData, UnitStatus unitStatus)
+
+    public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitData unitData, UnitStatus unitStatus)
     {
         this.teamManager = teamManager;
         this.synergyManager = synergyManager;
-        this.unitCombine = unitCombine;
         this.unitData = unitData;
         this.unitStatus = unitStatus;
         LevelInit();
@@ -91,15 +53,16 @@ public class UnitInfo : MonoBehaviour
             {
                 teamManager.UnitObject[unitData.Name] = new List<GameObject>();
             }
-            teamManager.UnitObject[unitData.Name].Add(transform.gameObject);
+            teamManager.UnitListUpdate(unitData.Name, transform.gameObject);
         }
-        unitCombine.CombineListUpdate(unitData.Name);
+
     }
 
     public void SynergyAdd()
     {
-        
-        if (teamManager.UnitCheck[unitData.Name] == 0) {
+
+        if (teamManager.UnitCheck[unitData.Name] == 0)
+        {
             Synergy traitSynergy = unitData.traitSynergy;
             Synergy schoolSynergy = unitData.schoolSynergy;
             synergyManager.synergyCount[traitSynergy]++;
@@ -110,13 +73,15 @@ public class UnitInfo : MonoBehaviour
 
     public void SynergyRemove()
     {
-        if (teamManager.UnitCheck[unitData.Name] > 0) {
+        if (teamManager.UnitCheck[unitData.Name] > 0)
+        {
             teamManager.UnitCheck[unitData.Name]--;
-            if(teamManager.UnitCheck[unitData.Name] == 0) {
+            if (teamManager.UnitCheck[unitData.Name] == 0)
+            {
                 Synergy traitSynergy = unitData.traitSynergy;
                 Synergy schoolSynergy = unitData.schoolSynergy;
                 synergyManager.synergyCount[traitSynergy]--;
-                synergyManager.synergyCount[schoolSynergy]--; 
+                synergyManager.synergyCount[schoolSynergy]--;
             }
         }
     }

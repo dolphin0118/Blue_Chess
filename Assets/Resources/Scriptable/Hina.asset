@@ -16,10 +16,9 @@ MonoBehaviour:
   UnitMemorial: {fileID: 21300000, guid: bede018362641fb4884e831288881997, type: 3}
   UnitData:
     Name: Hina
-    attackType: 0
     schoolSynergy: 1
     traitSynergy: 11
-    UnitPrice: 0
+    UnitPrice: 5
   UnitStat:
     Level: 1
     Name: Hina
@@ -31,4 +30,5 @@ MonoBehaviour:
     MR: 50
     ATKSpeed: 1
     Range: 1.5
+    attackType: 0
   Name: Hina

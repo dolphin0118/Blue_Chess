@@ -12,9 +12,11 @@ public class PlayerController : MonoBehaviour
     public TeamManager TeamManager;
     public SynergyManager synergyManager;
     public UIManager UIManager;
-    public UnitCombine unitCombine;
+
+    public CombineSystem combineSystem;
     private SpawnSystem spawnSystem;
     public PhotonView photonView;
+
     public GameObject HomeViewTarget;
     public GameObject AwayViewTarget;
     private GameObject ViewTarget;
@@ -26,18 +28,23 @@ public class PlayerController : MonoBehaviour
     public int playerGold { get; set; }
     public int maxUnitCapacity { get; set; }
 
-    private int[] levelEXP = new int[] { 2, 2, 6, 10, 20, 36 };
-    private int EXP = 0;
+    public int[] levelEXP = new int[] { 2, 2, 6, 10, 20, 36 };
+    public int EXP = 0;
 
     private void Awake()
     {
         TeamManager = GetComponentInChildren<TeamManager>();
         synergyManager = GetComponentInChildren<SynergyManager>();
-        unitCombine = GetComponentInChildren<UnitCombine>();
         UIManager = GetComponentInChildren<UIManager>();
+
+        combineSystem = GetComponentInChildren<CombineSystem>();
         spawnSystem = GetComponentInChildren<SpawnSystem>();
         photonView = GetComponent<PhotonView>();
-        spawnSystem.Initialize(TeamManager, synergyManager, unitCombine, photonView);
+
+        TeamManager.Initialize(combineSystem);
+        spawnSystem.Initialize(TeamManager, synergyManager);
+        combineSystem.Initialize(TeamManager);
+
 
         playerName = "Player" + playerCode;
         playerLevel = 3;
@@ -64,8 +71,10 @@ public class PlayerController : MonoBehaviour
 
         if (PlayerManager.instance.playerViewCode == playerCode)
         {
-            UIManager.SetUIActive(true);
             UpdateViewTarget();
+
+            UIManager.SetUIActive(true);
+
             if (photonView.IsMine)
             {
                 PlayerManager.instance.playerViewCode = playerCode;
@@ -105,7 +114,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-
     private void UpdateLevel()
     {
         if (EXP >= levelEXP[playerLevel])
@@ -115,14 +123,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void getGold()
-    {
-        int basicGold = 5;
-        int winGold = 1;
-
-        int totalGold = basicGold;
-        playerGold += totalGold;
-    }
     //전투 종료시 호출
     public void BattleEXP()
     {
@@ -131,18 +131,8 @@ public class PlayerController : MonoBehaviour
     }
 
     //Button으로 호출
-    public void BuyEXP()
-    {
-        int buyEXPValue = 4;
-        if (playerGold >= 4)
-        {
-            EXP += buyEXPValue;
-            playerGold -= 4;
-        }
 
-    }
-
-    public Tuple<int, int> getEXP()
+    public Tuple<int, int> GetEXP()
     {
         return new Tuple<int, int>(EXP, levelEXP[playerLevel]);
     }

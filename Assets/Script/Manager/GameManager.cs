@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public PhotonView photonView;
     [System.NonSerialized] public static bool isBattle = false;
     public Tilemap tilemap;
-    
+
     private void Awake()
     {
         if (instance == null)
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-         if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             photonView.RPC("BattleControll", RpcTarget.All, true);
         }
@@ -50,11 +50,12 @@ public class GameManager : MonoBehaviour
         {
             photonView.RPC("BattleControll", RpcTarget.All, false);
         }
-        
+
     }
 
     [PunRPC]
-    void BattleControll(bool isBattle) {
+    void BattleControll(bool isBattle)
+    {
 
         GameManager.isBattle = isBattle;
     }
@@ -143,7 +144,7 @@ public class GameManager : MonoBehaviour
             UnitStat UnitStat = statMapper.Map<UnitStat>(Stat[i]);
             // ※유닛 데이터베이스 동기화
             //CreateUnitAsset(UnitData, UnitStat);
- 
+
             UnitList.Add(UnitData.Name);
 
         }

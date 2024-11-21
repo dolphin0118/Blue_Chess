@@ -10,6 +10,8 @@ using UnityEngine.AI;
 
 public class TeamManager : MonoBehaviour
 {
+    private CombineSystem combineSystem;
+
     public Dictionary<string, int> UnitCheck = new Dictionary<string, int>(); //Synergy체크용
     public Dictionary<string, LevelData> UnitLevel = new Dictionary<string, LevelData>(); //Combine용
     public Dictionary<string, List<GameObject>> UnitObject = new Dictionary<string, List<GameObject>>();//
@@ -36,7 +38,10 @@ public class TeamManager : MonoBehaviour
         maxUnitCapacity = 0;
         currentUnitCapacity = 0;
     }
-
+    public void Initialize(CombineSystem combineSystem)
+    {
+        this.combineSystem = combineSystem;
+    }
     private void Start()
     {
         HomeTeam = this.gameObject;
@@ -129,6 +134,12 @@ public class TeamManager : MonoBehaviour
         {
             UnitCheck.Add(unitName, 0);
         }
+    }
+
+    public void UnitListUpdate(string unitName, GameObject unitObject)
+    {
+        UnitObject[unitName].Add(unitObject);
+        combineSystem.CombineListUpdate(unitName);
     }
 
     public void UnitDeleteAll()

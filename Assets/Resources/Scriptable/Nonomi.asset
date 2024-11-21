@@ -18,7 +18,7 @@ MonoBehaviour:
     Name: Nonomi
     schoolSynergy: 0
     traitSynergy: 10
-    UnitPrice: 0
+    UnitPrice: 2
   UnitStat:
     Level: 1
     Name: Nonomi

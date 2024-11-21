@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEditor;
 
-public class ItemInfo : MonoBehaviour
+public class ItemBase : MonoBehaviour
 {
     public ItemAsset itemAsset;
     public GameObject ItemPrefab;

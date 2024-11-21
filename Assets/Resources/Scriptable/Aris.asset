@@ -18,7 +18,7 @@ MonoBehaviour:
     Name: Aris
     schoolSynergy: 3
     traitSynergy: 9
-    UnitPrice: 0
+    UnitPrice: 3
   UnitStat:
     Level: 1
     Name: Aris

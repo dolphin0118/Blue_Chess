@@ -18,7 +18,7 @@ MonoBehaviour:
     Name: Kazusa
     schoolSynergy: 2
     traitSynergy: 6
-    UnitPrice: 0
+    UnitPrice: 1
   UnitStat:
     Level: 1
     Name: Kazusa

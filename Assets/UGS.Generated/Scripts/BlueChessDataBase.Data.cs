@@ -59,7 +59,7 @@ namespace BlueChessDataBase
 		public System.String Name;
 		public Synergy schoolSynergy;
 		public Synergy traitSynergy;
-		public System.Int32 charaPrice;
+		public System.Int32 UnitPrice;
   
 
 #region fuctions

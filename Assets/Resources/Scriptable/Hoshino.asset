@@ -18,7 +18,7 @@ MonoBehaviour:
     Name: Hoshino
     schoolSynergy: 0
     traitSynergy: 8
-    UnitPrice: 0
+    UnitPrice: 5
   UnitStat:
     Level: 1
     Name: Hoshino

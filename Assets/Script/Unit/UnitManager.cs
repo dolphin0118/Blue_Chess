@@ -14,6 +14,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
     private PhotonView photonView;
     private TeamManager teamManager;
     private SynergyManager synergyManager;
+    private UIManager UIManager;
 
     private UnitInfo unitInfo;
     private UnitLocate unitLocate;
@@ -23,8 +24,9 @@ public class UnitManager : MonoBehaviour, IPunObservable
     private UnitStatus unitStatus;
     private UnitItem unitItem;
     private UnitAnimator unitAnimator;
-    private UnitCombine unitCombine;
     private UnitStatusUI unitStatusUI;
+
+    private CombineSystem combineSystem;
 
     private State currentState;
     private bool isUnitControll;
@@ -42,6 +44,8 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     void BindComponent()
     {
+        photonView = GetComponent<PhotonView>();
+
         unitInfo = GetComponent<UnitInfo>();
         unitLocate = GetComponent<UnitLocate>();
         unitController = GetComponent<UnitController>();
@@ -50,19 +54,17 @@ public class UnitManager : MonoBehaviour, IPunObservable
         unitStatus = GetComponent<UnitStatus>();
         unitItem = GetComponentInChildren<UnitItem>();
         unitAnimator = GetComponent<UnitAnimator>();
-        photonView = GetComponent<PhotonView>();
+
         unitStatusUI = GetComponentInChildren<UnitStatusUI>();
     }
 
-    public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCombine unitCombine, UnitCard unitCard)
+    public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCard unitCard)
     {
         this.teamManager = teamManager;
         this.synergyManager = synergyManager;
-        this.unitCombine = unitCombine;
 
-        this.unitCombine.Initialize(teamManager);
         this.unitStatus.Initialize(unitCard.UnitStat);
-        this.unitInfo.Initialize(teamManager, synergyManager, unitCombine, unitCard.UnitData, unitStatus);
+        this.unitInfo.Initialize(teamManager, synergyManager, unitCard.UnitData, unitStatus);
         this.unitLocate.Initialize(teamManager, synergyManager);
         this.unitController.Initialize(teamManager);
         this.unitStatusUI.Initialize(teamManager, unitStatus);

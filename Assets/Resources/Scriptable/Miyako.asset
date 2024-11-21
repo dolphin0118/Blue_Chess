@@ -18,7 +18,7 @@ MonoBehaviour:
     Name: Miyako
     schoolSynergy: 4
     traitSynergy: 11
-    UnitPrice: 0
+    UnitPrice: 3
   UnitStat:
     Level: 1
     Name: Miyako

@@ -19,7 +19,7 @@ public class LevelData
     }
 }
 
-public class UnitCombine : MonoBehaviour
+public class CombineSystem : MonoBehaviour
 {
     private TeamManager TeamManager;
     const int CombineCount = 3;
@@ -85,21 +85,24 @@ public class UnitCombine : MonoBehaviour
         .Where(info => info.GetComponent<UnitInfo>().unitStatus.Level == combineLevel)
         .OrderByDescending(unit => unit.GetComponent<UnitLocate>().IsBattleLayer())
         .ToList();
-        
+
         GameObject mainUnit = targetUnits[0];
 
-        for(int i = targetUnits.Count - 1; i >= 0 ; i--) {
-                 if (Delete_Count >= 2) {
-                    mainUnit.GetComponent<UnitInfo>().unitStatus.Level++;
-                    break;
-                }
-                else {
-                    Delete_Count++;
-                    ObjectPoolManager.instance.multiPool[UnitName].Release(targetUnits[i]);
-                    TeamManager.UnitObject[UnitName].Remove(targetUnits[i]);
-                }
+        for (int i = targetUnits.Count - 1; i >= 0; i--)
+        {
+            if (Delete_Count >= 2)
+            {
+                mainUnit.GetComponent<UnitInfo>().unitStatus.Level++;
+                break;
+            }
+            else
+            {
+                Delete_Count++;
+                ObjectPoolManager.instance.multiPool[UnitName].Release(targetUnits[i]);
+                TeamManager.UnitObject[UnitName].Remove(targetUnits[i]);
+            }
         }
-        
+
     }
 
 }
