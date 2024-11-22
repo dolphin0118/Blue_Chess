@@ -71,7 +71,7 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         spawnSystem = GetComponentInParent<SpawnSystem>();
         playerData = GetComponentInParent<PlayerData>();
-        initColor = this.GetComponent<Image>().color;
+        initColor = UnitImage.color;
 
         CardInit();
         CardSetup();
