@@ -9,13 +9,13 @@ using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour
 {
-    public TeamManager TeamManager;
-    public SynergyManager synergyManager;
-    public UIManager UIManager;
+    [NonSerialized] public TeamManager TeamManager;
+    [NonSerialized] public SynergyManager synergyManager;
+    [NonSerialized] public UIManager UIManager;
 
-    public CombineSystem combineSystem;
-    private SpawnSystem spawnSystem;
-    public PhotonView photonView;
+    [NonSerialized] public CombineSystem combineSystem;
+    [NonSerialized] private SpawnSystem spawnSystem;
+    [NonSerialized] public PhotonView photonView;
 
     public GameObject HomeViewTarget;
     public GameObject AwayViewTarget;
@@ -73,7 +73,6 @@ public class PlayerController : MonoBehaviour
         {
             UpdateViewTarget();
 
-            UIManager.SetUIActive(true);
 
             if (photonView.IsMine)
             {
@@ -88,7 +87,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            UIManager.SetUIActive(false);
             UIManager.SetShopUIActive(false);
         }
     }

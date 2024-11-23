@@ -16,14 +16,22 @@ public class TeamManager : MonoBehaviour
     public Dictionary<string, LevelData> UnitLevel = new Dictionary<string, LevelData>(); //Combine용
     public Dictionary<string, List<GameObject>> UnitObject = new Dictionary<string, List<GameObject>>();//
 
+    //----------------FieldObject-------------------//
     public GameObject BattleArea, BenchArea;
     public GameObject HomeTeam, AwayTeam;
     public GameObject UnitLocateController;
     public GameObject GridView;
+    private Transform previousParent;
+    //-------------------text----------------------//
     public GameObject UnitCapacityObject;
     public TextMeshPro UnitCapacityText;
 
-    private Transform previousParent;
+
+    //----------------------UI---------------------//
+    public GameObject UnitDetailCard;
+
+
+
     public bool isAwayTeam { get; private set; }
 
     public int maxUnitCapacity;
@@ -46,6 +54,7 @@ public class TeamManager : MonoBehaviour
     {
         HomeTeam = this.gameObject;
         UnitListAdd();
+        UnitDetailCard.gameObject.SetActive(false);
     }
 
     public void Update()
@@ -223,6 +232,18 @@ public class TeamManager : MonoBehaviour
     public void SetBattleResult(bool result, int remainCount)
     {
 
+    }
+
+    //-----------------------------------------------------------------------//
+    public void OpenUI(UnitCard UnitCard)
+    {
+        UnitDetailCard.gameObject.SetActive(true);
+        UnitDetailCard.GetComponentInChildren<UnitDetailUI>().CardEnable(UnitCard);
+    }
+
+    public void CloseUI()
+    {
+        UnitDetailCard.gameObject.SetActive(false);
     }
 
 }

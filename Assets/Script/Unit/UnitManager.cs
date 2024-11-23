@@ -10,23 +10,25 @@ using BehaviorDesigner.Runtime;
 
 public class UnitManager : MonoBehaviour, IPunObservable
 {
-
+    //------------------Manager------------------//
     private PhotonView photonView;
     private TeamManager teamManager;
     private SynergyManager synergyManager;
     private UIManager UIManager;
+    private CombineSystem combineSystem;
+    //------------------Controll------------------//
 
-    private UnitInfo unitInfo;
     private UnitLocate unitLocate;
     private UnitController unitController;
     private UnitAstar unitAstar;
-
-    private UnitStatus unitStatus;
-    private UnitItem unitItem;
     private UnitAnimator unitAnimator;
-    private UnitStatusUI unitStatusUI;
 
-    private CombineSystem combineSystem;
+    //-----------------Data----------------------//
+    private UnitStatus unitStatus;
+    private UnitStatusUI unitStatusUI;
+    private UnitItem unitItem;
+    private UnitInfo unitInfo;
+    private UnitCard unitCard;
 
     private State currentState;
     private bool isUnitControll;
@@ -62,6 +64,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
     {
         this.teamManager = teamManager;
         this.synergyManager = synergyManager;
+        this.unitCard = unitCard;
 
         this.unitStatus.Initialize(unitCard.UnitStat);
         this.unitInfo.Initialize(teamManager, synergyManager, unitCard.UnitData, unitStatus);
@@ -208,7 +211,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
         //Right
         else if (Input.GetMouseButtonDown(1))
         {
-            //UIManager.instance.OpenUI(unitCard);
+            teamManager.OpenUI(unitCard);
         }
     }
 
@@ -231,7 +234,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     void OnMouseExit()
     {
-        //UIManager.instance.CloseUI();
+        teamManager.CloseUI();
     }
     //------------------------------------------//
 

@@ -38,7 +38,6 @@ public class UnitDetailUI : UI_Base
     private void Start()
     {
         Init();
-        gameObject.SetActive(false);
     }
 
     public override void Init()
