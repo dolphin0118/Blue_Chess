@@ -2018,7 +2018,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f6e2a03ca450941995c960d14ba5b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitDetailUI: {fileID: 0}
   SynergyUI: {fileID: 9157336737444718578}
   ShopUI: {fileID: 6375679953289128669}
   UserUI: {fileID: 0}

@@ -72,8 +72,6 @@ public class PlayerController : MonoBehaviour
         if (PlayerManager.instance.playerViewCode == playerCode)
         {
             UpdateViewTarget();
-
-
             if (photonView.IsMine)
             {
                 PlayerManager.instance.playerViewCode = playerCode;

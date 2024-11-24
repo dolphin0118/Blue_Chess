@@ -28,6 +28,7 @@ public class SynergyUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         backgroundImage = this.GetComponent<Image>();
         baseColor = backgroundImage.color;
         backgroundImage.material = baseMater;
+        isActive = true;
     }
 
     private void Start() {
@@ -69,18 +70,20 @@ public class SynergyUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
+        this.GetComponent<Image>().color = Color.grey;
+        tooltip.SetActive(true);
         if(isActive) {
-            this.GetComponent<Image>().color = Color.grey;
-            tooltip.SetActive(true);
+
         }
         else return;
 
     }
 
     public void OnPointerExit(PointerEventData eventData) {
+        this.GetComponent<Image>().color = baseColor;
+        tooltip.SetActive(false);
         if(isActive) {
-            this.GetComponent<Image>().color = baseColor;
-            tooltip.SetActive(false);
+
         }
         else return;
     }

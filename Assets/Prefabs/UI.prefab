@@ -2025,7 +2025,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f6e2a03ca450941995c960d14ba5b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitDetailUI: {fileID: 5958193169898059916}
   SynergyUI: {fileID: 7511699762153157285}
   ShopUI: {fileID: 780641613017647182}
   UserUI: {fileID: 2174109506037624719}
@@ -9411,6 +9410,10 @@ PrefabInstance:
     - target: {fileID: 2428240054673206562, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Name
       value: Abydos
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665076508162550605, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7958250480260305711, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Pivot.x
