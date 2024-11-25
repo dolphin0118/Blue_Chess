@@ -60,7 +60,7 @@ public class UnitStatus : MonoBehaviour
         ATKSpeed = unitStat.ATKSpeed;
         AR = unitStat.AR;
         MR = unitStat.MR;
-        Range = unitStat.Range * 2;
+        Range = unitStat.Range;
 
         currentHP = HP;
         currentMP = MP;
@@ -71,8 +71,8 @@ public class UnitStatus : MonoBehaviour
         currentRange = Range;
 
         attackType = unitStat.attackType;
-        schoolSynergy = unitData.schoolSynergy;
-        traitSynergy = unitData.traitSynergy;
+        // schoolSynergy = unitData.schoolSynergy;
+        // traitSynergy = unitData.traitSynergy;
 
         CalulateStatus();
     }
@@ -84,8 +84,8 @@ public class UnitStatus : MonoBehaviour
 
     public void CalulateStatus()
     {
-        SynergyActive();
-        ItemActive();
+        // SynergyActive();
+        // ItemActive();
         HPCalc();
         MPCalc();
         ATKCalc();
@@ -121,7 +121,7 @@ public class UnitStatus : MonoBehaviour
         //공격력은 레벨 * 0.33 추가 부여
 
         float LevelATKValue = unitStat.ATK * 0.33f;
-        currentATK = unitStat.ATK * 10 + (Level * LevelATKValue);
+        currentATK = unitStat.ATK + (Level * LevelATKValue);
     }
 
     public void Hit(float Damage, AttackType otherType)

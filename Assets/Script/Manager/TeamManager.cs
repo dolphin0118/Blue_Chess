@@ -62,8 +62,6 @@ public class TeamManager : MonoBehaviour
     {
         InputSystem();
         UnitCapacityText.text = currentUnitCapacity.ToString() + " / " + maxUnitCapacity.ToString();
-        if (GameManager.isBattle) UnitCapacityObject.SetActive(false);
-        else UnitCapacityObject.SetActive(true);
     }
 
     private void InputSystem()
@@ -96,6 +94,8 @@ public class TeamManager : MonoBehaviour
 
     public void SetHomeTeam(string tag, string targetTag)
     {
+        UnitCapacityObject.SetActive(false);
+
         this.targetTag = targetTag;
         foreach (List<GameObject> respawnObjects in UnitObject.Values)
         {
@@ -109,6 +109,8 @@ public class TeamManager : MonoBehaviour
 
     public void SetAwayTeam(Transform AwayTeam, string tag, string targetTag)
     {
+        UnitCapacityObject.SetActive(false);
+
         this.targetTag = targetTag;
         HomeTeam.transform.SetParent(AwayTeam);
         HomeTeam.transform.localPosition = Vector3.zero;
@@ -135,6 +137,7 @@ public class TeamManager : MonoBehaviour
             HomeTeam.transform.localRotation = Quaternion.identity;
         }
         UnitRespawnAll();
+        UnitCapacityObject.SetActive(true);
     }
 
     //---------------------------------------------------------------------------------------------//

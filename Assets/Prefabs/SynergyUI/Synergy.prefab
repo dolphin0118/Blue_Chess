@@ -199,14 +199,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SynergyDetail
       objectReference: {fileID: 0}
-    - target: {fileID: 1900553553553447077, guid: 661aba57e587e8943a79216a0ac6ff5d, type: 3}
-      propertyPath: m_Name
-      value: SynergyStack
-      objectReference: {fileID: 0}
-    - target: {fileID: 2753895172092970200, guid: 661aba57e587e8943a79216a0ac6ff5d, type: 3}
-      propertyPath: m_Name
-      value: SynergyCount
-      objectReference: {fileID: 0}
     - target: {fileID: 6250249314258178059, guid: 661aba57e587e8943a79216a0ac6ff5d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -287,41 +279,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8597417788022496014, guid: 661aba57e587e8943a79216a0ac6ff5d, type: 3}
-      propertyPath: synergyCount
-      value: 
-      objectReference: {fileID: 142684697784500081}
-    - target: {fileID: 8597417788022496014, guid: 661aba57e587e8943a79216a0ac6ff5d, type: 3}
-      propertyPath: synergyStack
-      value: 
-      objectReference: {fileID: 2254699132564501347}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 661aba57e587e8943a79216a0ac6ff5d, type: 3}
---- !u!114 &142684697784500081 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1871525573506154626, guid: 661aba57e587e8943a79216a0ac6ff5d, type: 3}
-  m_PrefabInstance: {fileID: 1729967669050933235}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2254699132564501347 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 524766696206208144, guid: 661aba57e587e8943a79216a0ac6ff5d, type: 3}
-  m_PrefabInstance: {fileID: 1729967669050933235}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &5674338508379795448 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6250249314258178059, guid: 661aba57e587e8943a79216a0ac6ff5d, type: 3}
@@ -375,17 +337,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5260845497412315291, guid: 8860323f3fd6f364b9d8981267285f03, type: 3}
-      propertyPath: sourceAsset
-      value: 
-      objectReference: {fileID: 9197481963319205126, guid: f86de73c42903564887cae4bd4cdb53c, type: 3}
     - target: {fileID: 8382139400919613415, guid: 8860323f3fd6f364b9d8981267285f03, type: 3}
       propertyPath: m_Name
       value: SynergyTooltip
-      objectReference: {fileID: 0}
-    - target: {fileID: 8382139400919613415, guid: 8860323f3fd6f364b9d8981267285f03, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

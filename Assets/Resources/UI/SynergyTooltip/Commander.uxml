@@ -3,13 +3,11 @@
         <ui:Label text="지휘관" display-tooltip-when-elided="true" style="height: 70px; font-size: 36px; -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(242, 235, 199); -unity-font: none;">
             <ui:VisualElement style="width: 64px; height: 60px; background-image: resource(&apos;Unit/Symbol/Commander&apos;);" />
         </ui:Label>
-        <ui:Label text="학생 모두를 고무 시킵니다." display-tooltip-when-elided="true" style="height: 111px; color: rgb(174, 181, 182); font-size: 24px; -unity-text-align: upper-left; white-space: normal; -unity-font: none; -unity-font-style: normal;" />
-        <ui:Label text="(2) 체력 및 공격력 + 200&#10;(3) 체력 및 공격력 + 300&#10;(4) 체력 및 공격력 + 400&#10;(5) 체력 및 공격력 + 500&#10;" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); font-size: 24px; height: 149px;" />
+        <ui:Label text="완벽환 전투 지휘로&#10;모든 학생을 고무 시킵니다." display-tooltip-when-elided="true" style="height: 99px; color: rgb(174, 181, 182); font-size: 24px; -unity-text-align: upper-left; white-space: normal; -unity-font: none; -unity-font-style: normal;" />
+        <ui:Label text="(1) 모든 능력치 소폭상승&#10;(2) 모든 능력치 상승&#10;&#10;" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); font-size: 24px; height: 94px;" />
         <ui:GroupBox style="height: 166px; background-image: none; width: 292px;">
-            <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Resources/Unit/Eligma/Abydos/NonomiElif.jpg?fileID=2800000&amp;guid=11a178a10910a6d4c90fa9a00de2882d&amp;type=3#NonomiElif&apos;); width: 102px; height: 85px; flex-direction: row; align-items: auto; justify-content: space-between; left: 65px; position: absolute; top: 10px;" />
-            <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Resources/Unit/Eligma/Abydos/ShirokoElif.jpg?fileID=2800000&amp;guid=ea818e4c78e704f4084ff6afcebeb444&amp;type=3#ShirokoElif&apos;); width: 102px; height: 85px; flex-direction: column; margin-left: 0; align-items: flex-start; position: absolute; top: 10px; left: 210px;" />
-            <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Resources/Unit/Eligma/Abydos/HoshinoElif.jpg?fileID=2800000&amp;guid=c91832706bff9e8488475ead9d0a5096&amp;type=3#HoshinoElif&apos;); width: 102px; height: 85px; flex-direction: row; align-items: auto; justify-content: space-between; position: absolute; top: 10px; left: -10px;" />
-            <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Resources/Unit/Eligma/Abydos/SerikaElif.jpg?fileID=2800000&amp;guid=e62cd695d25119e41918224000ee08ed&amp;type=3#SerikaElif&apos;); width: 101px; height: 85px; flex-direction: row; align-items: auto; justify-content: space-between; position: absolute; top: 10px; left: 137px;" />
+            <ui:VisualElement style="background-image: resource(&apos;Unit/Eligma/SRT/미야코&apos;); width: 102px; height: 85px; flex-direction: row; align-items: auto; justify-content: space-between; left: 151px; position: absolute; top: 8px;" />
+            <ui:VisualElement style="background-image: resource(&apos;Unit/Eligma/Gehenna/히나&apos;); height: 85px; flex-direction: row; align-items: auto; justify-content: space-between; position: absolute; top: 9px; left: 33px; right: 157px;" />
         </ui:GroupBox>
     </ui:VisualElement>
 </ui:UXML>

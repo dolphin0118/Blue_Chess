@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -54,23 +53,26 @@ public class UnitManager : MonoBehaviour, IPunObservable
         unitAstar = GetComponent<UnitAstar>();
 
         unitStatus = GetComponent<UnitStatus>();
+        unitStatusUI = GetComponentInChildren<UnitStatusUI>();
         unitItem = GetComponentInChildren<UnitItem>();
         unitAnimator = GetComponent<UnitAnimator>();
-
-        unitStatusUI = GetComponentInChildren<UnitStatusUI>();
+        
     }
 
     public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCard unitCard)
     {
+        
         this.teamManager = teamManager;
         this.synergyManager = synergyManager;
         this.unitCard = unitCard;
 
         this.unitStatus.Initialize(synergyManager, unitCard);
+        this.unitStatusUI.Initialize(teamManager, unitStatus);
         this.unitInfo.Initialize(teamManager, synergyManager, unitCard.UnitData, unitStatus);
         this.unitLocate.Initialize(teamManager, synergyManager);
         this.unitController.Initialize(teamManager);
-        this.unitStatusUI.Initialize(teamManager, unitStatus);
+        
+        
     }
 
     private void Update()

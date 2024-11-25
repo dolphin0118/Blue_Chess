@@ -2523,6 +2523,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Guardian
       objectReference: {fileID: 0}
+    - target: {fileID: 3978873429396895903, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: a4d252529bd63ea499aa198d4ed00a0e, type: 3}
     - target: {fileID: 5169711427045966150, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2629,6 +2633,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Engineer
       objectReference: {fileID: 0}
+    - target: {fileID: 3978873429396895903, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 73cbb527c382efa499dfcba0ec35e2cf, type: 3}
     - target: {fileID: 5169711427045966150, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2889,6 +2897,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gehenna
       objectReference: {fileID: 0}
+    - target: {fileID: 3978873429396895903, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 96587c05d4bc63446b9c48cf8e87f3a0, type: 3}
     - target: {fileID: 5169711427045966150, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -3295,6 +3307,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Abydos
       objectReference: {fileID: 0}
+    - target: {fileID: 3978873429396895903, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: f86de73c42903564887cae4bd4cdb53c, type: 3}
     - target: {fileID: 7958250480260305711, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3507,6 +3523,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Trinity
       objectReference: {fileID: 0}
+    - target: {fileID: 3978873429396895903, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: d41460389463b2a479c14982ef3dc8de, type: 3}
     - target: {fileID: 5169711427045966150, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -3613,6 +3633,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slayer
       objectReference: {fileID: 0}
+    - target: {fileID: 3978873429396895903, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: fdccbdc68f26ea142b8060954f6ae984, type: 3}
     - target: {fileID: 5169711427045966150, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -3869,6 +3893,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Commander
       objectReference: {fileID: 0}
+    - target: {fileID: 3978873429396895903, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: b6316230b1cef1447a6104d874a036f5, type: 3}
     - target: {fileID: 5169711427045966150, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -3975,6 +4003,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sniper
       objectReference: {fileID: 0}
+    - target: {fileID: 3978873429396895903, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 9569ecb2f1362644798182eeb0670010, type: 3}
     - target: {fileID: 5169711427045966150, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -4081,6 +4113,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mystery
       objectReference: {fileID: 0}
+    - target: {fileID: 3978873429396895903, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 8001e3d391829aa4692232ea7cc395e5, type: 3}
     - target: {fileID: 5169711427045966150, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -4389,6 +4425,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vanguard
       objectReference: {fileID: 0}
+    - target: {fileID: 3978873429396895903, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: ec2ea477f2bb7ec4c9d60d08fb1adfaa, type: 3}
     - target: {fileID: 5169711427045966150, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -4495,6 +4535,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SRT
       objectReference: {fileID: 0}
+    - target: {fileID: 3978873429396895903, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
+      propertyPath: sourceAsset
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 4abee2a7f6f272a4fb8f856ffa5da460, type: 3}
     - target: {fileID: 5169711427045966150, guid: c704f3a1383fa2c4a940585c03b27008, type: 3}
       propertyPath: m_Sprite
       value: 

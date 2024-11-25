@@ -5537,11 +5537,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -266331222821414313, guid: 4bd73bdd7f1182f4d88b8345f1f5263f, type: 3}
       propertyPath: m_SynchronizeLayers.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -266331222821414313, guid: 4bd73bdd7f1182f4d88b8345f1f5263f, type: 3}
       propertyPath: m_SynchronizeParameters.Array.size
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5880610861097937641, guid: 4bd73bdd7f1182f4d88b8345f1f5263f, type: 3}
       propertyPath: m_Controller
@@ -5621,8 +5621,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 0
+    Name: Idle
+  - Type: 4
+    SynchronizeType: 0
+    Name: Move
+  - Type: 4
+    SynchronizeType: 0
+    Name: Attack
+  - Type: 1
+    SynchronizeType: 0
+    Name: AttackSpeed
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!4 &2661441044227013557 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6656071157221204227, guid: 4bd73bdd7f1182f4d88b8345f1f5263f, type: 3}

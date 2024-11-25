@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UnitStatusUI : MonoBehaviour
 {
-    private UnitStatus unitStatus;
+    public UnitStatus unitStatus;
     private TeamManager teamManager;
 
     [SerializeField] Sprite[] Level_sprites;

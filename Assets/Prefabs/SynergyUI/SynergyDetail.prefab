@@ -115,9 +115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2bb69a1eeda5a4c99cac2f79dd903f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  synergyStack: {fileID: 1871525573506154626}
+  synergyCount: {fileID: 1871525573506154626}
   synergyName: {fileID: 7253593340339733716}
-  synergyLevel: {fileID: 524766696206208144}
+  synergyStack: {fileID: 524766696206208144}
 --- !u!1 &1900553553553447077
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 1663068880942360546}
   - component: {fileID: 524766696206208144}
   m_Layer: 5
-  m_Name: SynergyLevel
+  m_Name: SynergyStack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 8522336490712667382}
   - component: {fileID: 1871525573506154626}
   m_Layer: 5
-  m_Name: SynergyStack
+  m_Name: SynergyCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -30,6 +30,8 @@ public class UnitLocate : MonoBehaviour
         battleLayer = 1 << LayerMask.NameToLayer("Battle");
         benchLayer = 1 << LayerMask.NameToLayer("Bench");
         photonView = GetComponent<PhotonView>();
+
+        this.gameObject.transform.rotation = benchRotate;
     }
 
     public void Initialize(TeamManager TeamManager, SynergyManager SynergyManager)

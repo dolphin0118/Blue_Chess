@@ -10,11 +10,12 @@ using Photon.Pun;
 
 public class UnitAnimator : MonoBehaviour
 {
-    static public Vector3Int Infinity = new Vector3Int(int.MaxValue, int.MaxValue, int.MaxValue);
     Animator animator;
     UnitAstar unitAstar;
     UnitStatus unitStatus;
     UnitController unitController;
+    bool isAttack = false;
+
     void Awake()
     {
         animator = GetComponent<Animator>();
@@ -26,6 +27,8 @@ public class UnitAnimator : MonoBehaviour
     {
         animator.SetFloat("AttackSpeed", unitStatus.currentATKSpeed);
         AttackMotion();
+        if(GameManager.isBattle) animator.SetBool("isBattle", true);
+        else animator.SetBool("isBattle", false);
     }
 
     public void NoneState()
@@ -65,11 +68,17 @@ public class UnitAnimator : MonoBehaviour
 
     public void AttackMotion()
     {
+
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing") &&
-            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.5f)
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.4f &&
+            !isAttack)
         {
-            unitController.AttackTarget();
-            animator.Play("Attack_Delay", 0, 0f);
+            unitController.AttackTarget(); 
+            isAttack = true;
+        }
+         if(!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing"))
+        {
+            isAttack = false;
         }
     }
 
