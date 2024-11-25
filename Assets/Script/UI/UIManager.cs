@@ -20,4 +20,16 @@ public class UIManager : MonoBehaviour
         }
 
     }
+
+    public void SetSynergyUIActive(bool isActive)
+    {
+        if (isActive)
+        {
+            SynergyUI.SetActive(true);
+        }
+        else
+        {
+            SynergyUI.SetActive(false);
+        }
+    }
 }

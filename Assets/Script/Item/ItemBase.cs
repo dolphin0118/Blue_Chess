@@ -20,10 +20,8 @@ public class ItemBase : MonoBehaviour
         itemAsset = AssetDatabase.LoadAssetAtPath<ItemAsset>(path);
     }
 
-    public virtual void UseItem(UnitStatus unitStatus)
-    {
-
-    }
+    public virtual void UseItem(UnitStatus unitStatus) {; }
+    public virtual void UndoItem() {; }
 
     void Update()
     {

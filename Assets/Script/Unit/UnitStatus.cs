@@ -8,7 +8,16 @@ using UnityEngine;
 
 public class UnitStatus : MonoBehaviour
 {
+    private SynergyManager synergyManager;
+    private ItemManager itemManager;
+
     private UnitStat unitStat;
+    private UnitData unitData;
+
+    public UnitStat currentUnitStat { get; set; }
+    public UnitStat synergyStat { get; set; }
+    public UnitStat itemStat { get; set; }
+
     // public Item;
     public int Level { get; set; }
 
@@ -30,16 +39,21 @@ public class UnitStatus : MonoBehaviour
     public float currentRange { get; set; }
 
     public AttackType attackType { get; set; }
+    public Synergy schoolSynergy { get; set; }
+    public Synergy traitSynergy { get; set; }
 
-    public void Initialize(UnitStat unitStat)
+
+    public void Initialize(SynergyManager synergyManager, UnitCard unitCard)
     {
-        this.unitStat = unitStat;
-        Level = 1;
+        this.synergyManager = synergyManager;
+        this.unitStat = unitCard.UnitStat;
+        this.unitData = unitCard.UnitData;
         SetupStatus();
     }
 
     public void SetupStatus()
     {
+        Level = 1;
         HP = unitStat.HP;
         MP = unitStat.MP;
         ATK = unitStat.ATK;
@@ -57,6 +71,9 @@ public class UnitStatus : MonoBehaviour
         currentRange = Range;
 
         attackType = unitStat.attackType;
+        schoolSynergy = unitData.schoolSynergy;
+        traitSynergy = unitData.traitSynergy;
+
         CalulateStatus();
     }
 
@@ -67,11 +84,22 @@ public class UnitStatus : MonoBehaviour
 
     public void CalulateStatus()
     {
+        SynergyActive();
+        ItemActive();
         HPCalc();
         MPCalc();
         ATKCalc();
     }
 
+    void SynergyActive()
+    {
+        synergyManager.SynergyActive(this);
+    }
+
+    void ItemActive()
+    {
+        itemManager.ItemActive();
+    }
 
     void HPCalc()
     {

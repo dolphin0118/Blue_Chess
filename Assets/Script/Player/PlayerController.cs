@@ -76,16 +76,18 @@ public class PlayerController : MonoBehaviour
             {
                 PlayerManager.instance.playerViewCode = playerCode;
                 UIManager.SetShopUIActive(true);
+                UIManager.SetSynergyUIActive(true);
             }
             else
             {
                 UIManager.SetShopUIActive(false);
-                //UIManager.SetShopUIActive(true);
+                UIManager.SetSynergyUIActive(false);
             }
         }
         else
         {
             UIManager.SetShopUIActive(false);
+            UIManager.SetSynergyUIActive(false);
         }
     }
 

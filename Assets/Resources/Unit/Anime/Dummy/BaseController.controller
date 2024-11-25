@@ -200,13 +200,13 @@ AnimatorState:
   m_SpeedParameterActive: 1
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
+  m_TimeParameterActive: 1
   m_Motion: {fileID: 7400000, guid: 1f838674279c3444a86176aae4910e98, type: 2}
   m_Tag: 
   m_SpeedParameter: AttackSpeed
-  m_MirrorParameter: 
+  m_MirrorParameter: Idle
   m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_TimeParameter: AttackSpeed
 --- !u!1102 &-1777298432541661691
 AnimatorState:
   serializedVersion: 6
