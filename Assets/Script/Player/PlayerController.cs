@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
         spawnSystem = GetComponentInChildren<SpawnSystem>();
         photonView = GetComponent<PhotonView>();
 
-        TeamManager.Initialize(combineSystem);
+        TeamManager.Initialize(synergyManager, combineSystem);
         spawnSystem.Initialize(TeamManager, synergyManager);
         combineSystem.Initialize(TeamManager);
 

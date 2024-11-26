@@ -12,6 +12,7 @@ using BlueChessDataBase;
 public class TeamManager : MonoBehaviour
 {
     private CombineSystem combineSystem;
+    private SynergyManager synergyManager;
 
     public Dictionary<string, int> UnitCheck = new Dictionary<string, int>(); //Synergy체크용
     public Dictionary<string, LevelData> UnitLevel = new Dictionary<string, LevelData>(); //Combine용
@@ -26,7 +27,6 @@ public class TeamManager : MonoBehaviour
     //-------------------text----------------------//
     public GameObject UnitCapacityObject;
     public TextMeshPro UnitCapacityText;
-
 
     //----------------------UI---------------------//
     public GameObject UnitDetailCard;
@@ -47,8 +47,9 @@ public class TeamManager : MonoBehaviour
         maxUnitCapacity = 0;
         currentUnitCapacity = 0;
     }
-    public void Initialize(CombineSystem combineSystem)
+    public void Initialize(SynergyManager synergyManager, CombineSystem combineSystem)
     {
+        this.synergyManager = synergyManager;
         this.combineSystem = combineSystem;
     }
     private void Start()
@@ -94,7 +95,7 @@ public class TeamManager : MonoBehaviour
 
     public void SetHomeTeam(string tag, string targetTag)
     {
-        UnitCapacityObject.SetActive(false);
+        SetBattlePhase();
 
         this.targetTag = targetTag;
         foreach (List<GameObject> respawnObjects in UnitObject.Values)
@@ -109,7 +110,7 @@ public class TeamManager : MonoBehaviour
 
     public void SetAwayTeam(Transform AwayTeam, string tag, string targetTag)
     {
-        UnitCapacityObject.SetActive(false);
+        SetBattlePhase();
 
         this.targetTag = targetTag;
         HomeTeam.transform.SetParent(AwayTeam);
@@ -139,6 +140,24 @@ public class TeamManager : MonoBehaviour
         UnitRespawnAll();
         UnitCapacityObject.SetActive(true);
     }
+
+    public void SetBattlePhase()
+    {
+        UnitCapacityObject.SetActive(false);
+
+        foreach (List<GameObject> respawnObjects in UnitObject.Values)
+        {
+            List<UnitStatus> synergyActive = new List<UnitStatus>();
+            foreach (GameObject respawnObject in respawnObjects)
+            {
+                if (respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle"))
+                    synergyActive.Add(respawnObject.GetComponent<UnitStatus>());
+            }
+            synergyManager.SynergyActive(synergyActive);
+        }
+
+    }
+
 
     //---------------------------------------------------------------------------------------------//
     public void UnitListAdd()

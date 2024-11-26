@@ -11,6 +11,7 @@ public class UnitStatus : MonoBehaviour
     private SynergyManager synergyManager;
     private ItemManager itemManager;
 
+    public string unitName { get; private set; }
     private UnitStat unitStat;
     private UnitData unitData;
 
@@ -38,6 +39,8 @@ public class UnitStatus : MonoBehaviour
     public float currentATKSpeed { get; set; }
     public float currentRange { get; set; }
 
+    public float currentBarrior { get; set; }
+
     public AttackType attackType { get; set; }
     public Synergy schoolSynergy { get; set; }
     public Synergy traitSynergy { get; set; }
@@ -48,6 +51,7 @@ public class UnitStatus : MonoBehaviour
         this.synergyManager = synergyManager;
         this.unitStat = unitCard.UnitStat;
         this.unitData = unitCard.UnitData;
+        this.unitName = unitCard.Name;
         SetupStatus();
     }
 
@@ -84,17 +88,12 @@ public class UnitStatus : MonoBehaviour
 
     public void CalulateStatus()
     {
-        // SynergyActive();
         // ItemActive();
         HPCalc();
         MPCalc();
         ATKCalc();
     }
 
-    void SynergyActive()
-    {
-        synergyManager.SynergyActive(this);
-    }
 
     void ItemActive()
     {

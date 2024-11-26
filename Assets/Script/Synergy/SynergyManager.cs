@@ -97,14 +97,27 @@ public class SynergyManager : MonoBehaviour
         }
     }
 
-    public void SynergyActive(UnitStatus unitStatus)
+    public void SynergyActive(List<UnitStatus> unitStatuses)
     {
-        Synergy schoolSynergy = unitStatus.schoolSynergy;
-        int schoolSynergyIndex = synergyBase.FindIndex(x => x.synergyName == schoolSynergy);
-        synergyBase[schoolSynergyIndex].SynergyActive(unitStatus);
+        //foreach(UnitStatus unitStatus in unitStatuses) unitStatus.SynergyReset();
+        foreach (SynergyBase synergyBase in synergyBase)
+        {
+            if (synergyBase.synergyOrder > 0)
+            {
+                synergyBase.SynergyActive(unitStatuses);
+            }
+        }
 
-        Synergy traitSynergy = unitStatus.traitSynergy;
-        int traitSynergyIndex = synergyBase.FindIndex(x => x.synergyName == schoolSynergy);
-        synergyBase[traitSynergyIndex].SynergyActive(unitStatus);
     }
+
+    // public void SynergyActive(UnitStatus unitStatus)
+    // {
+    //     Synergy schoolSynergy = unitStatus.schoolSynergy;
+    //     int schoolSynergyIndex = synergyBase.FindIndex(x => x.synergyName == schoolSynergy);
+    //     synergyBase[schoolSynergyIndex].SynergyActive(unitStatus);
+
+    //     Synergy traitSynergy = unitStatus.traitSynergy;
+    //     int traitSynergyIndex = synergyBase.FindIndex(x => x.synergyName == traitSynergy);
+    //     synergyBase[traitSynergyIndex].SynergyActive(unitStatus);
+    // }
 }
