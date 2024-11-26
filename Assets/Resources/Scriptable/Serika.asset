@@ -17,7 +17,7 @@ MonoBehaviour:
   UnitData:
     Name: Serika
     schoolSynergy: 0
-    traitSynergy: 5
+    traitSynergy: 9
     UnitPrice: 1
   UnitStat:
     Level: 1

@@ -54,7 +54,6 @@ public class PlayerData : MonoBehaviour
 
     public void PayGold(int unitPrice)
     {
-        Debug.Log(playerGold + " " + unitPrice);
         playerGold -= unitPrice;
 
     }

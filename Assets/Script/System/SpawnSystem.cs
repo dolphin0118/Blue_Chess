@@ -136,7 +136,6 @@ public class SpawnSystem : MonoBehaviour
         UnitClone.transform.SetParent(BenchArea.transform.GetChild(parent));
         UnitClone.transform.localPosition = Vector3.zero;
         UnitClone.gameObject.tag = "Friendly";
-        Debug.Log("spawn");
         UnitClone.GetComponent<UnitManager>().Initialize(teamManager, synergyManager, UnitCard);
     }
 

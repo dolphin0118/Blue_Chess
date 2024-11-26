@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
             UnitData UnitData = dataMapper.Map<UnitData>(Data[i]);
             UnitStat UnitStat = statMapper.Map<UnitStat>(Stat[i]);
             // ※유닛 데이터베이스 동기화
-            //CreateUnitAsset(UnitData, UnitStat);
+           // CreateUnitAsset(UnitData, UnitStat);
 
             UnitList.Add(UnitData.Name);
 
