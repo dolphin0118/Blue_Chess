@@ -9,27 +9,25 @@ using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour
 {
+    //-----------------------------Manager-----------------------------------//
     [NonSerialized] public TeamManager TeamManager;
     [NonSerialized] public SynergyManager synergyManager;
     [NonSerialized] public UIManager UIManager;
 
+    //------------------------------System----------------------------------//
     [NonSerialized] public CombineSystem combineSystem;
     [NonSerialized] private SpawnSystem spawnSystem;
     [NonSerialized] public PhotonView photonView;
 
+    //-------------------------CameraTarget---------------------------------//
     public GameObject HomeViewTarget;
     public GameObject AwayViewTarget;
     private GameObject ViewTarget;
 
-    [SerializeField] public int playerCode = 0;
-    public string playerName { get; set; }
-    public int playerLevel { get; set; }
-    public int playerHp { get; set; }
-    public int playerGold { get; set; }
-    public int maxUnitCapacity { get; set; }
+    //------------------------------Data------------------------------------//
+    private PlayerData playerData;
 
-    public int[] levelEXP = new int[] { 2, 2, 6, 10, 20, 36 };
-    public int EXP = 0;
+    [SerializeField] public int playerCode = 0;
 
     private void Awake()
     {
@@ -41,25 +39,18 @@ public class PlayerController : MonoBehaviour
         spawnSystem = GetComponentInChildren<SpawnSystem>();
         photonView = GetComponent<PhotonView>();
 
+        playerData = GetComponent<PlayerData>();
+
         TeamManager.Initialize(synergyManager, combineSystem);
         spawnSystem.Initialize(TeamManager, synergyManager);
         combineSystem.Initialize(TeamManager);
-
-
-        playerName = "Player" + playerCode;
-        playerLevel = 3;
-        playerHp = 20;
-        playerGold = 20;
-        maxUnitCapacity = playerLevel;
 
     }
 
     private void Update()
     {
-        maxUnitCapacity = playerLevel;
-        TeamManager.maxUnitCapacity = maxUnitCapacity;
+        TeamManager.maxUnitCapacity = playerData.maxUnitCapacity;
         UpdateView();
-        UpdateLevel();
     }
 
     public void UpdateView()
@@ -74,7 +65,7 @@ public class PlayerController : MonoBehaviour
             UpdateViewTarget();
             if (photonView.IsMine)
             {
-                PlayerManager.instance.playerViewCode = playerCode;
+                //PlayerManager.instance.playerViewCode = playerCode;
                 UIManager.SetShopUIActive(true);
                 UIManager.SetSynergyUIActive(true);
             }
@@ -111,33 +102,9 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
-    private void UpdateLevel()
-    {
-        if (EXP >= levelEXP[playerLevel])
-        {
-            EXP -= levelEXP[playerLevel];
-            playerLevel++;
-        }
-    }
-
-    //전투 종료시 호출
-    public void BattleEXP()
-    {
-        int BattleEXPValue = 2;
-        EXP += BattleEXPValue;
-    }
-
-    //Button으로 호출
-
-    public Tuple<int, int> GetEXP()
-    {
-        return new Tuple<int, int>(EXP, levelEXP[playerLevel]);
-    }
-
     public void GetDamage(int damage)
     {
-        playerHp -= damage;
+        playerData.GetDamage(damage);
     }
 
 }

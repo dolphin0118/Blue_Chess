@@ -32,6 +32,12 @@ public class PlayerData : MonoBehaviour
         maxUnitCapacity = playerLevel;
     }
 
+    public void Update()
+    {
+        UpdateLevel();
+    }
+
+
     private void UpdateLevel()
     {
         if (EXP >= levelEXP[playerLevel])

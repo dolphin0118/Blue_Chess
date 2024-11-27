@@ -6,23 +6,17 @@ using UnityEngine.UI;
 
 public class PlayerHpUI : MonoBehaviour
 {
-    [SerializeField] PlayerController playerController;
+    [SerializeField] PlayerData playerData;
     [SerializeField] TextMeshProUGUI playerHpText;
     [SerializeField] TextMeshProUGUI playerNameText;
     [SerializeField] Image hpGauge;
     int playerHp;
     string playerName;
 
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        playerHp = playerController.playerHp;
-        playerName = playerController.playerName;
+        playerHp = playerData.playerHp;
+        playerName = playerData.playerName;
         playerHpText.text = playerHp.ToString();
         playerNameText.text = playerName;
         hpGauge.fillAmount = playerHp / 20f;

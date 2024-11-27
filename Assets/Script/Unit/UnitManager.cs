@@ -56,12 +56,12 @@ public class UnitManager : MonoBehaviour, IPunObservable
         unitStatusUI = GetComponentInChildren<UnitStatusUI>();
         unitItem = GetComponentInChildren<UnitItem>();
         unitAnimator = GetComponent<UnitAnimator>();
-        
+
     }
 
     public void Initialize(TeamManager teamManager, SynergyManager synergyManager, UnitCard unitCard)
     {
-        
+
         this.teamManager = teamManager;
         this.synergyManager = synergyManager;
         this.unitCard = unitCard;
@@ -71,8 +71,8 @@ public class UnitManager : MonoBehaviour, IPunObservable
         this.unitInfo.Initialize(teamManager, synergyManager, unitCard.UnitData, unitStatus);
         this.unitLocate.Initialize(teamManager, synergyManager);
         this.unitController.Initialize(teamManager);
-        
-        
+
+
     }
 
     private void Update()
@@ -213,7 +213,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
         //Right
         else if (Input.GetMouseButtonDown(1))
         {
-            teamManager.OpenUI(unitCard);
+            teamManager.OpenUI(unitCard);//UNITSTATUS로 수정 필요!
         }
     }
 

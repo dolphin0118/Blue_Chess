@@ -25,10 +25,6 @@ public class TrinitySynergy : SynergyBase
     public override void SynergyActive(List<UnitStatus> unitStatuses)
     {
         base.SynergyActive(unitStatuses);
-        foreach (UnitStatus unitStatus in unitStatuses)
-        {
-            SynergyApply(unitStatus);
-        }
     }
 
     public override void SynergyApply(UnitStatus unitStatus)
@@ -36,14 +32,14 @@ public class TrinitySynergy : SynergyBase
         switch (unitStatus.unitName)
         {
             case "Mika":
-                unitStatus.synergyStat.ATK = 50;
+                unitStatus.synergyStat.ATK += 50;
                 break;
             case "Koharu":
-                unitStatus.synergyStat.AR = 50;
-                unitStatus.synergyStat.MR = 50;
+                unitStatus.synergyStat.AR += 50;
+                unitStatus.synergyStat.MR += 50;
                 break;
             case "Kazusa":
-                unitStatus.synergyStat.ATKSpeed = 50;
+                unitStatus.synergyStat.ATKSpeed += 50;
                 break;
         }
 

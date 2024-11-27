@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 public class VanguardSynergy : SynergyBase
 {
+    int[] synergyHPValue = { 500, 1000 };
+    int[] synergyMRValue = { 50, 100 };
     public VanguardSynergy()
     {
         Init();
@@ -19,7 +21,16 @@ public class VanguardSynergy : SynergyBase
 
     public override void SynergyApply(UnitStatus unitStatus)
     {
-
+        if (unitStatus.traitSynergy == Synergy.Vanguard)
+        {
+            unitStatus.synergyStat.HP += synergyHPValue[synergyOrder] * 2;
+            unitStatus.synergyStat.MR += synergyMRValue[synergyOrder] * 2;
+        }
+        else
+        {
+            unitStatus.synergyStat.HP += synergyHPValue[synergyOrder];
+            unitStatus.synergyStat.MR += synergyMRValue[synergyOrder];
+        }
     }
 }
 

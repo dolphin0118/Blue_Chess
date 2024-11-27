@@ -41,6 +41,7 @@ public class UnitController : MonoBehaviour
         SetTargetTag();
         SetTargetList();
         SetTarget();
+        UnitStatus.CalulateStatus();
     }
 
     public void OnDisarm()
@@ -101,7 +102,11 @@ public class UnitController : MonoBehaviour
 
     private void IsTargetNull()
     {
-        if (targetEnemy == null || !targetEnemy.activeSelf) SetTarget();
+        if (targetEnemy == null || !targetEnemy.activeSelf)
+        {
+            Debug.Log("Settarget");
+            SetTarget();
+        }
         return;
     }
 
@@ -134,6 +139,7 @@ public class UnitController : MonoBehaviour
     public void AttackTargetRPC()
     {
         if (targetEnemy == null || !targetEnemy.activeSelf) return;
+        //Debug.Log(this.transform.name + " =>" + targetEnemy.name + ": " + UnitStatus.currentATK);
         targetEnemy.GetComponent<UnitManager>().OnHitDamage(UnitStatus.currentATK, UnitStatus.attackType);
     }
 }

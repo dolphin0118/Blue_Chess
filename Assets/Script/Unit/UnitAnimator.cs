@@ -27,7 +27,7 @@ public class UnitAnimator : MonoBehaviour
     {
         animator.SetFloat("AttackSpeed", unitStatus.currentATKSpeed);
         AttackMotion();
-        if(GameManager.isBattle) animator.SetBool("isBattle", true);
+        if (GameManager.isBattle) animator.SetBool("isBattle", true);
         else animator.SetBool("isBattle", false);
     }
 
@@ -70,14 +70,17 @@ public class UnitAnimator : MonoBehaviour
     {
 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing") &&
-            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.4f &&
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.35f &&
             !isAttack)
         {
-            unitController.AttackTarget(); 
+            unitController.AttackTarget();
             isAttack = true;
         }
-         if(!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing"))
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_ing") &&
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f &&
+            isAttack)
         {
+            animator.Play("Attack_ing", 0, 0f);
             isAttack = false;
         }
     }

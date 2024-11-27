@@ -99,7 +99,7 @@ public class SynergyManager : MonoBehaviour
 
     public void SynergyActive(List<UnitStatus> unitStatuses)
     {
-        //foreach(UnitStatus unitStatus in unitStatuses) unitStatus.SynergyReset();
+        foreach (UnitStatus unitStatus in unitStatuses) unitStatus.SynergyReset();
         foreach (SynergyBase synergyBase in synergyBase)
         {
             if (synergyBase.synergyOrder > 0)

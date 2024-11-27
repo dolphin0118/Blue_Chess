@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 public class SniperSynergy : SynergyBase
 {
-    int[] synergyRangeValue = { 1, 2, 5 };
+    int[] synergyRangeValue = { 1, 2, 3 };
 
     public SniperSynergy()
     {
@@ -14,20 +14,18 @@ public class SniperSynergy : SynergyBase
 
     public override void Init()
     {
-        synergyStack = new int[3] { 1, 2, 3 };
+        synergyStack = new int[3] { 2, 3, 4 };
         synergyName = Synergy.Sniper;
         synergyCount = 0;
         synergyOrder = -1;
     }
 
-    public override void SynergyActive(List<UnitStatus> unitStatuses)
-    {
-        base.SynergyActive(unitStatuses);
-
-    }
-
     public override void SynergyApply(UnitStatus unitStatus)
     {
-        unitStatus.synergyStat.Range += synergyRangeValue[synergyOrder];
+        if (SynergyCheck(unitStatus.traitSynergy))
+        {
+            unitStatus.synergyStat.Range += synergyRangeValue[synergyOrder];
+        }
+
     }
 }

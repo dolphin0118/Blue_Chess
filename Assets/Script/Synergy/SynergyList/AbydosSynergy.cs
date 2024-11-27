@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 public class AbydosSynergy : SynergyBase
 {
+    int[] synergyATKValue = new int[3] { 50, 100, 200 };
+
     public AbydosSynergy()
     {
         Init();
@@ -25,26 +27,13 @@ public class AbydosSynergy : SynergyBase
     public override void SynergyActive(List<UnitStatus> unitStatuses)
     {
         base.SynergyActive(unitStatuses);
-        foreach (UnitStatus unitStatus in unitStatuses)
-        {
-            if (unitStatus.schoolSynergy == Synergy.Abydos)
-            {
-                SynergyApply(unitStatus);
-            }
-        }
     }
 
     public override void SynergyApply(UnitStatus unitStatus)
     {
-        switch (synergyOrder)
+        if (SynergyCheck(unitStatus.schoolSynergy))
         {
-            case 0:
-                unitStatus.synergyStat.HP += 50;
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
+            unitStatus.synergyStat.ATK += synergyATKValue[synergyOrder];
         }
     }
 

@@ -84,12 +84,14 @@ public class CanAttack : UnitConditional
 public class CanMove : UnitConditional
 {
     protected bool isFindTarget;
+
     public override TaskStatus OnUpdate()
     {
         if (PhotonNetwork.IsMasterClient)
         {
             unitManager.IsCanAttack();
             unitManager.IsFindTarget();
+
         }
         isAttack = unitManager.isCanAttack;
         isFindTarget = unitManager.isFindTarget;

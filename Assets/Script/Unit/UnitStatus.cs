@@ -40,6 +40,7 @@ public class UnitStatus : MonoBehaviour
     public float currentRange { get; set; }
 
     public float currentBarrior { get; set; }
+    public int trueDamage { get; set; }
 
     public AttackType attackType { get; set; }
     public Synergy schoolSynergy { get; set; }
@@ -72,12 +73,12 @@ public class UnitStatus : MonoBehaviour
         currentMR = MR;
         currentATK = ATK;
         currentATKSpeed = ATKSpeed;
-        currentRange = Range;
+        currentRange = Range * 2;
 
         attackType = unitStat.attackType;
-        // schoolSynergy = unitData.schoolSynergy;
-        // traitSynergy = unitData.traitSynergy;
-
+        schoolSynergy = unitData.schoolSynergy;
+        traitSynergy = unitData.traitSynergy;
+        synergyStat = new UnitStat();
         CalulateStatus();
     }
 
@@ -92,6 +93,7 @@ public class UnitStatus : MonoBehaviour
         HPCalc();
         MPCalc();
         ATKCalc();
+        ARCalc();
     }
 
 
@@ -103,7 +105,7 @@ public class UnitStatus : MonoBehaviour
     void HPCalc()
     {
         float LevelHPValue = unitStat.HP * 0.8f;
-        HP = this.HP + (Level * LevelHPValue);
+        HP = this.HP + (Level * LevelHPValue) + synergyStat.HP;
         currentHP = HP;
     }
 
@@ -120,7 +122,12 @@ public class UnitStatus : MonoBehaviour
         //공격력은 레벨 * 0.33 추가 부여
 
         float LevelATKValue = unitStat.ATK * 0.33f;
-        currentATK = unitStat.ATK + (Level * LevelATKValue);
+        currentATK = unitStat.ATK + (Level * LevelATKValue) + synergyStat.ATK;
+    }
+
+    void ARCalc()
+    {
+
     }
 
     public void Hit(float Damage, AttackType otherType)
@@ -165,5 +172,10 @@ public class UnitStatus : MonoBehaviour
     {
         if (currentHP <= 0) return true;
         else return false;
+    }
+
+    public void SynergyReset()
+    {
+        synergyStat = new UnitStat();
     }
 }

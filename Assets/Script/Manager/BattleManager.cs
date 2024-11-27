@@ -44,9 +44,10 @@ public class BattleManager : MonoBehaviour
 
     public void BattleReadyPhase()
     {
+        int[] teamlist = RandomTeamList();
         if (PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("BattleReadyRPC", RpcTarget.All);
+            photonView.RPC("BattleReadyRPC", RpcTarget.All, teamlist);
         }
     }
 
@@ -74,9 +75,9 @@ public class BattleManager : MonoBehaviour
     }
 
     [PunRPC]
-    public void BattleReadyRPC()
+    public void BattleReadyRPC(int[] teamlist)
     {
-        MatchTeam();
+        MatchTeam(teamlist);
     }
 
     [PunRPC]
@@ -85,10 +86,10 @@ public class BattleManager : MonoBehaviour
         RevertTeam();
     }
 
-    public void MatchTeam()
+    public int[] RandomTeamList()
     {
         isMatched = true;
-        var list = new List<int>() { 0, 1, 2, 3 };
+        List<int> list = new List<int>() { 0, 1, 2, 3 };
         var random = new System.Random();
         var randomized = list.OrderBy(x => random.Next());
         int[] teamlist = new int[4];
@@ -99,13 +100,18 @@ public class BattleManager : MonoBehaviour
             count++;
         }
 
-        MatchTeamSet(teamlist[0], teamlist[1]);
+        return teamlist;
+    }
+
+    public void MatchTeam(int[] teamlist)
+    {
+        MatchTeamSetup(teamlist[0], teamlist[1]);
         match1 = new Tuple<int, int>(teamlist[0], teamlist[1]);
-        MatchTeamSet(teamlist[2], teamlist[3]);
+        MatchTeamSetup(teamlist[2], teamlist[3]);
         match2 = new Tuple<int, int>(teamlist[2], teamlist[3]);
     }
 
-    private void MatchTeamSet(int team1, int team2)
+    private void MatchTeamSetup(int team1, int team2)
     {
         teamManagers[team1].SetHomeTeam("Team" + team1, "Team" + team2);
         teamManagers[team2].SetAwayTeam(teamManagers[team1].AwayTeam.transform, "Team" + team2, "Team" + team1);

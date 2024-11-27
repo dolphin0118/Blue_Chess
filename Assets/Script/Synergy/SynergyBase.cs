@@ -14,7 +14,6 @@ public abstract class SynergyBase
     public int synergyOrder { get; set; }
 
     protected List<UnitStatus> unitStatuses;
-    protected List<UnitStat> synergyStat;
 
     public abstract void Init();
 
@@ -23,7 +22,17 @@ public abstract class SynergyBase
     public virtual void SynergyActive(List<UnitStatus> unitStatuses)
     {
         this.unitStatuses = unitStatuses;
-        this.synergyStat = unitStatuses.Select(info => info.synergyStat).ToList();
+        foreach (UnitStatus unitStatus in unitStatuses)
+        {
+            SynergyApply(unitStatus);
+        }
+
+    }
+
+    public bool SynergyCheck(Synergy checkSynergy)
+    {
+        if (checkSynergy == this.synergyName) return true;
+        return false;
     }
 
     public abstract void SynergyApply(UnitStatus unitStatus);

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 public class GuardianSynergy : SynergyBase
 {
+    int[] synergyBarriorValue = new int[2] { 100, 200 };
     public GuardianSynergy()
     {
         Init();
@@ -26,7 +27,7 @@ public class GuardianSynergy : SynergyBase
 
     public override void SynergyApply(UnitStatus unitStatus)
     {
-
+        unitStatus.currentBarrior += synergyBarriorValue[synergyOrder];
     }
 }
 

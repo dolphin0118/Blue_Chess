@@ -20,5 +20,9 @@ namespace BlueChessDataBase
         public float Range;
         public AttackType attackType;
 
+        public void Reset()
+        {
+
+        }
     }
 }
