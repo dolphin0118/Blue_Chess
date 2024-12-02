@@ -187,7 +187,6 @@ public class UnitManager : MonoBehaviour, IPunObservable
         {
             case State.Attack:
                 unitAnimator.AttackState();
-                GetComponent<Rigidbody>().velocity = Vector3.zero;
                 break;
             case State.Move:
                 unitAnimator.MoveState();

@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerData : MonoBehaviour
 {
     PlayerController playerController;
+    TeamManager teamManager;
 
     public string playerName { get; set; }
     public int playerLevel { get; set; }
@@ -20,8 +21,16 @@ public class PlayerData : MonoBehaviour
     private void Start()
     {
         playerController = GetComponent<PlayerController>();
+
         Setup();
-    }
+    } 
+
+    public void Initialize(TeamManager teamManager) {
+        this.teamManager = teamManager;
+        
+    } 
+
+
 
     void Setup()
     {
@@ -44,6 +53,8 @@ public class PlayerData : MonoBehaviour
         {
             EXP -= levelEXP[playerLevel];
             playerLevel++;
+            maxUnitCapacity = playerLevel;
+            teamManager.maxUnitCapacity = maxUnitCapacity;
         }
     }
 

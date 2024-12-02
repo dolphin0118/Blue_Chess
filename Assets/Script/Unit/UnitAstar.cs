@@ -8,14 +8,14 @@ using TMPro.Examples;
 
 public class UnitAstar : MonoBehaviour
 {
-    private NavMeshAgent charaNav;
+    private NavMeshAgent unitNav;
     private GameObject targetObject;
     private bool isRunning;
 
     void Start()
     {
-        charaNav = this.GetComponent<NavMeshAgent>();
-        charaNav.speed = 1f;
+        unitNav = this.GetComponent<NavMeshAgent>();
+        unitNav.speed = 1f;
     }
 
     private void Update()
@@ -29,18 +29,18 @@ public class UnitAstar : MonoBehaviour
     public void NavStart()
     {
         targetObject = this.GetComponent<UnitController>().GetTarget();
-        if (targetObject == null) return;
+        if (targetObject == null || !targetObject.activeSelf) return;
         else
         {
-            charaNav.SetDestination(targetObject.transform.position);
+            unitNav.SetDestination(targetObject.transform.position);
             isRunning = true;
         }
     }
 
     public void NavStop()
     {
-        if (charaNav == null) return;
-        if (isRunning) charaNav.ResetPath();
+        if (unitNav == null) return;
+        if (isRunning) unitNav.ResetPath();
         else return;
     }
 }

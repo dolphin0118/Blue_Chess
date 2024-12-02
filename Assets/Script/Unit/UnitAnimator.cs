@@ -26,7 +26,7 @@ public class UnitAnimator : MonoBehaviour
     void Update()
     {
         animator.SetFloat("AttackSpeed", unitStatus.currentATKSpeed);
-        AttackMotion();
+        //AttackMotion();
         if (GameManager.isBattle) animator.SetBool("isBattle", true);
         else animator.SetBool("isBattle", false);
     }
@@ -39,6 +39,7 @@ public class UnitAnimator : MonoBehaviour
     public void IdleState()
     {
         //현재 상태
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
         animator.SetBool("Idle", true);
 
         //다른 상태 취소
@@ -47,9 +48,11 @@ public class UnitAnimator : MonoBehaviour
     }
     public void MoveState()
     {
-        unitAstar.NavStart();
         //현재 상태
+        unitAstar.NavStart();
         animator.SetBool("Move", true);
+        
+        //다른 상태 취소
         animator.SetBool("Idle", false);
         animator.SetBool("Attack", false);
     }
@@ -57,12 +60,12 @@ public class UnitAnimator : MonoBehaviour
     public void AttackState()
     {
         //현재 상태
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
         unitAstar.NavStop();
         animator.SetBool("Attack", true);
 
         animator.SetBool("Move", false);
         animator.SetBool("Idle", false);
-
 
     }
 

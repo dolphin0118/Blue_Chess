@@ -823,7 +823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99b0306c61d24643b7b8fbeb2c2c4f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
+  playerData: {fileID: 0}
   playerHpText: {fileID: 6450698033422560180}
   playerNameText: {fileID: 5462008524950142218}
   hpGauge: {fileID: 7654765204025383333}

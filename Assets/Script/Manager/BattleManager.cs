@@ -89,14 +89,22 @@ public class BattleManager : MonoBehaviour
     public int[] RandomTeamList()
     {
         isMatched = true;
-        List<int> list = new List<int>() { 0, 1, 2, 3 };
-        var random = new System.Random();
-        var randomized = list.OrderBy(x => random.Next());
-        int[] teamlist = new int[4];
+        List<int> list = new List<int>() {};
+
+        for(int i = 0; i < playerControllers.Length; i++) {
+            if(playerControllers[i].gameObject.activeSelf) {
+                list.Add(i);
+            }
+        }
+
+        //var random = new System.Random();  
+        var randomized = list.OrderBy(x => new System.Random().Next());
+        int[] teamlist = new int[list.Count];
+
         int count = 0;
-        foreach (var i in randomized)
+        foreach (var randomNum in randomized)
         {
-            teamlist[count] = i;
+            teamlist[count] = randomNum;
             count++;
         }
 
@@ -105,10 +113,15 @@ public class BattleManager : MonoBehaviour
 
     public void MatchTeam(int[] teamlist)
     {
+        
         MatchTeamSetup(teamlist[0], teamlist[1]);
         match1 = new Tuple<int, int>(teamlist[0], teamlist[1]);
-        MatchTeamSetup(teamlist[2], teamlist[3]);
-        match2 = new Tuple<int, int>(teamlist[2], teamlist[3]);
+
+        if(teamlist.Length >= 4) {
+            MatchTeamSetup(teamlist[2], teamlist[3]);
+            match2 = new Tuple<int, int>(teamlist[2], teamlist[3]);
+        }
+ 
     }
 
     private void MatchTeamSetup(int team1, int team2)
@@ -154,6 +167,15 @@ public class BattleManager : MonoBehaviour
 
     public void BattleEnd()
     {
+        if (PhotonNetwork.IsMasterClient && isMatched)
+        {
+            photonView.RPC("BattleEndRPC", RpcTarget.All);
+        }
+
+    }
+    
+    [PunRPC]
+    public void BattleEndRPC() {
         CalculateDamage(match1.Item1, match1.Item2);
         CalculateDamage(match2.Item1, match2.Item2);
     }

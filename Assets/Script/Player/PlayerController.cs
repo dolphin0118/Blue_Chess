@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
         TeamManager.Initialize(synergyManager, combineSystem);
         spawnSystem.Initialize(TeamManager, synergyManager);
         combineSystem.Initialize(TeamManager);
+        playerData.Initialize(TeamManager);
 
     }
 
@@ -77,6 +78,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            //UpdateViewTarget();
             UIManager.SetShopUIActive(false);
             UIManager.SetSynergyUIActive(false);
         }

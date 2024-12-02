@@ -15,6 +15,7 @@ public class UnitController : MonoBehaviour
     private GameObject[] targetEnemys;
     private GameObject targetEnemy { get; set; }
     private string targetTag { get; set; }
+    [SerializeField] GameObject muzzleFlash;
 
     void Awake()
     {
@@ -24,6 +25,7 @@ public class UnitController : MonoBehaviour
 
         navMeshAgent.enabled = false;
         targetEnemy = null;
+        muzzleFlash.SetActive(false);
     }
     public void Initialize(TeamManager teamManager)
     {
@@ -32,7 +34,14 @@ public class UnitController : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.isBattle) IsTargetNull();
+        if (GameManager.isBattle) {
+            IsTargetNull();
+            if(IsFindTarget()) {
+                Vector3 direction = (targetEnemy.transform.position - this.transform.position).normalized;
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
+            }  
+        }
     }
 
     public void OnBattle()
@@ -48,6 +57,7 @@ public class UnitController : MonoBehaviour
     {
         navMeshAgent.enabled = false;
         targetEnemy = null;
+        muzzleFlash.SetActive(false);
     }
 
     //player to target 거리 체크
@@ -82,7 +92,6 @@ public class UnitController : MonoBehaviour
         targetEnemy = null;
         if (targetEnemys == null)
         {
-            Debug.Log(this.transform.name);
             return;
         }
         for (int i = 0; i < targetEnemys.Length; i++)
@@ -104,7 +113,7 @@ public class UnitController : MonoBehaviour
     {
         if (targetEnemy == null || !targetEnemy.activeSelf)
         {
-            Debug.Log("Settarget");
+            //Debug.Log("Target Null: "+ this.transform.name);
             SetTarget();
         }
         return;
@@ -138,8 +147,22 @@ public class UnitController : MonoBehaviour
     [PunRPC]
     public void AttackTargetRPC()
     {
-        if (targetEnemy == null || !targetEnemy.activeSelf) return;
+        if (targetEnemy == null || !targetEnemy.activeSelf) {
+            SetTarget();
+            return;
+        }
         //Debug.Log(this.transform.name + " =>" + targetEnemy.name + ": " + UnitStatus.currentATK);
         targetEnemy.GetComponent<UnitManager>().OnHitDamage(UnitStatus.currentATK, UnitStatus.attackType);
+        StartCoroutine(ShowMuzzleFlash());
+    }
+
+     private IEnumerator ShowMuzzleFlash()
+    {
+        if(muzzleFlash != null) {
+            muzzleFlash.SetActive(true); // MuzzleFlash 활성화
+            yield return new WaitForSeconds(0.05f);          // 추가로 1프레임 대기 (총 2프레임)
+            muzzleFlash.SetActive(false); // MuzzleFlash 비활성화
+        }
+        yield return null;  
     }
 }

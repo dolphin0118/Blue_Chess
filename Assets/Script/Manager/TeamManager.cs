@@ -153,7 +153,7 @@ public class TeamManager : MonoBehaviour
                 if (respawnObject.transform.parent.gameObject.layer == LayerMask.NameToLayer("Battle"))
                     synergyActive.Add(respawnObject.GetComponent<UnitStatus>());
             }
-            synergyManager.SynergyActive(synergyActive);
+            //synergyManager.SynergyActive(synergyActive);
         }
 
     }
