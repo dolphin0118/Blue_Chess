@@ -73,7 +73,7 @@ public class UnitStatus : MonoBehaviour
         currentMR = MR;
         currentATK = ATK;
         currentATKSpeed = ATKSpeed;
-        currentRange = Range * 2;
+        currentRange = Range;
 
         attackType = unitStat.attackType;
         schoolSynergy = unitData.schoolSynergy;

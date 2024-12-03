@@ -18,13 +18,21 @@ public class SpawnSystem : MonoBehaviour
     private Dictionary<string, UnitCard> unitDictionary = new Dictionary<string, UnitCard>();
     private bool[] checkSlot = new bool[9];
     public UnitCard[] UnitCards;
-
+    public List<List<UnitCard>> UnitCardTier;
     private GameObject BenchArea;
     private PhotonView photonView;
 
     void Awake()
     {
         UnitCards = Resources.LoadAll<UnitCard>("Scriptable");
+
+        foreach (UnitCard unitCard in UnitCards)
+        {
+            int price = unitCard.UnitData.UnitPrice;
+            UnitCardTier[price].Add(unitCard);
+        }
+
+        UnitCardTier = new List<List<UnitCard>>();
         UnitDictionarySetup();
 
     }

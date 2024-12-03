@@ -16,8 +16,7 @@ public class BattleManager : MonoBehaviour
     private PlayerController[] playerControllers;
     private PhotonView photonView;
     private bool isMatched = false;
-    private Tuple<int, int> match1;
-    private Tuple<int, int> match2;
+    private List<Tuple<int, int>> matchTeam;
 
     private void Awake()
     {
@@ -31,6 +30,7 @@ public class BattleManager : MonoBehaviour
             if (instance != this) Destroy(this.gameObject);
         }
         photonView = GetComponent<PhotonView>();
+
     }
 
     private void Start()
@@ -89,10 +89,12 @@ public class BattleManager : MonoBehaviour
     public int[] RandomTeamList()
     {
         isMatched = true;
-        List<int> list = new List<int>() {};
+        List<int> list = new List<int>() { };
 
-        for(int i = 0; i < playerControllers.Length; i++) {
-            if(playerControllers[i].gameObject.activeSelf) {
+        for (int i = 0; i < playerControllers.Length; i++)
+        {
+            if (playerControllers[i].gameObject.activeSelf)
+            {
                 list.Add(i);
             }
         }
@@ -113,15 +115,16 @@ public class BattleManager : MonoBehaviour
 
     public void MatchTeam(int[] teamlist)
     {
-        
+        matchTeam = new List<Tuple<int, int>>();
         MatchTeamSetup(teamlist[0], teamlist[1]);
-        match1 = new Tuple<int, int>(teamlist[0], teamlist[1]);
+        matchTeam.Add(new Tuple<int, int>(teamlist[0], teamlist[1]));
 
-        if(teamlist.Length >= 4) {
+        if (teamlist.Length >= 4)
+        {
             MatchTeamSetup(teamlist[2], teamlist[3]);
-            match2 = new Tuple<int, int>(teamlist[2], teamlist[3]);
+            matchTeam.Add(new Tuple<int, int>(teamlist[2], teamlist[3]));
         }
- 
+
     }
 
     private void MatchTeamSetup(int team1, int team2)
@@ -145,17 +148,18 @@ public class BattleManager : MonoBehaviour
 
     public bool IsBattleEnd()
     {
-        bool firstMatch = IsBothBattleEnd(match1.Item1, match1.Item2);
-        bool secondMatch = IsBothBattleEnd(match2.Item1, match2.Item2);
-
-        if (!firstMatch || !secondMatch) return false;
+        foreach (Tuple<int, int> team in matchTeam)
+        {
+            bool currentMatch = IsBothBattleEnd(team);
+            if (!currentMatch) return false;
+        }
         return true;
     }
 
-    public bool IsBothBattleEnd(int team1, int team2)
+    public bool IsBothBattleEnd(Tuple<int, int> teams)
     {
-        TeamManager Team1 = teamManagers[team1];
-        TeamManager Team2 = teamManagers[team2];
+        TeamManager Team1 = teamManagers[teams.Item1];
+        TeamManager Team2 = teamManagers[teams.Item2];
 
         if (Team1.IsBattleEndCheck() || Team2.IsBattleEndCheck())
         {
@@ -173,17 +177,21 @@ public class BattleManager : MonoBehaviour
         }
 
     }
-    
+
     [PunRPC]
-    public void BattleEndRPC() {
-        CalculateDamage(match1.Item1, match1.Item2);
-        CalculateDamage(match2.Item1, match2.Item2);
+    public void BattleEndRPC()
+    {
+        foreach (Tuple<int, int> team in matchTeam)
+        {
+            CalculateDamage(team);
+        }
+
     }
 
-    public void CalculateDamage(int team1, int team2)
+    public void CalculateDamage(Tuple<int, int> teams)
     {
-        TeamManager Team1 = teamManagers[team1];
-        TeamManager Team2 = teamManagers[team2];
+        TeamManager Team1 = teamManagers[teams.Item1];
+        TeamManager Team2 = teamManagers[teams.Item2];
 
         int team1RemainUnit = Team1.GetRemainUnit();
         int team2RemainUnit = Team2.GetRemainUnit();
@@ -192,17 +200,17 @@ public class BattleManager : MonoBehaviour
 
         if (team1RemainUnit > team2RemainUnit)
         {
-            playerControllers[team2].GetDamage(damage);
+            playerControllers[teams.Item2].GetDamage(damage);
         }
         else if (team1RemainUnit < team2RemainUnit)
         {
-            playerControllers[team1].GetDamage(damage);
+            playerControllers[teams.Item1].GetDamage(damage);
         }
         else
         {
-            int drawDamage = 3;
-            playerControllers[team1].GetDamage(drawDamage);
-            playerControllers[team2].GetDamage(drawDamage);
+            int drawDamage = 2;
+            playerControllers[teams.Item1].GetDamage(drawDamage);
+            playerControllers[teams.Item2].GetDamage(drawDamage);
         }
     }
 }

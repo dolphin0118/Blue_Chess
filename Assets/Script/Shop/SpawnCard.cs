@@ -108,6 +108,29 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         CardEnable();
     }
 
+    void CardSetup2()
+    {
+        int[,] levelToPercent = {
+        {100, 0, 0, 0, 0},
+        {100, 0, 0, 0, 0},
+        {75, 25, 0, 0, 0},
+        {55, 30, 15, 0, 0},
+        {45, 33, 20, 2, 0},
+        {25, 40, 30, 5, 0},
+        {19, 30, 35, 15, 1},
+        {16, 20, 35, 25, 4},
+        };
+
+        int cardCount = spawnSystem.UnitCardTier[playerData.playerLevel].Count;
+        int selectCard = Random.Range(0, 100);
+        for (int i = 0; i < 5; i++)
+        {
+            int add = levelToPercent[playerData.playerLevel, i];
+        }
+
+        unitCard = spawnSystem.UnitCardTier[playerData.playerLevel][selectCard];
+    }
+
     void SynergyInit()
     {
         traitSymbol = traitSynergy.GetComponentInChildren<Image>();

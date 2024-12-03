@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
     {
         TeamManager.maxUnitCapacity = playerData.maxUnitCapacity;
         UpdateView();
+        IsPlayerDie();
     }
 
     public void UpdateView()
@@ -107,6 +108,14 @@ public class PlayerController : MonoBehaviour
     public void GetDamage(int damage)
     {
         playerData.GetDamage(damage);
+    }
+
+    public void IsPlayerDie()
+    {
+        if (playerData.playerHp <= 0)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 
 }
