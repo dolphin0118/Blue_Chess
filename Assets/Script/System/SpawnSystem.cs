@@ -25,6 +25,10 @@ public class SpawnSystem : MonoBehaviour
     void Awake()
     {
         UnitCards = Resources.LoadAll<UnitCard>("Scriptable");
+        UnitCardTier = new List<List<UnitCard>>();
+        for(int i = 0; i < 6; i++) {
+            UnitCardTier.Add(new List<UnitCard>());
+        }
 
         foreach (UnitCard unitCard in UnitCards)
         {
@@ -32,7 +36,7 @@ public class SpawnSystem : MonoBehaviour
             UnitCardTier[price].Add(unitCard);
         }
 
-        UnitCardTier = new List<List<UnitCard>>();
+        
         UnitDictionarySetup();
 
     }

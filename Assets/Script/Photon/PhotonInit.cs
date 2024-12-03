@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class PhotonInit : MonoBehaviourPunCallbacks
+public class PhotonInit1 : MonoBehaviourPunCallbacks
 {
     private void Awake()
     {
