@@ -29,6 +29,6 @@ MonoBehaviour:
     AR: 50
     MR: 50
     ATKSpeed: 1
-    Range: 3
+    Range: 4
     attackType: 1
   Name: Iori

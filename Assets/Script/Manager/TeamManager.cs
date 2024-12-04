@@ -63,6 +63,10 @@ public class TeamManager : MonoBehaviour
     {
         InputSystem();
         UnitCapacityText.text = currentUnitCapacity.ToString() + " / " + maxUnitCapacity.ToString();
+        if (!PlayManager.instance.isStart) UnitCapacityObject.SetActive(false);
+        else if (PlayManager.instance.isReady && !GameManager.isBattle) UnitCapacityObject.SetActive(true);
+        else if (PlayManager.instance.isStart) UnitCapacityObject.SetActive(false);
+        else if (GameManager.isBattle) UnitCapacityObject.SetActive(false);
     }
 
     private void InputSystem()

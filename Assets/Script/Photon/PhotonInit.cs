@@ -6,12 +6,14 @@ using UnityEngine.UI;
 
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class PhotonInit1 : MonoBehaviourPunCallbacks
 {
     private void Awake()
     {
         PhotonNetwork.ConnectUsingSettings();
+        DontDestroyOnLoad(gameObject);
     }
 
     public override void OnConnectedToMaster()
@@ -47,7 +49,7 @@ public class PhotonInit1 : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         Debug.Log("Joined Room");
-        if (PhotonNetwork.IsConnected&& PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsConnected && PhotonNetwork.IsMasterClient)
         {
             PlayerManager.instance.AssignPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
             PlayerManager.instance.playerViewCode = 1;
@@ -56,17 +58,8 @@ public class PhotonInit1 : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Debug.Log("ENDTER");
+        Debug.Log("ENTER");
         PlayerManager.instance.AssignPlayer(newPlayer.ActorNumber); // 새로운 플레이어가 들어오면 소유권을 할당
-    }
-
-    IEnumerator CreatePlayer()
-    {
-        PhotonNetwork.Instantiate("Player",
-                                    new Vector3(0, 0, 0),
-                                    Quaternion.identity,
-                                    0);
-        yield return null;
     }
 
     private void OnGUI()
@@ -74,5 +67,22 @@ public class PhotonInit1 : MonoBehaviourPunCallbacks
         GUILayout.Label(PhotonNetwork.NetworkClientState.ToString());
     }
 
+    // private void OnEnable()
+    // {
+    //     SceneManager.sceneLoaded += OnSceneLoaded;
+    // }
+
+    // private void OnDisable()
+    // {
+    //     SceneManager.sceneLoaded -= OnSceneLoaded;
+    // }
+
+    // private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    // {
+    //     if (scene.name == "Main")
+    //     {
+    //         PlayerManager.instance.AssignPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
+    //     }
+    // }
 
 }

@@ -57,6 +57,14 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateView()
     {
+        if (!PlayManager.instance.isStart)
+        {
+            UIManager.SetShopUIActive(false);
+            UIManager.SetSynergyUIActive(false);
+            UpdateViewTarget();
+            return;
+        }
+
         if (photonView.IsMine && !PhotonNetwork.IsMasterClient)
         {
             PlayerManager.instance.playerViewCode = playerCode;

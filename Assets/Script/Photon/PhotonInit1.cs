@@ -95,9 +95,6 @@ public class PhotonInit : MonoBehaviourPunCallbacks
     {
         base.OnJoinedLobby();
         Debug.Log("Joined Lobby");
-        //PhotonNetwork.CreateRoom("MyRoom");
-        //PhotonNetwork.JoinRandomRoom();
-        //PhotonNetwork.JoinRoom("MyRoom");
     }
 
     public void Connect()
@@ -114,7 +111,6 @@ public class PhotonInit : MonoBehaviourPunCallbacks
 
 
             PhotonNetwork.JoinLobby();
-            //PhotonNetwork.JoinRandomRoom();
         }
         else
         {
@@ -132,7 +128,6 @@ public class PhotonInit : MonoBehaviourPunCallbacks
         if (connectionInfoText)
             connectionInfoText.text = connectionState;
         Debug.Log("No Room");
-        //PhotonNetwork.CreateRoom("MyRoom");
     }
 
 
@@ -165,11 +160,7 @@ public class PhotonInit : MonoBehaviourPunCallbacks
         isLoggIn = true;
         PlayerPrefs.SetInt("LogIn", 1);
 
-        //SceneManager.LoadScene("SampleScene");
-        PhotonNetwork.LoadLevel("SampleScene");
-
-
-
+        PhotonNetwork.LoadLevel("Main");
     }
 
     private void OnApplicationQuit()
@@ -213,13 +204,6 @@ public class PhotonInit : MonoBehaviourPunCallbacks
             yield return new WaitForSeconds(0.5f);
         }
 
-        GameObject tempPlayer = PhotonNetwork.Instantiate("PlayerDagger",
-                                    new Vector3(0, 0, 0),
-                                    Quaternion.identity,
-                                    0);
-        //tempPlayer.GetComponent<PlayerCtrl>().SetPlayerName(playerName);
-        pv = GetComponent<PhotonView>();
-
         yield return null;
     }
 
@@ -244,22 +228,9 @@ public class PhotonInit : MonoBehaviourPunCallbacks
         {
             chatMessage = playerInput.text;
             playerInput.text = string.Empty;
-            //ShowChat(chatMessage);
             pv.RPC("ChatInfo", RpcTarget.All, chatMessage);
         }
 
-    }
-
-    public void ShowChat(string chat)
-    {
-        chatText.text += chat + "\n";
-        scroll_rect.verticalNormalizedPosition = 0.0f;
-    }
-
-    [PunRPC]
-    public void ChatInfo(string sChat)
-    {
-        ShowChat(sChat);
     }
 
     public override void OnConnectedToMaster()
@@ -301,7 +272,6 @@ public class PhotonInit : MonoBehaviourPunCallbacks
     }
 
 
-    //���ο� �� �����
     public void CreateNewRoom()
     {
 
@@ -328,12 +298,8 @@ public class PhotonInit : MonoBehaviourPunCallbacks
         MakeRoomPanel.SetActive(false);
         //LobbyCanvas.SetActive(false);
 
-
-
     }
 
-
-    // ����ư -2 , ����ư -1 , �� ����
     public void MyListClick(int num)
     {
 
@@ -414,23 +380,19 @@ public class PhotonInit : MonoBehaviourPunCallbacks
 
     void MyListRenewal()
     {
-
         maxPage = (myList.Count % CellBtn.Length == 0)
             ? myList.Count / CellBtn.Length
             : myList.Count / CellBtn.Length + 1;
 
         PreviousBtn.interactable = (currentPage <= 1) ? false : true;
         NextBtn.interactable = (currentPage >= maxPage) ? false : true;
-        
+
         multiple = (currentPage - 1) * CellBtn.Length;
         for (int i = 0; i < CellBtn.Length; i++)
         {
             CellBtn[i].interactable = (multiple + i < myList.Count) ? true : false;
             CellBtn[i].transform.GetChild(0).GetComponent<Text>().text =
                 (multiple + i < myList.Count) ? myList[multiple + i].Name : "";
-            // CellBtn[i].transform.GetChild(1).GetComponent<Text>().text = (multiple + i < myList.Count)
-            //     ? myList[multiple + i].PlayerCount + "/" + myList[multiple + i].MaxPlayers
-            //     : "";
         }
 
     }
@@ -454,4 +416,22 @@ public class PhotonInit : MonoBehaviourPunCallbacks
     }
     #endregion
 
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Main")
+        {
+            PlayerManager.instance.AssignPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
+        }
+    }
 }

@@ -24,11 +24,11 @@ MonoBehaviour:
     Name: Momoi
     HP: 700
     MP: 50
-    ATK: 60
+    ATK: 50
     AP: 50
     AR: 50
     MR: 50
     ATKSpeed: 1
-    Range: 1.5
+    Range: 3
     attackType: 1
   Name: Momoi

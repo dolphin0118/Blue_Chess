@@ -24,11 +24,11 @@ MonoBehaviour:
     Name: Miyako
     HP: 700
     MP: 50
-    ATK: 100
+    ATK: 30
     AP: 50
     AR: 50
     MR: 50
     ATKSpeed: 1
-    Range: 1.5
+    Range: 3
     attackType: 2
   Name: Miyako

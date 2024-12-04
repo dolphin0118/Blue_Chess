@@ -31,7 +31,7 @@ public class PlayerManager : MonoBehaviour
             if (instance != this) Destroy(this.gameObject);
         }
         playerControllers = FindObjectsOfType<PlayerController>();
-     
+
     }
     void Start()
     {
@@ -45,11 +45,10 @@ public class PlayerManager : MonoBehaviour
         foreach (GameObject player in players)
         {
             PhotonView photonView = player.GetComponent<PhotonView>();
-            
+
             // PhotonView의 소유자가 없는 경우 (0은 소유자가 없다는 의미)
             if (photonView.Owner == null)
             {
-
                 // 소유권을 현재 로컬 플레이어로 변경
                 photonView.TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber);
                 Debug.Log($"Player {PhotonNetwork.LocalPlayer.ActorNumber} is assigned to {player.name}");
@@ -66,7 +65,7 @@ public class PlayerManager : MonoBehaviour
         foreach (GameObject player in players)
         {
             PhotonView photonView = player.GetComponent<PhotonView>();
-            
+
             // PhotonView의 소유자가 없는 경우 (0은 소유자가 없다는 의미)
             if (photonView.Owner == null)
             {
@@ -95,7 +94,8 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void SetPlayerView(int viewCode) {
+    public void SetPlayerView(int viewCode)
+    {
         playerViewCode = viewCode;
     }
 

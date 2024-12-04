@@ -24,11 +24,11 @@ MonoBehaviour:
     Name: Neru
     HP: 700
     MP: 50
-    ATK: 60
+    ATK: 10
     AP: 50
     AR: 50
     MR: 50
     ATKSpeed: 1
-    Range: 1
+    Range: 2
     attackType: 1
   Name: Neru

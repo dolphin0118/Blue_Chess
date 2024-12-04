@@ -22,13 +22,13 @@ MonoBehaviour:
   UnitStat:
     Level: 1
     Name: Nonomi
-    HP: 800
+    HP: 1000
     MP: 50
-    ATK: 60
+    ATK: 10
     AP: 50
     AR: 50
     MR: 50
     ATKSpeed: 1
-    Range: 1.5
+    Range: 3
     attackType: 1
   Name: Nonomi

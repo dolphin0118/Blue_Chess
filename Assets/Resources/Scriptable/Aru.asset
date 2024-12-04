@@ -28,7 +28,7 @@ MonoBehaviour:
     AP: 50
     AR: 50
     MR: 50
-    ATKSpeed: 2
-    Range: 2
+    ATKSpeed: 1
+    Range: 3
     attackType: 0
   Name: Aru

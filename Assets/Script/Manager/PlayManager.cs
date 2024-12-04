@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayManager : MonoBehaviour
 {
     public static PlayManager instance;
     [SerializeField] StageUI stageUI;
-
+    [SerializeField] GameObject lobbyUI;
     public const float WaitTime = 20f;
     public const float BattleTime = 30f;
     public const float OverTime = 30f;
     public const float ReadyTime = 5;
+
+    public bool isReady = false;
+    public bool isStart = false;
 
     private void Awake()
     {
@@ -28,19 +32,32 @@ public class PlayManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(StartGame());
+        StartCoroutine(StartGameCheck());
+    }
+    void Update()
+    {
+        bool isEnd = false;
+        if (isEnd) StopAllCoroutines();
     }
 
-    IEnumerator StartGame()
+    IEnumerator StartGameCheck()
     {
         while (!PhotonNetwork.IsConnected || !PhotonNetwork.IsMasterClient)
         {
             yield return new WaitForSeconds(0.1f);
         }
-        StartCoroutine(DisarmState());
-
+        isReady = true;
     }
 
+    public void StartGame()
+    {
+        if (isReady)
+        {
+            isStart = true;
+            lobbyUI.SetActive(false);
+            StartCoroutine(DisarmState());
+        }
+    }
     IEnumerator DisarmReadyState()
     {
         float elapsedTime = 0f;
@@ -136,9 +153,6 @@ public class PlayManager : MonoBehaviour
         StartCoroutine(DisarmReadyState());
     }
 
-    void Update()
-    {
-        bool isEnd = false;
-        if (isEnd) StopAllCoroutines();
-    }
+
+
 }
