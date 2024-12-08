@@ -31,27 +31,29 @@ public class TeamManager : MonoBehaviour
     //----------------------UI---------------------//
     public GameObject UnitDetailCard;
 
+    //----------------CurrentUnit-------------------//
+    public bool isControllUnit { get; set;}
+    public GameObject controllUnit;
 
-
+    //---------------------Data--------------------------//
     public bool isAwayTeam { get; private set; }
+    public string targetTag;
 
     public int maxUnitCapacity;
     public int currentUnitCapacity;
-    public string targetTag;
 
     private void Awake()
     {
         AreaSetup();
-        previousParent = this.transform.parent;
-        isAwayTeam = false;
-        maxUnitCapacity = 0;
-        currentUnitCapacity = 0;
+        DataSetup();
     }
+
     public void Initialize(SynergyManager synergyManager, CombineSystem combineSystem)
     {
         this.synergyManager = synergyManager;
         this.combineSystem = combineSystem;
     }
+
     private void Start()
     {
         HomeTeam = this.gameObject;
@@ -63,15 +65,10 @@ public class TeamManager : MonoBehaviour
     {
         InputSystem();
         UnitCapacityText.text = currentUnitCapacity.ToString() + " / " + maxUnitCapacity.ToString();
-        if (!PlayManager.instance.isStart) UnitCapacityObject.SetActive(false);
-        else if (PlayManager.instance.isReady && !GameManager.isBattle) UnitCapacityObject.SetActive(true);
-        else if (PlayManager.instance.isStart) UnitCapacityObject.SetActive(false);
-        else if (GameManager.isBattle) UnitCapacityObject.SetActive(false);
     }
 
     private void InputSystem()
     {
-
         if (Input.GetKeyDown(KeyCode.D))
         {
             UnitDeleteAll();
@@ -95,6 +92,14 @@ public class TeamManager : MonoBehaviour
                 BenchArea = child.gameObject;
             }
         }
+    }
+
+    private void DataSetup() {
+        previousParent = this.transform.parent;
+        isAwayTeam = false;
+        isControllUnit = false;
+        maxUnitCapacity = 0;
+        currentUnitCapacity = 0;
     }
 
     public void SetHomeTeam(string tag, string targetTag)
@@ -143,6 +148,7 @@ public class TeamManager : MonoBehaviour
         }
         UnitRespawnAll();
         UnitCapacityObject.SetActive(true);
+        
     }
 
     public void SetBattlePhase()

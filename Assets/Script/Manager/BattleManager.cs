@@ -212,5 +212,8 @@ public class BattleManager : MonoBehaviour
             playerControllers[teams.Item1].GetDamage(drawDamage);
             playerControllers[teams.Item2].GetDamage(drawDamage);
         }
+
+        playerControllers[teams.Item1].GetComponent<PlayerData>().AddGold();
+        playerControllers[teams.Item2].GetComponent<PlayerData>().AddGold();
     }
 }

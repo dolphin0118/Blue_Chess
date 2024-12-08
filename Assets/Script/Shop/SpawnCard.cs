@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using Photon.Pun;
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityTransform;
 
 
 
@@ -37,7 +38,6 @@ public class PriceColor
                 resultColor = Price5;
                 break;
         }
-
         return resultColor;
     }
 }
@@ -52,6 +52,9 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     [SerializeField] TextMeshProUGUI UnitPriceText;
     [SerializeField] GameObject traitSynergy;
     [SerializeField] GameObject schoolSynergy;
+    [SerializeField] Image attackImage;
+    [SerializeField] Image defenseImage;
+
     private Image traitSymbol;
     private Image schoolSymbol;
     private TextMeshProUGUI traitName;
@@ -73,10 +76,9 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         playerData = GetComponentInParent<PlayerData>();
         initColor = UnitImage.color;
 
-        CardInit();
-        CardSetup();
-        SynergyInit();
-        SynergySetup();
+
+        Setup();
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -92,6 +94,15 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerClick(PointerEventData eventData)
     {
         CardSpawn();
+    }
+
+//-------------------------- Setup--------------------------//
+    void Setup() {
+        CardInit();
+        CardSetup();
+        SynergyInit();
+        SynergySetup();
+        TypeSetup();
     }
 
     void CardInit()
@@ -153,10 +164,20 @@ public class SpawnCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         this.schoolName.text = schoolName;
     }
 
+    void TypeSetup() {
+        string TypePath = "Unit/Type/";
+        string attackName = unitCard.UnitStat.attackType.ToString();
+        string defenseName = unitCard.UnitStat.defenseType.ToString();
+        attackImage.sprite = Resources.Load(TypePath + "Attack" + attackName, typeof(Sprite)) as Sprite;
+        defenseImage.sprite = Resources.Load(TypePath + "Defense" + defenseName, typeof(Sprite)) as Sprite;
+        
+    }
+
+//-------------------------- CardSpawn -------------------------------//
     void CardSpawn()
     {
         int unitPrice = unitCard.UnitData.UnitPrice;
-        if (isSpawn && spawnSystem.isSpawnable() && unitPrice <= playerData.GetGold())
+        if (isSpawn && spawnSystem.isSpawnable() && unitPrice <= playerData.playerGold)
         {
             playerData.PayGold(unitPrice);
             //spawnSystem.SpawnUnit(unitCard.name);

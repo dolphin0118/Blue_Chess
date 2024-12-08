@@ -5,10 +5,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Photon.Pun;
+using Photon.Realtime;
+
 public class StageUI : MonoBehaviour
 {
     [SerializeField] Image timerBar;
     [SerializeField] TextMeshProUGUI timerCount;
+    PhotonView photonView;
+
     float maxCount;
     float currentCount;
 
@@ -17,10 +22,11 @@ public class StageUI : MonoBehaviour
 
     void Awake()
     {
-        maxCount = 0;
+        maxCount = 30;
         currentCount = 0;
         baseColor = new Color(0, 225, 255);
         readyColor = Color.yellow;
+        photonView = GetComponent<PhotonView>();
     }
 
     void Update()
@@ -30,15 +36,35 @@ public class StageUI : MonoBehaviour
         timerCount.text = ((int)currentCount).ToString();
     }
 
-    public void SetTimer(float maxCount)
+
+    public void SetTimer(float maxCount, bool isChange)
     {
-        this.maxCount = maxCount;
-        this.currentCount = 0;
+        photonView.RPC("SetTimerRPC", RpcTarget.All, maxCount, isChange);
     }
 
-    public void UpdateTimer(float currentTimer)
+    [PunRPC]
+    public void SetTimerRPC(float maxCount, bool isChange) {
+        this.maxCount = maxCount;
+        this.currentCount = maxCount;
+        SetReadyColor(isChange);
+        StopCoroutine(UpdateTimer());
+        StartCoroutine(UpdateTimer());
+    }
+
+    public IEnumerator UpdateTimer()
     {
-        currentCount = currentTimer;
+        float elapsedTime = 0f;
+        while (elapsedTime < maxCount)
+        {
+            elapsedTime += Time.deltaTime; // 매 프레임의 시간 합산
+            float Timer = maxCount - elapsedTime;
+            if (Timer <= 0) {
+                Timer = 0f;
+            }
+            currentCount = Timer;
+            yield return null;
+        }
+        
     }
 
     public void SetReadyColor(bool isChange)
@@ -46,4 +72,6 @@ public class StageUI : MonoBehaviour
         if (isChange) timerBar.color = readyColor;
         else timerBar.color = baseColor;
     }
+
+
 }

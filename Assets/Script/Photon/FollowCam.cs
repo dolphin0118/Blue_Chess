@@ -5,7 +5,7 @@ using UnityEngine;
 public class FollowCam : MonoBehaviour
 {
     
-    private Camera mainCamera;
+    [SerializeField] Camera mainCamera;
     [SerializeField] Camera subCamera;
     private Vector3 homePosition;
     private Vector3 awayPosition;
@@ -19,8 +19,6 @@ public class FollowCam : MonoBehaviour
     void Start()
     {
         isAwayViewTarget = false;
-        mainCamera = Camera.main;
-
         homePosition = mainCamera.transform.position;
         awayPosition = subCamera.transform.position;
         homeRotation = mainCamera.transform.rotation;
@@ -47,7 +45,8 @@ public class FollowCam : MonoBehaviour
     }
 
     void LerpTarget() {
-
+        
+        if(!mainCamera.enabled || viewTarget == null) return;
         if(!isAwayViewTarget) {
             Vector3 newPosition = new Vector3(viewTarget.position.x, homePosition.y, homePosition.z + viewTarget.position.z);
             mainCamera.transform.position = newPosition;

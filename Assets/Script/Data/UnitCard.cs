@@ -5,10 +5,17 @@ using BlueChessDataBase;
 
 [GoogleSheet.Core.Type.UGS(typeof(AttackType))]
 public enum AttackType {
-        Explosion,
-        Penetrate,
-        Mystery
- }
+    Explosion,
+    Penetrate,
+    Mystery
+}
+
+[GoogleSheet.Core.Type.UGS(typeof(AttackType))]
+public enum DefenseType {
+    Explosion,
+    Penetrate,
+    Mystery
+}
 
 [GoogleSheet.Core.Type.UGS(typeof(Synergy))]
 public enum Synergy {

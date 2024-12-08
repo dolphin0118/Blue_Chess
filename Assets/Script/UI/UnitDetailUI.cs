@@ -30,7 +30,9 @@ public class UnitDetailUI : UI_Base
         SchoolSynergy,
         Item_1,
         Item_2,
-        Item_3
+        Item_3,
+        AttackTypeImage,
+        DefenseTypeImage
     }
 
     private UnitCard UnitCard;
@@ -77,9 +79,13 @@ public class UnitDetailUI : UI_Base
     void TextSetup()
     {
         string symbolPath = "Unit/Symbol/";
+        string typePath = "Unit/Type/";
         GetImage((int)Images.UnitImage).sprite = UnitCard.UnitMemorial;
         GetImage((int)Images.TraitSynergy).sprite = Resources.Load(symbolPath + UnitCard.UnitData.traitSynergy, typeof(Sprite)) as Sprite;
         GetImage((int)Images.SchoolSynergy).sprite = Resources.Load(symbolPath + UnitCard.UnitData.schoolSynergy, typeof(Sprite)) as Sprite;
+
+        GetImage((int)Images.AttackTypeImage).sprite = Resources.Load(typePath +"Attack" + UnitCard.UnitStat.attackType, typeof(Sprite)) as Sprite;
+        GetImage((int)Images.DefenseTypeImage).sprite = Resources.Load(typePath +"Defense" + UnitCard.UnitStat.defenseType, typeof(Sprite)) as Sprite;
 
         //traitSymbol.transform.SetAsLastSibling();
         //schoolSymbol.transform.SetAsLastSibling();

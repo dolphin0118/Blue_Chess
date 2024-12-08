@@ -9,6 +9,10 @@ public class PlayManager : MonoBehaviour
     public static PlayManager instance;
     [SerializeField] StageUI stageUI;
     [SerializeField] GameObject lobbyUI;
+    [SerializeField] Camera mainCamera;
+    [SerializeField] Camera lobbyCamera;
+
+
     public const float WaitTime = 20f;
     public const float BattleTime = 30f;
     public const float OverTime = 30f;
@@ -28,16 +32,31 @@ public class PlayManager : MonoBehaviour
         {
             if (instance != this) Destroy(this.gameObject);
         }
+        SwitchToLobbyCamera();
     }
 
     private void Start()
     {
+        
         StartCoroutine(StartGameCheck());
     }
+    
     void Update()
     {
         bool isEnd = false;
         if (isEnd) StopAllCoroutines();
+    }
+
+    public void SwitchToMainCamera()
+    {
+        mainCamera.enabled = true;
+        lobbyCamera.enabled = false;
+    }
+
+    public void SwitchToLobbyCamera()
+    {
+        mainCamera.enabled = false;
+        lobbyCamera.enabled = true;
     }
 
     IEnumerator StartGameCheck()
@@ -53,25 +72,23 @@ public class PlayManager : MonoBehaviour
     {
         if (isReady)
         {
+            SwitchToMainCamera();
             isStart = true;
             lobbyUI.SetActive(false);
             StartCoroutine(DisarmState());
         }
     }
+
     IEnumerator DisarmReadyState()
     {
         float elapsedTime = 0f;
-
-        stageUI.SetTimer(ReadyTime);
-        stageUI.SetReadyColor(true);
+        stageUI.SetTimer(ReadyTime, true);
         //BattleManager.instance.DisarmReadyPhase();
         while (elapsedTime < ReadyTime)
         {
             elapsedTime += Time.deltaTime; // 매 프레임의 시간 합산
             float Timer = ReadyTime - elapsedTime;
             if (Timer <= 0) Timer = 0f;
-            stageUI.UpdateTimer(Timer);
-
             yield return null;
         }
         StartCoroutine(DisarmState());
@@ -81,8 +98,7 @@ public class PlayManager : MonoBehaviour
     {
         float elapsedTime = 0f;
 
-        stageUI.SetTimer(WaitTime);
-        stageUI.SetReadyColor(false);
+        stageUI.SetTimer(WaitTime, false);
         BattleManager.instance.DisarmPhase();
 
         while (elapsedTime < WaitTime)
@@ -90,7 +106,6 @@ public class PlayManager : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float Timer = WaitTime - elapsedTime;
             if (Timer <= 0) Timer = 0f;
-            stageUI.UpdateTimer(Timer);
 
             yield return null;
         }
@@ -102,8 +117,7 @@ public class PlayManager : MonoBehaviour
     {
         float elapsedTime = 0f;
 
-        stageUI.SetTimer(ReadyTime);
-        stageUI.SetReadyColor(true);
+        stageUI.SetTimer(ReadyTime, true);
         BattleManager.instance.BattleReadyPhase();
 
         while (elapsedTime < ReadyTime)
@@ -111,7 +125,6 @@ public class PlayManager : MonoBehaviour
             elapsedTime += Time.deltaTime; // 매 프레임의 시간 합산
             float Timer = ReadyTime - elapsedTime;
             if (Timer <= 0) Timer = 0f;
-            stageUI.UpdateTimer(Timer);
 
             yield return null;
         }
@@ -124,8 +137,7 @@ public class PlayManager : MonoBehaviour
         bool isBattleEnd = false;
         bool isOverTime = false;
 
-        stageUI.SetTimer(BattleTime);
-        stageUI.SetReadyColor(false);
+        stageUI.SetTimer(BattleTime, false);
         BattleManager.instance.BattlePhase();
 
         while (elapsedTime < BattleTime && !isBattleEnd)
@@ -143,7 +155,6 @@ public class PlayManager : MonoBehaviour
 
             float Timer = BattleTime - elapsedTime;
             if (Timer <= 0) Timer = 0f;
-            stageUI.UpdateTimer(Timer);
 
             isBattleEnd = BattleManager.instance.IsBattleEnd(); // End체크
 
@@ -152,7 +163,5 @@ public class PlayManager : MonoBehaviour
         BattleManager.instance.BattleEnd();
         StartCoroutine(DisarmReadyState());
     }
-
-
 
 }

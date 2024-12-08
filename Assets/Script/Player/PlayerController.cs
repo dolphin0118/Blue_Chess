@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [NonSerialized] public TeamManager TeamManager;
     [NonSerialized] public SynergyManager synergyManager;
     [NonSerialized] public UIManager UIManager;
+    [NonSerialized] public ShopManager shopManager;
 
     //------------------------------System----------------------------------//
     [NonSerialized] public CombineSystem combineSystem;
@@ -34,7 +35,8 @@ public class PlayerController : MonoBehaviour
         TeamManager = GetComponentInChildren<TeamManager>();
         synergyManager = GetComponentInChildren<SynergyManager>();
         UIManager = GetComponentInChildren<UIManager>();
-
+        shopManager = GetComponentInChildren<ShopManager>();
+        
         combineSystem = GetComponentInChildren<CombineSystem>();
         spawnSystem = GetComponentInChildren<SpawnSystem>();
         photonView = GetComponent<PhotonView>();
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviour
         playerData = GetComponent<PlayerData>();
 
         TeamManager.Initialize(synergyManager, combineSystem);
+        shopManager.Initialize(TeamManager, playerData);
         spawnSystem.Initialize(TeamManager, synergyManager);
         combineSystem.Initialize(TeamManager);
         playerData.Initialize(TeamManager);
@@ -61,7 +64,7 @@ public class PlayerController : MonoBehaviour
         {
             UIManager.SetShopUIActive(false);
             UIManager.SetSynergyUIActive(false);
-            UpdateViewTarget();
+            //UpdateViewTarget();
             return;
         }
 

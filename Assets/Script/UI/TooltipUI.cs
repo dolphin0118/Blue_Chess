@@ -40,7 +40,7 @@ public class TooltipUI : MonoBehaviour
     public void PositionSetup() {
         root = uiDocument.rootVisualElement;
         panel = root.Q<VisualElement>("Root_Panel");
-        panel.style.marginLeft = 200;
+        panel.style.marginLeft = 300;
         panel.style.marginTop = 100;
     }
 }

@@ -6,10 +6,17 @@ using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
+    //-----------------------Component---------------------------//
+    private TeamManager teamManager;
+    private PlayerData playerData;
+
+    //-----------------------Bind Data----------------------------//
     [SerializeField] TextMeshProUGUI GoldText;
     [SerializeField] TextMeshProUGUI LevelText;
     [SerializeField] TextMeshProUGUI EXPText;
-    [SerializeField] PlayerData playerData;
+    
+    [SerializeField] GameObject sellSystem;
+    [SerializeField] GameObject spawnSystem;
 
     private int playerGold;
     int level;
@@ -19,12 +26,22 @@ public class ShopManager : MonoBehaviour
 
     void Start()
     {
+        sellSystem.SetActive(false);
         isReroll = true;
     }
 
     void Update()
     {
         DataUpdate();
+        SystemActive();
+    }
+
+    public void Initialize(TeamManager teamManager, PlayerData playerData) {
+        this.teamManager = teamManager;
+        this.playerData = playerData;
+
+        sellSystem.GetComponent<SellSystem>().Initialize(teamManager, playerData);
+        
     }
 
     void DataUpdate()
@@ -58,6 +75,17 @@ public class ShopManager : MonoBehaviour
         {
             playerData.playerGold -= 2;
             StartCoroutine(CardReroll());
+        }
+    }
+
+    public void SystemActive() {
+        if(teamManager.isControllUnit) {
+            sellSystem.SetActive(true);
+            spawnSystem.SetActive(false);
+        }
+        else {
+            sellSystem.SetActive(false);
+            spawnSystem.SetActive(true);
         }
     }
 

@@ -207,6 +207,8 @@ public class UnitManager : MonoBehaviour, IPunObservable
         if (Input.GetMouseButtonDown(0) && isUnitControll && photonView.IsMine)
         {
             unitLocate.OnUnitControll();
+            teamManager.isControllUnit = true;
+            teamManager.controllUnit = this.gameObject;
             teamManager.GridView.SetActive(true);
         }
         //Right
@@ -224,6 +226,7 @@ public class UnitManager : MonoBehaviour, IPunObservable
 
     void OnMouseUp()
     {
+        //teamManager.isControllUnit = false;
         if (isUnitControll && photonView.IsMine)
         {
             unitLocate.OnUnitUpdate();

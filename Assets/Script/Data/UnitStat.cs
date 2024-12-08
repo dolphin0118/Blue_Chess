@@ -19,7 +19,8 @@ namespace BlueChessDataBase
         public float ATKSpeed;
         public float Range;
         public AttackType attackType;
-
+        public DefenseType defenseType;
+        
         public void Reset()
         {
 

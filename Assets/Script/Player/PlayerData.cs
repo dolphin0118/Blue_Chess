@@ -30,8 +30,6 @@ public class PlayerData : MonoBehaviour
         
     } 
 
-
-
     void Setup()
     {
         playerName = "Player" + playerController.playerCode;
@@ -58,15 +56,15 @@ public class PlayerData : MonoBehaviour
         }
     }
 
+    public void AddGold(int value) {
+        playerGold += value;
+    }
+
     public void AddGold()
     {
         int basicGold = 5;
         int totalGold = basicGold;
         playerGold += totalGold;
-    }
-    public int GetGold()
-    {
-        return playerGold;
     }
 
     public void PayGold(int unitPrice)
