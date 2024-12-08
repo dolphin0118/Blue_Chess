@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
 
         if (PlayerManager.instance.playerViewCode == playerCode)
         {
+            UpdateViewTarget();
             if (photonView.IsMine)
             {
                 //PlayerManager.instance.playerViewCode = playerCode;
@@ -91,7 +92,7 @@ public class PlayerController : MonoBehaviour
             UIManager.SetShopUIActive(false);
             UIManager.SetSynergyUIActive(true);
         }
-        UpdateViewTarget();
+        
     }
 
     public void SetAwayViewTarget(GameObject AwayViewTarget)
