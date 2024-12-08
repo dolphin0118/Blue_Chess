@@ -64,7 +64,6 @@ public class PlayerController : MonoBehaviour
         {
             UIManager.SetShopUIActive(false);
             UIManager.SetSynergyUIActive(false);
-            //UpdateViewTarget();
             return;
         }
 
@@ -75,7 +74,6 @@ public class PlayerController : MonoBehaviour
 
         if (PlayerManager.instance.playerViewCode == playerCode)
         {
-            UpdateViewTarget();
             if (photonView.IsMine)
             {
                 //PlayerManager.instance.playerViewCode = playerCode;
@@ -85,15 +83,15 @@ public class PlayerController : MonoBehaviour
             else
             {
                 UIManager.SetShopUIActive(false);
-                UIManager.SetSynergyUIActive(false);
+                UIManager.SetSynergyUIActive(true);
             }
         }
         else
         {
-            //UpdateViewTarget();
             UIManager.SetShopUIActive(false);
-            UIManager.SetSynergyUIActive(false);
+            UIManager.SetSynergyUIActive(true);
         }
+        UpdateViewTarget();
     }
 
     public void SetAwayViewTarget(GameObject AwayViewTarget)

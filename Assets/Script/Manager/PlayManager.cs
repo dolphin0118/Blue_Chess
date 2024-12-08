@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class PlayManager : MonoBehaviour
 {
     public static PlayManager instance;
+    private PhotonView photonView;
+
     [SerializeField] StageUI stageUI;
     [SerializeField] GameObject lobbyUI;
     [SerializeField] Camera mainCamera;
@@ -33,11 +35,11 @@ public class PlayManager : MonoBehaviour
             if (instance != this) Destroy(this.gameObject);
         }
         SwitchToLobbyCamera();
+        photonView = GetComponent<PhotonView>();
     }
 
     private void Start()
     {
-        
         StartCoroutine(StartGameCheck());
     }
     
@@ -47,6 +49,7 @@ public class PlayManager : MonoBehaviour
         if (isEnd) StopAllCoroutines();
     }
 
+    [PunRPC]
     public void SwitchToMainCamera()
     {
         mainCamera.enabled = true;
@@ -72,7 +75,7 @@ public class PlayManager : MonoBehaviour
     {
         if (isReady)
         {
-            SwitchToMainCamera();
+            photonView.RPC("SwitchToMainCamera", RpcTarget.All);
             isStart = true;
             lobbyUI.SetActive(false);
             StartCoroutine(DisarmState());

@@ -6193,10 +6193,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7425529838231634148, guid: 24128951769f9fc44883bb59493017fe, type: 3}
       insertIndex: 2
       addedObject: {fileID: 618162037}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1337110549748025633, guid: 24128951769f9fc44883bb59493017fe, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24128951769f9fc44883bb59493017fe, type: 3}
 --- !u!4 &658843153 stripped
 Transform:
@@ -24465,10 +24462,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7425529838231634148, guid: 24128951769f9fc44883bb59493017fe, type: 3}
       insertIndex: 2
       addedObject: {fileID: 803229133}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1337110549748025633, guid: 24128951769f9fc44883bb59493017fe, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24128951769f9fc44883bb59493017fe, type: 3}
 --- !u!114 &3429939308748101227
 MonoBehaviour:
