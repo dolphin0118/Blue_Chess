@@ -54,6 +54,8 @@ public class PlayManager : MonoBehaviour
     {
         mainCamera.enabled = true;
         lobbyCamera.enabled = false;
+        lobbyUI.SetActive(false);
+        isStart = true;
     }
 
     public void SwitchToLobbyCamera()
@@ -76,8 +78,6 @@ public class PlayManager : MonoBehaviour
         if (isReady)
         {
             photonView.RPC("SwitchToMainCamera", RpcTarget.All);
-            isStart = true;
-            lobbyUI.SetActive(false);
             StartCoroutine(DisarmState());
         }
     }
